@@ -1,0 +1,109 @@
+name: ci
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  # Job to run change detection
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      # Expose matched filters as job 'images' output variable
+      images: ${{ steps.filter.outputs.changes }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          # Use context to get the branch where commits were pushed.
+          # If there is only one long-lived branch (e.g. master),
+          # you can specify it directly.
+          # If it's not configured, the repository default branch is used.
+          base: ${{ github.ref }}
+          filters: |
+            src/bootstrap/cinc-auditor: 'src/bootstrap/cinc-auditor/**'
+            src/bootstrap/dasel: 'src/bootstrap/dasel/**'
+            src/bootstrap/hadolint: 'src/bootstrap/hadolint/**'
+
+  # Job to build and test each of the modified images
+  build:
+    needs: changes
+    strategy:
+      matrix:
+        # Parse JSON array containing names of all filters matching any of changed files
+        # e.g. ['image1', 'image2'] if both image folders contains changes
+        image: ${{ fromJSON(needs.changes.outputs.images) }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ matrix.image }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Check the Containerfile with hadolint
+        run: |
+          $(git rev-parse --show-toplevel)/bin/lint.sh
+      
+      - name: Install QEMU static binaries
+        uses: docker/setup-qemu-action@v2
+      
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v2
+      
+      - name: Set the tags
+        id: tags
+        run: |
+          echo "tags=$($(git rev-parse --show-toplevel)/bin/list-tags-github-env.sh)" >> $GITHUB_ENV
+
+      - name: Build locally for testing
+        uses: docker/build-push-action@v3
+        with:
+          load: true
+          context: ${{ matrix.image }}
+          file: ${{ matrix.image }}/Containerfile
+          tags: ${{ env.tags }}
+
+      - name: Run tests on the image with cinc-auditor
+        run: |
+          $(git rev-parse --show-toplevel)/bin/buildx-test.sh
+
+      - name: Set the platforms
+        id: platforms
+        run: |
+          echo "platforms=$($(git rev-parse --show-toplevel)/bin/list-platforms-github-env.sh)" >> $GITHUB_ENV
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
+          password: ${{ secrets.CONTAINER_REGISTRY_PASSWORD }}
+      
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          context: ${{ matrix.image }}
+          file: ${{ matrix.image }}/Containerfile
+          platforms: ${{ env.platforms }}
+          tags: ${{ env.tags }}
+
+      - name: Set the image name
+        id: image_name
+        run: |
+          echo "image_name=$($(git rev-parse --show-toplevel)/bin/image-name.sh)" >> $GITHUB_ENV
+
+      - name: Set the image description
+        id: image_description
+        run: |
+          echo "image_description=$($(git rev-parse --show-toplevel)/bin/image-description.sh)" >> $GITHUB_ENV
+
+      - name: Update Docker Hub Description
+        uses: peter-evans/dockerhub-description@v3
+        with:
+          username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
+          password: ${{ secrets.CONTAINER_DESCRIPTION_PASSWORD }}
+          short-description: ${{ env.image_description }}
+          repository: boxcutter/${{ env.image_name }}
+          readme-filepath: ${{ matrix.image }}/README.md

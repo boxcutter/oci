@@ -1,0 +1,70 @@
+# syntax=docker/dockerfile:1
+ARG CONTAINER_REGISTRY=docker.io
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20220815 as build
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN <<EOF
+  apt-get update
+  apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl
+  dpkgArch="$(dpkg --print-architecture)"
+  case "${dpkgArch##*-}" in \
+    amd64) \
+      CINC_AUDITOR_URL='http://downloads.cinc.sh/files/stable/cinc-auditor/5.18.14/ubuntu/22.04/cinc-auditor_5.18.14-1_amd64.deb' \
+      CINC_AUDITOR_SHA256='5993d10eedaa20cb87dacc7c93ef8b444894b2089dd29fd13cf6e7377708f8da' \
+      ;; \
+    arm64) \
+      CINC_AUDITOR_URL='http://downloads.cinc.sh/files/stable/cinc-auditor/5.18.14/ubuntu/22.04/cinc-auditor_5.18.14-1_arm64.deb' \
+      CINC_AUDITOR_SHA256='d30c0f746c013a8fbca6726f62d825550aecc416e99266adf32cfbf7607e48ad' \
+      ;; \
+    *) echo "unsupported architecture"; exit 1 ;; \
+    esac
+  curl -fsSL -o /tmp/cinc-auditor.deb "${CINC_AUDITOR_URL}"
+  echo "${CINC_AUDITOR_SHA256} /tmp/cinc-auditor.deb" | sha256sum -c -
+EOF
+
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20220815
+
+LABEL \
+    org.opencontainers.image.source="https://github.com/polymathrobotics/oci" \
+    org.opencontainers.image.licenses="Apache-2.0" \
+    org.opencontainers.image.description="Cinc Auditing and Testing Framework."
+
+ENV PATH=/opt/cinc-auditor/bin:/opt/cinc-auditor/embedded/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+# Run the entire container with the default locale to be en_US.UTF-8
+RUN <<EOF
+  apt-get update 
+  apt-get install -y --no-install-recommends locales
+  locale-gen en_US.UTF-8
+  update-locale LANG=en_US.UTF-8
+  # The official Ubuntu images automatically run `apt-get clean`, so explicit
+  # invocation is not required
+  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+EOF
+
+ENV LANG=en_US.UTF-8 \
+    LANGUAGE=en_US:en \
+    LC_ALL=en_US.UTF-8
+
+WORKDIR /share
+
+COPY --from=build /tmp/cinc-auditor.deb  /tmp/cinc-auditor.deb
+
+RUN <<EOF
+  apt-get update 
+  apt-get install -y --no-install-recommends /tmp/cinc-auditor.deb 
+  rm -rf /tmp/cinc-auditor.deb
+  # Install any packages that make life easier for an InSpec installation
+  apt-get install -y --no-install-recommends git
+  # The official Ubuntu images automatically run `apt-get clean`, so explicit
+  # invocation is not required
+  rm -rf /var/lib/apt/lists/*
+EOF
+
+ENTRYPOINT ["cinc-auditor"]
+CMD ["help"]
+VOLUME ["/share"]
