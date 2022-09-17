@@ -24,7 +24,6 @@ jobs:
           filters: |
             src/bootstrap/cinc-auditor: 'src/bootstrap/cinc-auditor/**'
             src/bootstrap/dasel: 'src/bootstrap/dasel/**'
-            src/bootstrap/hadolint: 'src/bootstrap/hadolint/**'
 
   # Job to build and test each of the modified images
   build:
