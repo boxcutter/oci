@@ -27,6 +27,11 @@ EOF
 
 FROM $CONTAINER_REGISTRY/ubuntu:jammy-20220815
 
+LABEL \
+    org.opencontainers.image.source="https://github.com/polymathrobotics/oci" \
+    org.opencontainers.image.licenses="Apache-2.0" \
+    org.opencontainers.image.description="Command line processor for JSON, YAML, TOML, XML and CSV."
+
 RUN <<EOF
   apt-get update
   apt-get install -y --no-install-recommends jq
