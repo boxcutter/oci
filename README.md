@@ -13,3 +13,11 @@ The repo has the following structure:
 
 - `src/` contains all the source code for the images, primarily
   Containerfiles/Dockerfiles in BuildKit format.
+
+# Alphabetical index of images
+
+| Image | Location | DockerHub URL |
+| --- | --- | --- |
+| cinc-auditor | src/bootstrap/cinc-auditor | https://hub.docker.com/r/boxcutter/cinc-auditor |
+| dasel | src/bootstrap/dasel | https://hub.docker.com/r/boxcutter/dasel |
+| hadolint | src/bootstrap/hadolint | https://hub.docker.com/r/boxcutter/dasel |
