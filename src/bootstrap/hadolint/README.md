@@ -11,13 +11,13 @@ This image packages releases from https://github.com/hadolint/hadolint
 To lint a `Containerfile` just pipe it to `docker run`:
 
 ```bash
-docker run --rm -i docker.io/boxcutter/hadolint < Dockerfile
+docker container run --rm -i docker.io/boxcutter/hadolint < Dockerfile
 ```
 
 # CLI
 
 ```
-docker run --rm -i docker.io/boxcutter/hadolint hadolint --h
+docker container run --rm -i docker.io/boxcutter/hadolint hadolint --h
 elp
 hadolint - Dockerfile Linter written in Haskell
 
