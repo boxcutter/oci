@@ -12,7 +12,9 @@ The repo has the following structure:
   using automated builds in the cloud.
 
 - `src/` contains all the source code for the images, primarily
-  Containerfiles/Dockerfiles in BuildKit format.
+  Containerfiles/Dockerfiles in BuildKit format. The subdirectories are
+  vaguely organized into categories and by vendors. An alphabetical
+  index is also provided in this README.md.
 
 # Alphabetical index of images
 
