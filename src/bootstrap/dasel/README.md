@@ -8,6 +8,25 @@ metadata.
 
 This image packages releases from https://github.com/TomWright/dasel
 
+# Using dasel
+
+Dasel has an online playground environment where you can test out example
+queries: https://dasel.tomwright.me/
+
+Dasel also has a comprehensive user guide with command line examples:
+https://daseldocs.tomwright.me/
+
+Our primary use case is reading toml files. Basic queries are in the
+form of "section.key". The `--null` parameter ensures that a consistent
+error result is returned when the key is not found:
+
+```bash
+docker container run --rm \
+  --mount type=bind,source="$(pwd)",target=/share,readonly \
+  docker.io/boxcutter/dasel \
+    -f Polly.toml --null "container_image.name"
+```
+
 # CLI
 
 ```
