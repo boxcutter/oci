@@ -11,7 +11,7 @@ This image packages releases from https://github.com/hadolint/hadolint
 To lint a `Containerfile` just pipe it to `docker run`:
 
 ```bash
-docker container run --rm -i docker.io/boxcutter/hadolint < Dockerfile
+docker container run --rm -i docker.io/boxcutter/hadolint < Containerfile
 ```
 
 # CLI
