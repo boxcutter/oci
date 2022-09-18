@@ -33,7 +33,7 @@ In its general form, you bind mount the profile source into `/share` like so:
 % cd <profile_dir>
 % docker container run --rm --interactive --tty \
     --mount type=bind,source="$(pwd)",target=/share \
-    docker.io/polymathrobotics/cinc-auditor exec .
+    docker.io/boxcutter/cinc-auditor exec .
 ```
 
 The exit codes return test result status:
@@ -58,7 +58,7 @@ remote environments.
 ```bash
 docker container run --rm --interactive --tty \
   --mount type=bind,source="$(pwd)",target=/share \
-  docker.io/polymathrobotics/cinc-auditor exec example \
+  docker.io/boxcutter/cinc-auditor exec example \
     --key-files /path/keys/ssh.key \
     --target ssh://root@192.168.1.12
 ```
@@ -88,7 +88,7 @@ dd6e9a9ce3df   nginx     "/docker-entrypoint.…"   14 seconds ago   Up 14 secon
   --env=CONTAINER_ID \
   --mount type=bind,source="$(pwd)",target=/share \
   --mount type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock \
-  docker.io/polymathrobotics/cinc-auditor exec . -t docker://${CONTAINER_ID}
+  docker.io/boxcutter/cinc-auditor exec . -t docker://${CONTAINER_ID}
   
 # Stop the container under test - give a chance for PID 1 to clean up processes
 % docker container stop ${CONTAINER_ID}
