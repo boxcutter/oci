@@ -18,6 +18,6 @@ The repo has the following structure:
 
 | Image | Location | DockerHub URL |
 | --- | --- | --- |
-| cinc-auditor | src/bootstrap/cinc-auditor | https://hub.docker.com/r/boxcutter/cinc-auditor |
-| dasel | src/bootstrap/dasel | https://hub.docker.com/r/boxcutter/dasel |
-| hadolint | src/bootstrap/hadolint | https://hub.docker.com/r/boxcutter/dasel |
+| cinc-auditor | [src/bootstrap/cinc-auditor](https://github.com/boxcutter/oci/tree/main/src/bootstrap/cinc-auditor) | https://hub.docker.com/r/boxcutter/cinc-auditor |
+| dasel | [src/bootstrap/dasel](https://github.com/boxcutter/oci/tree/main/src/bootstrap/dasel) | https://hub.docker.com/r/boxcutter/dasel |
+| hadolint | [src/bootstrap/hadolint](https://github.com/boxcutter/oci/tree/main/src/bootstrap/hadolint) | https://hub.docker.com/r/boxcutter/dasel |
