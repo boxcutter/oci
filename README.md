@@ -135,7 +135,7 @@ The default value of the `platforms` field is `platforms = ["linux/amd64", "linu
 
 Normally we just use the GitHub Actions pipelines that have been configured in `.github/workflows` to build
 these images. However, the scripts to build the container images in the `/bin` subdirectory can be used to
-build any image locally on your machine. For example, to build `ros-core-amd64`:
+build any image locally on your machine. For example, to build `ros-core`:
 
 ```bash
 # Make the current working directory the location of the Containerfile for the image you want to build
