@@ -35,7 +35,7 @@ jobs:
         # Parse JSON array containing names of all filters matching any of changed files
         # e.g. ['image1', 'image2'] if both image folders contains changes
         image: ${{ fromJSON(needs.changes.outputs.images) }}
-    if: ${{ needs.changes.outputs.images == 'true' }}
+    if: ${{ needs.changes.outputs.images != null' }}
     runs-on: ubuntu-latest
     defaults:
       run:
