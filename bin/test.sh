@@ -17,15 +17,20 @@ Usage:  $0 [IMAGE_NAME] [ENTRYPOINT_COMMAND]
 Test image with cinc-auditor
 
   -h    Print help
+  -e    Return error if profile does not exist
 EOF
 }
 
 args() {
-  while getopts h opt; do
+  ERROR_IF_PROFILE_DOES_NOT_EXIST=0
+  while getopts he opt; do
     case "$opt" in
       h)
         usage
         exit
+        ;;
+      e)
+        ERROR_IF_PROFILE_DOES_NOT_EXIST=1
         ;;
     esac
   done
@@ -39,6 +44,13 @@ args() {
   ENTRYPOINT_COMMAND="/bin/bash"
   if [ "$#" -gt 1 ]; then
     ENTRYPOINT_COMMAND="$2"
+  fi
+}
+
+check_profile() {
+  if [ ! -d "${CINC_PROFILE_DIR}" ]; then
+    echo "==> ${CINC_PROFILE_DIR} does not exist."
+    exit ${ERROR_IF_PROFILE_DOES_NOT_EXIST}
   fi
 }
 
@@ -70,6 +82,7 @@ trap cleanup_image_under_test EXIT
 
 "${BIN_DIR}/check-image.sh" "${CINC_AUDITOR_CONTAINER_IMAGE}"
 args $*
+check_profile
 start_image_under_test
 run_cinc_auditor
 
