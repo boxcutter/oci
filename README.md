@@ -88,7 +88,7 @@ The files are as follows:
   image builds.
 - `Polly.toml` - toml-format file describing custom metadata options for the image build. "Polly" is
   short for "polymath", a tool we use to help manage embedded system builds.
-- `test/` - subdirectory containing a Chef InSpec profile with tests for the contaimer image.
+- `test/` - subdirectory containing an InSpec profile with tests for the contaimer image.
 
 ## Polly.toml file
 
