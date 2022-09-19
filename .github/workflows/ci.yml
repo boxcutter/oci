@@ -24,6 +24,7 @@ jobs:
           filters: |
             src/bootstrap/cinc-auditor: 'src/bootstrap/cinc-auditor/**'
             src/bootstrap/dasel: 'src/bootstrap/dasel/**'
+            src/lint/lint: 'src/lint/go-lint/**'
 
   # Job to build and test each of the modified images
   build:
@@ -33,6 +34,7 @@ jobs:
         # Parse JSON array containing names of all filters matching any of changed files
         # e.g. ['image1', 'image2'] if both image folders contains changes
         image: ${{ fromJSON(needs.changes.outputs.images) }}
+    if: ${{ needs.changes.outputs.images == 'true' }}
     runs-on: ubuntu-latest
     defaults:
       run:
