@@ -30,7 +30,7 @@ docker container run --rm \
 # CLI
 
 ```
-% docker run -it --rm boxcutter/dasel --help
+% docker container run -it --rm boxcutter/dasel --help
 Select properties from the given file.
 
 Usage:
