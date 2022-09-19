@@ -16,7 +16,7 @@ docker container run --rm -i docker.io/boxcutter/hadolint < Containerfile
 
 # CLI
 
-```
+```bash
 docker container run --rm -i docker.io/boxcutter/hadolint hadolint --h
 elp
 hadolint - Dockerfile Linter written in Haskell
