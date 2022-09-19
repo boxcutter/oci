@@ -20,14 +20,6 @@ check_docker() {
   fi
 }
 
-check_if_image_local() {
-  local image_name="$1"
-
-  if docker image inspect "${image_name}" >/dev/null 2>&1; then
-    exit 0
-  fi
-}
-
 not_found() {
   local image_name="$1"
 
@@ -37,7 +29,12 @@ ${image_name} does not appear to be available.
 
 If you need to bootstrap the image, go to the Containerfile directory and run:
 
-  ${BIN_DIR}/build-push.sh 
+  docker buildx build \
+    --platform linux/arm64,linux/amd64,linux/arm/v7 \
+    --file Containerfile \
+    --tag ${image_name} \
+    --push \
+    .
 EOF
   exit 1
 }
@@ -61,8 +58,6 @@ if [ $# -lt 1 ]; then
 fi
 
 check_docker
-check_if_image_local "$1"
-echo "==> $1 not found, attempting to pull image from dockerhub"
 if ! docker image pull "$1" >/dev/null 2>&1; then
   not_found "$1"
 fi
