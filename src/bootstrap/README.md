@@ -36,7 +36,7 @@ cd $(git rev-parse --show-toplevel)/src/bootstrap/cinc-auditor
 docker buildx build \
   --platform linux/arm64,linux/amd64 \
   --file Containerfile \
-  --tag docker.io/polymathrobotics/cinc-auditor:5.18.14 \
+  --tag docker.io/polymathrobotics/cinc-auditor:5.14.0 \
   --push \
   .
 ```
