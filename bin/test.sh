@@ -3,7 +3,7 @@
 set -eu
 set -o pipefail
 
-CINC_AUDITOR_CONTAINER_IMAGE=boxcutter/cinc-auditor:5.18.14
+CINC_AUDITOR_CONTAINER_IMAGE=boxcutter/cinc-auditor:5.14.0
 
 SCRIPT_PATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 BIN_DIR="${SCRIPT_PATH}"
