@@ -3,11 +3,11 @@ Open container images for robotics, neuromorphic engineering, systems and embedd
 
 # Alphabetical index of images
 
-| Image | Description | Location | DockerHub URL |
-| --- | --- | --- | --- |
-| cinc-auditor | Framework compatible with Chef InSpec for testing infrastructure | [src/bootstrap/cinc-auditor](https://github.com/boxcutter/oci/tree/main/src/bootstrap/cinc-auditor) | https://hub.docker.com/r/boxcutter/cinc-auditor |
-| dasel | Command line process for JSON, YAML, TOML, XML and CSV files | [src/bootstrap/dasel](https://github.com/boxcutter/oci/tree/main/src/bootstrap/dasel) | https://hub.docker.com/r/boxcutter/dasel |
-| hadolint | Containerfile/Dockerfiles linter | [src/bootstrap/hadolint](https://github.com/boxcutter/oci/tree/main/src/bootstrap/hadolint) | https://hub.docker.com/r/boxcutter/hadolint |
+| Image | Description | Location
+| --- | --- | --- |
+| [cinc-auditor](https://hub.docker.com/r/boxcutter/cinc-auditor) | Framework compatible with Chef InSpec for testing infrastructure | [src/bootstrap/cinc-auditor](https://github.com/boxcutter/oci/tree/main/src/bootstrap/cinc-auditor) |
+| [dasel](https://hub.docker.com/r/boxcutter/dasel) | Command line process for JSON, YAML, TOML, XML and CSV files | [src/bootstrap/dasel](https://github.com/boxcutter/oci/tree/main/src/bootstrap/dasel) |
+| [hadolint](https://hub.docker.com/r/boxcutter/hadolint) | Containerfile/Dockerfiles linter | [src/bootstrap/hadolint](https://github.com/boxcutter/oci/tree/main/src/bootstrap/hadolint) |
 
 # Why are you re-publishing some official images?
 
