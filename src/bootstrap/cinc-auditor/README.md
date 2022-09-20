@@ -100,7 +100,7 @@ dd6e9a9ce3df1b6cf8164ed093da6fcd309d411f5a45ddcc2cbebb518de3ad40
 
 # CLI
 
-```bash
+```
 % docker container run -it --rm docker.io/boxcutter/cinc-auditor --help
 Commands:
   cinc-auditor archive PATH                                  # archive a prof...
