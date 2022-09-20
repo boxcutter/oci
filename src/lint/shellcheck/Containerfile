@@ -1,0 +1,36 @@
+# syntax=docker/dockerfile:1
+ARG CONTAINER_REGISTRY=docker.io
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20220815 AS build
+
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    xz-utils \
+  && dpkgArch="$(dpkg --print-architecture)" \
+  && case "${dpkgArch##*-}" in \
+    amd64) \
+      SHELLCHECK_URL=https://github.com/koalaman/shellcheck/releases/download/v0.8.0/shellcheck-v0.8.0.linux.x86_64.tar.xz \
+      ;; \
+    arm64) \
+      SHELLCHECK_URL=https://github.com/koalaman/shellcheck/releases/download/v0.8.0/shellcheck-v0.8.0.linux.aarch64.tar.xz \
+      ;; \
+    armhf) \
+      SHELLCHECK_URL=https://github.com/koalaman/shellcheck/releases/download/v0.8.0/shellcheck-v0.8.0.linux.armv6hf.tar.xz \
+      ;; \
+    *) echo "unsupported architecture"; exit 1 ;; \
+    esac \
+  && curl -fsSL -o /tmp/shellcheck.tar.gz ${SHELLCHECK_URL} \
+  && tar -xf /tmp/shellcheck.tar.gz --wildcards '*/shellcheck' --strip-components=1
+
+FROM scratch
+
+LABEL \
+    org.opencontainers.image.source="https://github.com/boxcutter/oci" \
+    org.opencontainers.image.licenses="Apache-2.0" \
+    org.opencontainers.image.description="ShellCheck, a static analysis tool for shell scripts."
+
+COPY --from=build /shellcheck /usr/local/bin/shellcheck
+
+WORKDIR /share
+ENTRYPOINT ["/usr/local/bin/shellcheck"]

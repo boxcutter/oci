@@ -25,7 +25,7 @@ jobs:
             src/bootstrap/cinc-auditor: 'src/bootstrap/cinc-auditor/**'
             src/bootstrap/dasel: 'src/bootstrap/dasel/**'
             src/bootstrap/hadolint: 'src/bootstrap/hadolint/**'
-            src/lint/lint: 'src/lint/go-lint/**'
+            src/lint/shellcheck: 'src/lint/shellcheck/**'
 
   # Job to build and test each of the modified images
   build:
