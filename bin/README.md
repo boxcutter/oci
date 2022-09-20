@@ -21,7 +21,7 @@ files:
 - `full-image-name.sh` - prints full image name using config info from Polly.toml (e.g. docker.io/polymathrobotics/ros:noetic)
 - `image-name.sh` - prints image name component of full image name using config info from Polly.toml (e.g. ros)
 - `list-platforms.sh` - prints image platforms from Polly.toml
-- `list-tsgs.sh` - prints tag component of full image name using config info from Polly.toml (e.g. noetic)
+- `list-tags.sh` - prints tag component of full image name using config info from Polly.toml (e.g. noetic)
 
 These are the rest of the supporting scripts:
 - `check-image.sh` - checks if an image is present in a container registry
