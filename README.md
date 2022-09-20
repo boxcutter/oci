@@ -1,6 +1,14 @@
 # oci - Open Container Initiative (OCI) images [![oci](https://github.com/boxcutter/oci/actions/workflows/ci.yml/badge.svg)](https://github.com/boxcutter/oci/actions/workflows/ci.yml)
 Open container images for robotics, neuromorphic engineering, systems and embedded applications.
 
+# Alphabetical index of images
+
+| Image | Description | Location | DockerHub URL |
+| --- | --- | --- | --- |
+| cinc-auditor | Framework compatible with Chef InSpec for testing infrastructure | [src/bootstrap/cinc-auditor](https://github.com/boxcutter/oci/tree/main/src/bootstrap/cinc-auditor) | https://hub.docker.com/r/boxcutter/cinc-auditor |
+| dasel | Command line process for JSON, YAML, TOML, XML and CSV files | [src/bootstrap/dasel](https://github.com/boxcutter/oci/tree/main/src/bootstrap/dasel) | https://hub.docker.com/r/boxcutter/dasel |
+| hadolint | Containerfile/Dockerfiles linter | [src/bootstrap/hadolint](https://github.com/boxcutter/oci/tree/main/src/bootstrap/hadolint) | https://hub.docker.com/r/boxcutter/hadolint |
+
 # Why are you re-publishing some official images?
 
 Re-packaging is a time-honored trend in system administration! It's not as common as you might think to use a vanilla install
@@ -149,12 +157,3 @@ $(git rev-parse --show-toplevel)/bin/test.sh
 # (Optional) push the image to the container repository on dockerhub - ideally this should be done via a GitHub Actions workflow and not locally
 $(git rev-parse --show-toplevel)/bin/build-push.sh
 ```
-
-# Alphabetical index of images
-
-| Image | Description | Location | DockerHub URL |
-| --- | --- | --- | --- |
-| cinc-auditor | Framework compatible with Chef InSpec for testing infrastructure | [src/bootstrap/cinc-auditor](https://github.com/boxcutter/oci/tree/main/src/bootstrap/cinc-auditor) | https://hub.docker.com/r/boxcutter/cinc-auditor |
-| dasel | Command line process for JSON, YAML, TOML, XML and CSV files | [src/bootstrap/dasel](https://github.com/boxcutter/oci/tree/main/src/bootstrap/dasel) | https://hub.docker.com/r/boxcutter/dasel |
-| go-toml | Tools that read, lint and format TOML files | [src/lint/go-toml](https://github.com/boxcutter/oci/tree/main/src/lint/go-toml) | https://hub.docker.com/r/boxcutter/go-toml |
-| hadolint | Containerfile/Dockerfiles linter | [src/bootstrap/hadolint](https://github.com/boxcutter/oci/tree/main/src/bootstrap/hadolint) | https://hub.docker.com/r/boxcutter/hadolint |
