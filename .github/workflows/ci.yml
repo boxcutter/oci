@@ -22,10 +22,10 @@ jobs:
           # If it's not configured, the repository default branch is used.
           base: ${{ github.ref }}
           filters: |
-            src/bootstrap/cinc-auditor: 'src/bootstrap/cinc-auditor/**'
-            src/bootstrap/dasel: 'src/bootstrap/dasel/**'
-            src/bootstrap/hadolint: 'src/bootstrap/hadolint/**'
-            src/lint/shellcheck: 'src/lint/shellcheck/**'
+            bootstrap/cinc-auditor: 'bootstrap/cinc-auditor/**'
+            bootstrap/dasel: 'bootstrap/dasel/**'
+            bootstrap/hadolint: 'bootstrap/hadolint/**'
+            shellcheck: 'shellcheck/**'
 
   # Job to build and test each of the modified images
   build:

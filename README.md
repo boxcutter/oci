@@ -5,10 +5,10 @@ Open container images for robotics, neuromorphic engineering, systems and embedd
 
 | Image | Description | Location
 | --- | --- | --- |
-| [cinc-auditor](https://hub.docker.com/r/boxcutter/cinc-auditor) | Framework compatible with Chef InSpec for testing infrastructure | [src/bootstrap/cinc-auditor](https://github.com/boxcutter/oci/tree/main/src/bootstrap/cinc-auditor) |
-| [dasel](https://hub.docker.com/r/boxcutter/dasel) | Command line process for JSON, YAML, TOML, XML and CSV files | [src/bootstrap/dasel](https://github.com/boxcutter/oci/tree/main/src/bootstrap/dasel) |
-| [hadolint](https://hub.docker.com/r/boxcutter/hadolint) | Containerfile/Dockerfiles linter | [src/bootstrap/hadolint](https://github.com/boxcutter/oci/tree/main/src/bootstrap/hadolint) |
-| [shellcheck](https://hub.docker.com/r/boxcutter/shellcheck) | Static analysis tool for shell scripts | [src/lint/shellcheck](https://github.com/boxcutter/oci/tree/main/src/lint/shellcheck) |
+| [cinc-auditor](https://hub.docker.com/r/boxcutter/cinc-auditor) | Framework compatible with Chef InSpec for testing infrastructure | [bootstrap/cinc-auditor](https://github.com/boxcutter/oci/tree/main/bootstrap/cinc-auditor) |
+| [dasel](https://hub.docker.com/r/boxcutter/dasel) | Command line process for JSON, YAML, TOML, XML and CSV files | [bootstrap/dasel](https://github.com/boxcutter/oci/tree/main/bootstrap/dasel) |
+| [hadolint](https://hub.docker.com/r/boxcutter/hadolint) | Containerfile/Dockerfiles linter | [bootstrap/hadolint](https://github.com/boxcutter/oci/tree/main/bootstrap/hadolint) |
+| [shellcheck](https://hub.docker.com/r/boxcutter/shellcheck) | Static analysis tool for shell scripts | [shellcheck](https://github.com/boxcutter/oci/tree/mainshellcheck) |
 
 # Why are you re-publishing some official images?
 
@@ -50,10 +50,9 @@ The repo has the following structure:
   everything uses the same code, whether or not you are building locally or
   using automated builds in the cloud.
 
-- `src/` contains all the source code for the images, primarily
-  Containerfiles/Dockerfiles in BuildKit format. The subdirectories are
-  vaguely organized into categories and by vendors. An alphabetical
-  index is also provided in this README.md.
+- `bootstrap/` contains the source code for the container images needed to bootstrap the build system.
+
+- Rest of the directories contain all the source code for the images, primarily Containerfiles/Dockerfiles in BuildKit format. An alphabetical index is also provided in this README.md.
   
 # Developing
 
