@@ -8,7 +8,7 @@ Open container images for robotics, neuromorphic engineering, systems and embedd
 | [cinc-auditor](https://hub.docker.com/r/boxcutter/cinc-auditor) | Framework compatible with Chef InSpec for testing infrastructure | [bootstrap/cinc-auditor](https://github.com/boxcutter/oci/tree/main/bootstrap/cinc-auditor) |
 | [dasel](https://hub.docker.com/r/boxcutter/dasel) | Command line process for JSON, YAML, TOML, XML and CSV files | [bootstrap/dasel](https://github.com/boxcutter/oci/tree/main/bootstrap/dasel) |
 | [hadolint](https://hub.docker.com/r/boxcutter/hadolint) | Containerfile/Dockerfiles linter | [bootstrap/hadolint](https://github.com/boxcutter/oci/tree/main/bootstrap/hadolint) |
-| [shellcheck](https://hub.docker.com/r/boxcutter/shellcheck) | Static analysis tool for shell scripts | [shellcheck](https://github.com/boxcutter/oci/tree/mainshellcheck) |
+| [shellcheck](https://hub.docker.com/r/boxcutter/shellcheck) | Static analysis tool for shell scripts | [shellcheck](https://github.com/boxcutter/oci/tree/main/shellcheck) |
 
 # Why are you re-publishing some official images?
 
