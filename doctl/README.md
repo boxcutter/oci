@@ -57,7 +57,7 @@ docker container run --rm --interactive --tty \
   --env=DIGITALOCEAN_ACCESS_TOKEN \
   --env=DIGITALOCEAN_SSH_KEY_IDS \
   --env=DIGITALOCEAN_REGION \
-  docker.io/boxcutter/doctl compute droplet create ubuntu20-04 \
+  docker.io/boxcutter/doctl compute droplet create ubuntu22-04 \
     --ssh-keys $DIGITALOCEAN_SSH_KEY_IDS \
     --size s-1vcpu-1gb \
     --image ubuntu-22-04-x64 \
