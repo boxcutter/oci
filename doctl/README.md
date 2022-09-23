@@ -66,19 +66,39 @@ docker container run --rm --interactive --tty \
     --enable-monitoring
 ```
 
-SSH into a running instance
-```
-docker container run --rm --interactive --tty \
-  --env=DIGITALOCEAN_ACCESS_TOKEN \
-  --mount type=bind,source="$HOME/.ssh/id_ed25519",target="/root/.ssh/id_ed25519",readonly \
-  docker.io/boxcutter/doctl compute ssh <DROPLET_ID>
-```
-
 Listing current droplets
 ```
 docker container run --rm --interactive --tty \
   --env=DIGITALOCEAN_ACCESS_TOKEN \
   docker.io/boxcutter/doctl compute droplet list
+```
+
+SSH into a running instance
+```
+# Mounting private key into container
+docker container run --rm --interactive --tty \
+  --env=DIGITALOCEAN_ACCESS_TOKEN \
+  --mount type=bind,source="$HOME/.ssh/id_ed25519",target="/root/.ssh/id_ed25519",readonly \
+  docker.io/boxcutter/doctl compute ssh <DROPLET_ID>
+
+# Using SSH forwarding
+ssh-add -l # Check if keys are cached
+ssh-add # If not add identities
+docker container run --rm --interactive --tty \
+  --env=DIGITALOCEAN_ACCESS_TOKEN \
+  --env=SSH_AUTH_SOCK \
+  --mount type=bind,source=$SSH_AUTH_SOCK,target=$SSH_AUTH_SOCK,readonly \
+  docker.io/boxcutter/doctl compute ssh <DROPLET_ID>
+
+# Using SSH forwarding with Docker Desktop for Mac
+# Seems like you need to use a magic path to forward SSH_AUTH_SOCK into the VM running the Linux instancea
+ssh-add -l # Check if keys are cached
+ssh-add # If not add identities
+docker container run --rm --interactive --tty \
+  --env=DIGITALOCEAN_ACCESS_TOKEN \
+  --env=SSH_AUTH_SOCK=/run/host-services/ssh-auth.sock \
+  --mount type=bind,source=/run/host-services/ssh-auth.sock,target=/run/host-services/ssh-auth.sock,readonly \
+  docker.io/boxcutter/doctl compute ssh <DROPLET_ID>  
 ```
 
 Deleting a Droplet
