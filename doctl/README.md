@@ -60,7 +60,7 @@ docker container run --rm --interactive --tty \
   docker.io/boxcutter/doctl compute droplet create ubuntu20-04 \
     --ssh-keys $DIGITALOCEAN_SSH_KEY_IDS \
     --size s-1vcpu-1gb \
-    --image ubuntu-20-04-x64 \
+    --image ubuntu-22-04-x64 \
     --region $DIGITALOCEAN_REGION \
     --enable-ipv6 \
     --enable-monitoring
