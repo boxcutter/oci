@@ -25,6 +25,7 @@ jobs:
             bootstrap/cinc-auditor: 'bootstrap/cinc-auditor/**'
             bootstrap/dasel: 'bootstrap/dasel/**'
             bootstrap/hadolint: 'bootstrap/hadolint/**'
+            doctl: 'doctl/**'
             shellcheck: 'shellcheck/**'
 
   # Job to build and test each of the modified images

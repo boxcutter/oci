@@ -1,0 +1,48 @@
+# syntax=docker/dockerfile:1
+ARG CONTAINER_REGISTRY=docker.io
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20220815 AS build
+
+RUN <<EOF
+  apt-get update
+  apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl
+  dpkgArch="$(dpkg --print-architecture)"
+  case "${dpkgArch##*-}" in \
+    amd64) \
+      DOCTL_URL='https://github.com/digitalocean/doctl/releases/download/v1.81.0/doctl-1.81.0-linux-amd64.tar.gz' \
+      DOCTL_SHA256='ab5be5b365bdea817fbe8925a2b3ea9f7d552de731dd58f235e0921ecdb978b4' \
+      ;; \
+    arm64) \
+      DOCTL_URL='https://github.com/digitalocean/doctl/releases/download/v1.81.0/doctl-1.81.0-linux-arm64.tar.gz' \
+      DOCTL_SHA256='8c449ac0dace0cf6bb9392f901cffe3cfe70a09a109d3af2a48d45011b0baf85' \
+      ;; \
+    *) echo "unsupported architecture"; exit 1 ;; \
+  esac
+  curl -fsSL -o /tmp/doctl.tar.gz ${DOCTL_URL}
+  echo "${DOCTL_SHA256} /tmp/doctl.tar.gz" | sha256sum -c -
+  mkdir -p /tmp/doctl
+  tar xzvf /tmp/doctl.tar.gz -C /tmp/doctl
+EOF
+
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20220815
+
+LABEL \
+    org.opencontainers.image.source="https://github.com/polymathrobotics/oci" \
+    org.opencontainers.image.licenses="Apache-2.0" \
+    org.opencontainers.image.description="Digital Ocean command-line interface."
+
+RUN <<EOF
+  apt-get update
+  apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    jq \
+    openssh-client
+  rm -rf /var/lib/apt/lists/*
+EOF
+
+WORKDIR /app
+COPY --from=build /tmp/doctl/doctl /usr/local/bin/doctl
+
+ENTRYPOINT ["/usr/local/bin/doctl"]
