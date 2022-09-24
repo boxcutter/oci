@@ -1,4 +1,4 @@
-# bin
+# bin [![oci](https://github.com/boxcutter/oci/actions/workflows/bin.yml/badge.svg)](https://github.com/boxcutter/oci/actions/workflows/bin.yml)
 
 This directory contains supporting scripts for the build system. Using shell
 scripts makes it easy for the devs to build images locally without needing
