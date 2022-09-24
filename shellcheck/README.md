@@ -12,7 +12,7 @@ Because this is a container image, you need to get the source files into the
 image with a bind mount. Other than that, just pass in the name of the script
 you want to check as a parameter
  
-```
+```bash
 docker container run --rm \
   --mount type=bind,source="$(pwd)",target=/share,readonly \
   docker.io/boxcutter/shellcheck <myscript>
