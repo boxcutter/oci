@@ -1,0 +1,3 @@
+[container_image]
+name = 'python'
+tags = ["3.8.14-jammy", "3.8-jammy"]

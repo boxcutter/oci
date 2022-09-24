@@ -29,6 +29,9 @@ jobs:
             doctl: 'doctl/**'
             shellcheck: 'shellcheck/**'
             ruby/3.1/jammy: 'ruby/3.1/jammy/**'
+            python/3.10/jammy: 'python/3.10/jammy/**'
+            python/3.8/jammy: 'python/3.8/jammy/**'
+            python/3.9/jammy: 'python/3.9/jammy/**'
 
   # Job to build and test each of the modified images
   build:
