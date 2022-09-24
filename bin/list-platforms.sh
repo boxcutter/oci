@@ -5,8 +5,6 @@ set -o pipefail
 
 DASEL_CONTAINER_IMAGE=boxcutter/dasel:1.26.1
 
-SCRIPT_PATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
-BIN_DIR="${SCRIPT_PATH}"
 CONTAINERFILE_DIR=$(pwd)
 
 MODE=plain
@@ -16,7 +14,6 @@ usage() {
   cat <<EOF
 Usage:  $0
 
-  -d    Enable debug messages
   -h    Print help
   -c    Print tags in CSV format for GitHub Actions
   -t    Print tags in plain test format (default)
@@ -24,11 +21,8 @@ EOF
 }
 
 args() {
-  while getopts dhct opt; do
+  while getopts hct opt; do
     case "$opt" in
-      d)
-        DEBUG=1
-        ;;
       h)
         usage
         exit
@@ -38,6 +32,9 @@ args() {
         ;;
       t)
         MODE=plain
+        ;;
+      *)
+        usage
         ;;
     esac
   done
@@ -75,7 +72,7 @@ print_platforms_csv() {
       -c "dasel -f Polly.toml -w json | jq --raw-output '.container_image.platforms | @csv'"
 }
 
-args $*
+args "$@"
 
 if [[ -f "${CONTAINERFILE_DIR}/Polly.toml" ]]; then
   if [[ "$MODE" == "csv" ]]; then

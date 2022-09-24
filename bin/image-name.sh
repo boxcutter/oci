@@ -4,10 +4,9 @@ set -eu
 
 DASEL_CONTAINER_IMAGE=boxcutter/dasel:1.26.1
 
-SCRIPT_PATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
-BIN_DIR="${SCRIPT_PATH}"
+BIN_DIR="$(dirname -- "$(readlink -f "${BASH_SOURCE[0]}")")"
 CONTAINERFILE_DIR=$(pwd)
-IMAGE_NAME=$(basename $(pwd))
+IMAGE_NAME=$(basename "$(pwd)")
 
 if [[ -f "${CONTAINERFILE_DIR}/Polly.toml" ]]; then
   "${BIN_DIR}/check-image.sh" "${DASEL_CONTAINER_IMAGE}"
@@ -22,4 +21,4 @@ if [[ -f "${CONTAINERFILE_DIR}/Polly.toml" ]]; then
   fi
 fi
 # Without a config file, the image name is assumed to be the directory name
-echo ${IMAGE_NAME}
+echo "${IMAGE_NAME}"

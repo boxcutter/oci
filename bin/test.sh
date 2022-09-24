@@ -32,11 +32,14 @@ args() {
       e)
         ERROR_IF_PROFILE_DOES_NOT_EXIST=1
         ;;
+      *)
+        usage
+        ;;
     esac
   done
 
   if [ "$*" == "" ]; then
-    TEST_CONTAINER_IMAGE="$(${BIN_DIR}/full-image-name.sh)"
+    TEST_CONTAINER_IMAGE="$("${BIN_DIR}/full-image-name.sh")"
   else
     TEST_CONTAINER_IMAGE=$1
   fi
@@ -55,7 +58,7 @@ check_profile() {
 }
 
 start_image_under_test() {
-  CONTAINER_ID=$(docker container run --interactive --entrypoint "${ENTRYPOINT_COMMAND}" --detach $TEST_CONTAINER_IMAGE )
+  CONTAINER_ID=$(docker container run --interactive --entrypoint "${ENTRYPOINT_COMMAND}" --detach "$TEST_CONTAINER_IMAGE" )
 }
 
 run_cinc_auditor() {
@@ -64,16 +67,16 @@ run_cinc_auditor() {
   docker container run -t --rm \
     -v "${CINC_PROFILE_DIR}:/share" \
     -v /var/run/docker.sock:/var/run/docker.sock \
-    ${CINC_AUDITOR_CONTAINER_IMAGE} exec . --no-create-lockfile -t docker://${CONTAINER_ID}
+    "${CINC_AUDITOR_CONTAINER_IMAGE}" exec . --no-create-lockfile -t "docker://${CONTAINER_ID}"
 }
 
 cleanup_image_under_test() {
   set +u
-  if [ ! -z "$CONTAINER_ID" ]; then
+  if [ -n "$CONTAINER_ID" ]; then
     echo "==> stopping ${CONTAINER_ID}"
-    docker container stop ${CONTAINER_ID}
+    docker container stop "${CONTAINER_ID}"
     echo "==> removing ${CONTAINER_ID}"
-    docker container rm ${CONTAINER_ID}
+    docker container rm "${CONTAINER_ID}"
   fi
   set -u
 }
@@ -81,7 +84,7 @@ cleanup_image_under_test() {
 trap cleanup_image_under_test EXIT
 
 "${BIN_DIR}/check-image.sh" "${CINC_AUDITOR_CONTAINER_IMAGE}"
-args $*
+args "$@"
 check_profile
 start_image_under_test
 run_cinc_auditor

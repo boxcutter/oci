@@ -10,13 +10,12 @@ BIN_DIR="${SCRIPT_PATH}"
 CONTAINERFILE_DIR=$(pwd)
 
 MODE=plain
-DEFAULT_TAG="$(${BIN_DIR}/full-image-name.sh)"
+DEFAULT_TAG="$("${BIN_DIR}/full-image-name.sh")"
 
 usage() {
   cat <<EOF
 Usage:  $0
 
-  -d    Enable debug messages
   -h    Print help
   -c    Print tags in CSV format for GitHub Actions
   -t    Print tags in plain text (default)
@@ -24,11 +23,8 @@ EOF
 }
 
 args() {
-  while getopts dhct opt; do
+  while getopts hct opt; do
     case "$opt" in
-      d)
-        DEBUG=1
-        ;;
       h)
         usage
         exit
@@ -38,6 +34,9 @@ args() {
         ;;
       t)
         MODE=plain
+        ;;
+      *)
+        usage
         ;;
     esac
   done
@@ -59,8 +58,8 @@ print_tags_csv() {
       -c "dasel -f Polly.toml -w json | jq -r '[ .container_image.tags | \"${DEFAULT_TAG}:\" + .[] ] | @csv'"
 }
 
-args $*
-DEFAULT_TAG="$(${BIN_DIR}/full-image-name.sh)"
+args "$@"
+DEFAULT_TAG="$("${BIN_DIR}/full-image-name.sh")"
 
 if [[ -f "${CONTAINERFILE_DIR}/Polly.toml" ]]; then
   if [[ "$MODE" == "csv" ]]; then
