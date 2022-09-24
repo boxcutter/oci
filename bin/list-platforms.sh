@@ -18,7 +18,8 @@ Usage:  $0
 
   -d    Enable debug messages
   -h    Print help
-  -c    Print tags in CSV format for GitHub Actions (default)
+  -c    Print tags in CSV format for GitHub Actions
+  -t    Print tags in plain test format (default)
 EOF
 }
 

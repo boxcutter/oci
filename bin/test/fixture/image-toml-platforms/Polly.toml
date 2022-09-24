@@ -1,0 +1,2 @@
+[container_image]
+platforms=["linux/arm64","linux/amd64"]
