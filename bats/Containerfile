@@ -1,0 +1,44 @@
+# syntax=docker/dockerfile:1
+ARG CONTAINER_REGISTRY=docker.io
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20220815 as build
+
+ARG BATS_CORE_URL=https://github.com/bats-core/bats-core/archive/refs/tags/v1.8.0.tar.gz
+ARG BATS_SUPPORT_URL=https://github.com/bats-core/bats-support/archive/refs/tags/v0.3.0.tar.gz
+ARG BATS_ASSERT_URL=https://github.com/bats-core/bats-assert/archive/refs/tags/v2.0.0.tar.gz
+
+RUN <<EOF
+  apt-get update
+  apt-get install --no-install-recommends -y \
+    ca-certificates \
+    curl
+  curl -o /tmp/bats-core.tar.gz -fsSL $BATS_CORE_URL
+  mkdir -p /opt/bats
+  tar xzvf /tmp/bats-core.tar.gz -C /opt/bats --strip 1
+  curl -o /tmp/bats-support.tar.gz -fsSL $BATS_SUPPORT_URL
+  mkdir -p /opt/bats/test_helper/bats-support
+  tar xzvf /tmp/bats-support.tar.gz -C /opt/bats/test_helper/bats-support --strip 1
+  curl -o /tmp/bats-assert.tar.gz -fsSL $BATS_ASSERT_URL
+  mkdir -p /opt/bats/test_helper/bats-assert
+  tar xzvf /tmp/bats-assert.tar.gz -C /opt/bats/test_helper/bats-assert --strip 1
+EOF
+
+FROM $CONTAINER_REGISTRY/ubuntu:focal-20220826
+
+LABEL \
+    org.opencontainers.image.source="https://github.com/boxcutter/oci" \
+    org.opencontainers.image.licenses="Apache-2.0" \
+    org.opencontainers.image.description="Bash Automated Testing System."
+
+RUN <<EOF
+  apt-get update
+  apt-get install -y --no-install-recommends \
+    parallel \
+    tini
+  rm -rf /var/lib/apt/lists/*
+EOF
+
+COPY --from=build /opt/bats/ /opt/bats/
+
+WORKDIR /code/
+
+ENTRYPOINT ["tini", "--", "/bin/bash", "/opt/bats/bin/bats"]
