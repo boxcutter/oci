@@ -22,6 +22,7 @@ jobs:
           # If it's not configured, the repository default branch is used.
           base: ${{ github.ref }}
           filters: |
+            bats: 'bats/**'
             bootstrap/cinc-auditor: 'bootstrap/cinc-auditor/**'
             bootstrap/dasel: 'bootstrap/dasel/**'
             bootstrap/hadolint: 'bootstrap/hadolint/**'
