@@ -43,7 +43,7 @@ The `./run.sh` script runs BATS from this container image.
 
 # CLI
 
-```
+```bash
 % docker container run --rm -i docker.io/boxcutter/bats -h
 Bats 1.8.0
 Usage: bats [OPTIONS] <tests>
