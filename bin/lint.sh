@@ -11,7 +11,7 @@ BIN_DIR="$(dirname -- "$(readlink -f "${BASH_SOURCE[0]}")")"
 
 if [[ -f "${BIN_DIR}/hadolint-ignore" ]]; then
   lints_to_ignore=$(sed "s/#.*//" "${BIN_DIR}/hadolint-ignore" | sed '/^[[:space:]]*$/d' | sed 's/^/--ignore / ' | tr '\n' ' ')
-  docker container run --rm -i "${HADOLINT_CONTAINER_IMAGE}" hadolint "${lints_to_ignore}" - < "Containerfile"
+  docker container run --rm -i "${HADOLINT_CONTAINER_IMAGE}" hadolint ${lints_to_ignore} - < "Containerfile"
   exit 0
 fi
 
