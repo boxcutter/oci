@@ -31,7 +31,7 @@ docker container run --rm \
 Bats will also accept a path as a parameter, if you want to run all bats
 scripts in a directory.
 
-```
+```bash
 docker container run --rm \
   --mount type=bind,source="$(pwd)",target=/code,readonly \
   docker.io/boxcutter/bats test/
