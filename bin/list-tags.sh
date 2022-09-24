@@ -5,8 +5,7 @@ set -o pipefail
 
 DASEL_CONTAINER_IMAGE=boxcutter/dasel:1.26.1
 
-SCRIPT_PATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
-BIN_DIR="${SCRIPT_PATH}"
+BIN_DIR="$(dirname -- "$(readlink -f "${BASH_SOURCE[0]}")")"
 CONTAINERFILE_DIR=$(pwd)
 
 MODE=plain

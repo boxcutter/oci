@@ -26,3 +26,15 @@ files:
 These are the rest of the supporting scripts:
 - `check-image.sh` - checks if an image is present in a container registry
 - `image-description.sh` - prints image description using container image label metadata
+
+We use bats to verify the scripts. Because the scripts use container images,
+it's easier to have the bats scripts running on the host outside of docker.
+So we add the bats scripts via submodules. They were created with the following
+commands:
+
+```
+mkdir -p test/test_helper
+git submodule add https://github.com/bats-core/bats-core.git test/bats
+git submodule add https://github.com/bats-core/bats-support.git test/test_helper/bats-support
+git submodule add https://github.com/bats-core/bats-assert.git test/test_helper/bats-assert
+```

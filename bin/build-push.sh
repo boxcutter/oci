@@ -3,9 +3,8 @@
 set -eu
 set -o pipefail
 
-SCRIPT_PATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
-BIN_DIR="${SCRIPT_PATH}"
-# PLATFORMS=linux/arm64,linux/amd64,linux/arm/v7
+BIN_DIR="$(dirname -- "$(readlink -f "${BASH_SOURCE[0]}")")"
+# Supported platforms: linux/arm64,linux/amd64,linux/arm/v7
 PLATFORMS="$("${BIN_DIR}/list-platforms.sh -t")"
 
 if [[ -z ${CONTAINER_REGISTRY_USERNAME} ]] || [[ -z ${CONTAINER_REGISTRY_PASSWORD} ]]; then

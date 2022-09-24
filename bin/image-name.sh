@@ -6,7 +6,7 @@ DASEL_CONTAINER_IMAGE=boxcutter/dasel:1.26.1
 
 BIN_DIR="$(dirname -- "$(readlink -f "${BASH_SOURCE[0]}")")"
 CONTAINERFILE_DIR=$(pwd)
-IMAGE_NAME=$(basename "$(pwd)")
+IMAGE_NAME="$(basename "$(pwd)")"
 
 if [[ -f "${CONTAINERFILE_DIR}/Polly.toml" ]]; then
   "${BIN_DIR}/check-image.sh" "${DASEL_CONTAINER_IMAGE}"
