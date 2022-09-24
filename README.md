@@ -111,19 +111,25 @@ default settings.
 ```
 [container_image]
 name = "python"
+readme = "python/README.md"
 tags = ["3.8.12-focal", "3.8-focal"]
 platforms=["linux/arm64", "linux/amd64"]
 ```
 
 ### The `name` field
 
-The `name` field is used to produce the name portion of a tag for a docker image (in the form 
+The `name` field is used to produce the name portion of a tag for a container image (in the form 
 "<container_registry>/<name>:<tag>", e.g. `docker.io/ubuntu:20.04`). The `name` field is a string.
 
 By default the name of the subdirectory in which the image source resides is used. But sometimes
 image authors prefer to use a different name for the source, usually to group related images together.
 For example, such as having source directory names like `python/3.8/` and `python/3.9` that both
 produce images called `docker.io/python:3.8` and `docker.io/python:3.9`, respectively.
+
+### The `readme` field
+
+The `readme` field is used to provide the path to a shared README.md when an
+image has multiple Containerfiles.
 
 ### The `tags` field
 
