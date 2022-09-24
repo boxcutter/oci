@@ -21,7 +21,7 @@ docker container run --rm \
 Shellcheck also respects wildcards for filenames, so you can use those in
 filename parameters as well:
 
-```
+```bash
 docker container run --rm \
   --mount type=bind,source="$(pwd)",target=/share \
   docker.io/boxcutter/shellcheck ./*.sh
