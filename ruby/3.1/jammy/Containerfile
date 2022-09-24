@@ -2,7 +2,7 @@
 ARG CONTAINER_REGISTRY=docker.io
 FROM $CONTAINER_REGISTRY/ubuntu:jammy-20220815 AS build
 
-# skip installing gem documentation
+# skip  installing gem documentation
 RUN set -eux; \
 	mkdir -p /usr/local/etc; \
 	{ \
