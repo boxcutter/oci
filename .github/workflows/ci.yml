@@ -28,6 +28,7 @@ jobs:
             bootstrap/hadolint: 'bootstrap/hadolint/**'
             doctl: 'doctl/**'
             shellcheck: 'shellcheck/**'
+            ruby/3.1/jammy: 'ruby/3.1/jammy/**'
 
   # Job to build and test each of the modified images
   build:
