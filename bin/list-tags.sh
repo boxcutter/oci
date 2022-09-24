@@ -58,10 +58,23 @@ print_tags_csv() {
       -c "dasel -f Polly.toml -w json | jq -r '[ .container_image.tags | \"${DEFAULT_TAG}:\" + .[] ] | @csv'"
 }
 
+check_for_tags_field() {
+  result=$(docker container run --rm \
+    --mount type=bind,source="$(pwd)",target=/share,readonly \
+    --entrypoint /bin/bash \
+    ${DASEL_CONTAINER_IMAGE} \
+      -c "dasel -f Polly.toml -w json | jq -r '.container_image.tags'")
+  if [[ $result == "null" ]]; then
+    echo "${DEFAULT_TAG}"
+    exit
+  fi
+}
+
 args "$@"
 DEFAULT_TAG="$("${BIN_DIR}/full-image-name.sh")"
 
 if [[ -f "${CONTAINERFILE_DIR}/Polly.toml" ]]; then
+  check_for_tags_field
   if [[ "$MODE" == "csv" ]]; then
     print_tags_csv
   else

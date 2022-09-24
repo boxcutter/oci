@@ -47,13 +47,12 @@ setup() {
   assert_output '"docker.io/boxcutter/example:1.2.3","docker.io/boxcutter/example:latest"'
 }
 
-# @test "reads tags from toml with name and platform" {
-#   pushd $PROJECT_ROOT/test/fixture/image-toml-name-platforms
-#   run list-tags.sh
-#   popd
-#   assert_output --partial 'docker.io/boxcutter/example:1.2.3'
-#   assert_output --partial 'docker.io/boxcutter/example:latest'
-# }
+@test "uses default tag when toml has name and platform" {
+  pushd $PROJECT_ROOT/test/fixture/image-toml-name-platforms
+  run list-tags.sh
+  popd
+  assert_output 'docker.io/boxcutter/example'
+}
 
 @test "reads tags from toml with name and tags" {
   pushd $PROJECT_ROOT/test/fixture/image-toml-name-tags
