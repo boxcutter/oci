@@ -26,6 +26,8 @@ files:
 These are the rest of the supporting scripts:
 - `check-image.sh` - checks if an image is present in a container registry
 - `image-description.sh` - prints image description using container image label metadata
+- `run_shellcheck.sh` - runs shellcheck linter on the bash scripts in this directory
+- `run_tests.sh` - runs bats tests on the bash scripts in this directory
 
 We use bats to verify the scripts. Because the scripts use container images,
 it's easier to have the bats scripts running on the host outside of docker.
