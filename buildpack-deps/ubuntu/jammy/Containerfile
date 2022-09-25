@@ -2,6 +2,9 @@
 ARG CONTAINER_REGISTRY=docker.io
 FROM $CONTAINER_REGISTRY/boxcutter:jammy-scm
 
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+# hadolint ignore=SC2046
 RUN set -ex; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
