@@ -26,6 +26,9 @@ jobs:
             bootstrap/cinc-auditor: 'bootstrap/cinc-auditor/**'
             bootstrap/dasel: 'bootstrap/dasel/**'
             bootstrap/hadolint: 'bootstrap/hadolint/**'
+            buildpack-deps/ubuntu/jammy/curl: 'buildpack-deps/ubuntu/jammy/curl/**'
+            buildpack-deps/ubuntu/jammy/scm: 'buildpack-deps/ubuntu/jammy/scm/**'
+            buildpack-deps/ubuntu/jammy: `buildpack-deps/ubuntu/jammy/*`
             doctl: 'doctl/**'
             shellcheck: 'shellcheck/**'
             ruby/3.1/jammy: 'ruby/3.1/jammy/**'

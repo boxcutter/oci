@@ -1,0 +1,4 @@
+[container_image]
+name="buildpack-deps"
+tags=["jammy", "22.04"]
+readme="buildpack-deps/README.md"
