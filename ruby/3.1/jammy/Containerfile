@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/ubuntu:jammy-20220815 AS build
+FROM $CONTAINER_REGISTRY/boxcutter/buildpack-deps:jammy
 
 # skip  installing gem documentation
 RUN set -eux; \
