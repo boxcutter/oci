@@ -2,7 +2,7 @@
 
 In spirit, `buildpack-deps` is similar to [Heroku's stack images](https://github.com/heroku/stack-images/). It includes a large number of "development header" packages needed by various things like Ruby Gems, PyPI modules, etc. For example, `buildpack-deps` would let you do a `bundle install` in an arbitrary application directory without knowing beforehand that `ssl.h` is required to build a dependent module.
 
-This image repackages the container images defined in https://github.com/docker-library/buildpack-deps because we remix some images that use this as a dependency.
+This image repackages the container images defined in https://github.com/docker-library/buildpack-deps because we remix some images that use this as a dependency. We also are specific about the exact base ubuntu image we depend on. The upstream images use a generic label, so it's difficult to tell.
 
 # How to use this image
 
