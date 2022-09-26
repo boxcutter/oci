@@ -10,18 +10,26 @@ setup() {
   assert_output 'docker.io/boxcutter/image-no-toml'
 }
 
-@test "defaults tag is nothing with csv" {
+@test "default tag is nothing with csv" {
   pushd $PROJECT_ROOT/test/fixture/image-no-toml
   run list-tags.sh -c
   popd
   assert_output 'docker.io/boxcutter/image-no-toml'
 }
 
-@test "defaults tag is nothing with plain text" {
+@test "default tag is nothing with plain text" {
   pushd $PROJECT_ROOT/test/fixture/image-no-toml
   run list-tags.sh -t
   popd
   assert_output 'docker.io/boxcutter/image-no-toml'
+}
+
+@test "reads tags from toml when name isn't present" {
+  pushd $PROJECT_ROOT/test/fixture/image-toml-tags
+  run list-tags.sh
+  popd
+  assert_output --partial 'docker.io/boxcutter/image-toml-tags:1.2.3'
+  assert_output --partial 'docker.io/boxcutter/image-toml-tags:4.5.6'
 }
 
 @test "reads tags from toml" {
