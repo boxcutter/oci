@@ -17,8 +17,7 @@ ENV RUBY_DOWNLOAD_SHA256 ca10d017f8a1b6d247556622c841fc56b90c03b1803f87198da1e4f
 
 # some of ruby's build scripts are written in ruby
 #   we purge system ruby later to make sure our final image uses what we just built
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-# hadolint ignore=DL3003,SC2086
+# hadolint ignore=DL3003,SC2086,DL4006
 RUN set -eux; \
 	\
 	savedAptMark="$(apt-mark showmanual)"; \
