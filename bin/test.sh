@@ -6,7 +6,7 @@ set -o pipefail
 CINC_AUDITOR_CONTAINER_IMAGE=boxcutter/cinc-auditor:5.18.14
 
 BIN_DIR="$(dirname -- "$(readlink -f "${BASH_SOURCE[0]}")")"
-DEFAUT_TAG="$("${BIN_DIR}/list-tags.sh" | head -n 1)"
+DEFAULT_TAG="$("${BIN_DIR}/list-tags.sh" | head -n 1)"
 CONTAINERFILE_DIR=$(pwd)
 CINC_PROFILE_DIR="${CONTAINERFILE_DIR}/test"
 
@@ -39,7 +39,7 @@ args() {
   done
 
   if [ "$*" == "" ]; then
-    TEST_CONTAINER_IMAGE="${DEFAUT_TAG}"
+    TEST_CONTAINER_IMAGE="${DEFAULT_TAG}"
   else
     TEST_CONTAINER_IMAGE=$1
   fi
