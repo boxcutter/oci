@@ -12,7 +12,6 @@ Open container images for robotics, neuromorphic engineering, systems and embedd
 | [doctl](https://hub.docker.com/r/boxcutter/doctl) | Command line interface for the DigitalOcean API | [doctl](https://github.com/boxcutter/oci/tree/main/doctl) |
 | [hadolint](https://hub.docker.com/r/boxcutter/hadolint) | Containerfile/Dockerfiles linter | [bootstrap/hadolint](https://github.com/boxcutter/oci/tree/main/bootstrap/hadolint) |
 | [python](https://hub.docker.com/r/boxcutter/python) | The Python programming language | [python](https://github.com/boxcutter/oci/tree/main/python) |
-| [ruby](https://hub.docker.com/r/boxcutter/ruby) | Ruby is a dynamic, reflective, object-oriented, general-purpose, open-source programming language | [ruby](https://github.com/boxcutter/oci/tree/main/ruby) |
 | [shellcheck](https://hub.docker.com/r/boxcutter/shellcheck) | Static analysis tool for shell scripts | [shellcheck](https://github.com/boxcutter/oci/tree/main/shellcheck) |
 
 # Why are you re-publishing some official images?

@@ -34,7 +34,6 @@ jobs:
             buildpack-deps/ubuntu/jammy: 'buildpack-deps/ubuntu/jammy/*'
             doctl: 'doctl/**'
             shellcheck: 'shellcheck/**'
-            ruby/3.1/jammy: 'ruby/3.1/jammy/**'
             python/3.10/jammy: 'python/3.10/jammy/**'
             python/3.8/jammy: 'python/3.8/jammy/**'
             python/3.9/jammy: 'python/3.9/jammy/**'
