@@ -1,2 +1,3 @@
 [container_image]
 tags = [ "1.26.1", "latest" ]
+readme = "bootstrap/dasel/README.md"

@@ -7,6 +7,8 @@ infrastructure, applications and container images.
 
 This image packages releases from https://cinc.sh/
 
+Image source: https://github.com/boxcutter/oci/tree/main/bootstrap/cinc-auditor
+
 # Using cinc-auditor
 
 The two most commonly-used subcommands are `init` and `exec`

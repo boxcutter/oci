@@ -8,6 +8,8 @@ metadata.
 
 This image packages releases from https://github.com/TomWright/dasel
 
+Image source: https://github.com/boxcutter/oci/tree/main/bootstrap/dasel
+
 # Using dasel
 
 Dasel has an online playground environment where you can test out example

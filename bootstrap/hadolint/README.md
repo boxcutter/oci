@@ -6,6 +6,8 @@ We use this during the `lint` phase of our CI pipelines for container images.
 
 This image packages releases from https://github.com/hadolint/hadolint
 
+Image source: https://github.com/boxcutter/oci/tree/main/bootstrap/hadolint
+
 # Using hadolint
 
 To lint a `Containerfile` just pipe it to `docker run`:
