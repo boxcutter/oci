@@ -4,6 +4,8 @@ ShellCheck is a linter for bash/sh shell scripts.
 
 This image packages releases from https://github.com/koalaman/shellcheck
 
+Source location: https://github.com/boxcutter/oci/tree/main/shellcheck
+
 # Using shellcheck
 
 Shellcheck has an online playground environment where you can test out example scripts: https://www.shellcheck.net/
