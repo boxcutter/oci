@@ -4,6 +4,8 @@ The command line interface for the Digital Ocean API.
 
 This image packages releases from https://github.com/digitalocean/doctl
 
+Source location: https://github.com/boxcutter/oci/tree/main/doctl
+
 # Using doctl
 
 Set up some environment variables that are commonly used by other tools:
