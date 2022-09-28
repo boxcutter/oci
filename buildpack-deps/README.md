@@ -4,6 +4,8 @@ In spirit, `buildpack-deps` is similar to [Heroku's stack images](https://github
 
 This image repackages the container images defined in https://github.com/docker-library/buildpack-deps because we remix some images that use this as a dependency. We also are specific about the exact base ubuntu image we depend on. The upstream images use a generic label, so it's difficult to tell.
 
+Source location: https://github.com/boxcutter/oci/tree/main/buildpack-deps
+
 # How to use this image
 
 This stack is designed to be the foundation of a language-stack image.
