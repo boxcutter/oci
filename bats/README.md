@@ -16,6 +16,8 @@ image installs bash in `/usr/local/bin` and test scripts cannot use a
 hardcoded path to `/bin/bash` in the shebang.  This image makes sure that
 bash is installed in `/bin/bash`.
 
+Source location: https://github.com/boxcutter/oci/tree/main/bats
+
 # Using bats
 
 You'll need to bind mount your scripts inside the image when you run it,
