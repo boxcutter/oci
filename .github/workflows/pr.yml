@@ -32,6 +32,7 @@ jobs:
             bootstrap/dasel: 'bootstrap/dasel/**'
             bootstrap/hadolint: 'bootstrap/hadolint/**'
             doctl: 'doctl/**'
+            flake8: 'flake8/**'
             shellcheck: 'shellcheck/**'
 
   # Job to build and test each of the modified images

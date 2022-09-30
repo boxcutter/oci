@@ -33,6 +33,7 @@ jobs:
             buildpack-deps/ubuntu/jammy/scm: 'buildpack-deps/ubuntu/jammy/scm/**'
             buildpack-deps/ubuntu/jammy: 'buildpack-deps/ubuntu/jammy/*'
             doctl: 'doctl/**'
+            flake8: 'flake8/**'
             shellcheck: 'shellcheck/**'
             python/3.10/jammy: 'python/3.10/jammy/**'
             python/3.8/jammy: 'python/3.8/jammy/**'

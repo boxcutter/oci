@@ -1,0 +1,8 @@
+ARG CONTAINER_REGISTRY=docker.io
+FROM $CONTAINER_REGISTRY/boxcutter/python:3.8-focal
+
+WORKDIR /code
+RUN python3 -m pip install --no-cache-dir flake8==5.0.4
+
+ENTRYPOINT ["flake8"]
+CMD ["--help"]
