@@ -1,0 +1,7 @@
+ARG CONTAINER_REGISTRY=docker.io
+FROM $CONTAINER_REGISTRY/boxcutter/python:3.10-jammy
+
+WORKDIR /code
+RUN python3 -m pip install --no-cache-dir black==22.8.0
+
+ENTRYPOINT  ["black"]

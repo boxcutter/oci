@@ -28,6 +28,7 @@ jobs:
           base: ${{ github.ref }}
           filters: |
             bats: 'bats/**'
+            black: 'black/**'
             bootstrap/cinc-auditor: 'bootstrap/cinc-auditor/**'
             bootstrap/dasel: 'bootstrap/dasel/**'
             bootstrap/hadolint: 'bootstrap/hadolint/**'

@@ -6,6 +6,7 @@ Open container images for robotics, neuromorphic engineering, systems and embedd
 | Image | Description | Location
 | --- | --- | --- |
 | [bats](https://hub.docker.com/r/boxcutter/bats) | Bash Automated Testing System | [bats](https://github.com/boxcutter/oci/tree/main/bats) |
+| [black](https://hub.docker.com/r/boxcutter/black) | The uncompromising Python code formatter | [black](https://github.com/boxcutter/oci/tree/main/black) |
 | [buildpack-deps](https://hub.docker.com/r/boxcutter/buildpack-deps) | A collection of common build dependencies used for installing various modules, e.g., gems | [buildpack-deps](https://github.com/boxcutter/oci/tree/main/buildpack-deps) |
 | [cinc-auditor](https://hub.docker.com/r/boxcutter/cinc-auditor) | Framework compatible with Chef InSpec for testing infrastructure | [bootstrap/cinc-auditor](https://github.com/boxcutter/oci/tree/main/bootstrap/cinc-auditor) |
 | [dasel](https://hub.docker.com/r/boxcutter/dasel) | Command line process for JSON, YAML, TOML, XML and CSV files | [bootstrap/dasel](https://github.com/boxcutter/oci/tree/main/bootstrap/dasel) |
