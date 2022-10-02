@@ -17,6 +17,7 @@ ENV RUBY_DOWNLOAD_SHA256 ca10d017f8a1b6d247556622c841fc56b90c03b1803f87198da1e4f
 
 # some of ruby's build scripts are written in ruby
 #   we purge system ruby later to make sure our final image uses what we just built
+# hadolint ignore=DL3003,SC2086,DL4006
 RUN set -eux; \
 	\
 	savedAptMark="$(apt-mark showmanual)"; \
@@ -29,7 +30,7 @@ RUN set -eux; \
 	; \
 	rm -rf /var/lib/apt/lists/*; \
 	\
-	wget -O ruby.tar.xz "https://cache.ruby-lang.org/pub/ruby/${RUBY_MAJOR%-rc}/ruby-$RUBY_VERSION.tar.xz"; \
+	wget --progress=dot:giga -O ruby.tar.xz "https://cache.ruby-lang.org/pub/ruby/${RUBY_MAJOR%-rc}/ruby-$RUBY_VERSION.tar.xz"; \
 	echo "$RUBY_DOWNLOAD_SHA256 *ruby.tar.xz" | sha256sum --check --strict; \
 	\
 	mkdir -p /usr/src/ruby; \
