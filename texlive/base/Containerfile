@@ -34,4 +34,5 @@ RUN <<EOF
     python3 \
     python3-pygments \
     unzip
+  rm -rf /var/lib/apt/lists/*
 EOF
