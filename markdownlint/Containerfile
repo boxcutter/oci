@@ -1,5 +1,10 @@
 FROM docker.io/boxcutter/ruby:3.1-slim-jammy
 
+LABEL \
+    org.opencontainers.image.source="https://github.com/boxcutter/oci" \
+    org.opencontainers.image.licenses="Apache-2.0" \
+    org.opencontainers.image.description="A tool to check markdown files and flag style issues."
+
 RUN gem install mdl --no-document -v 0.11.0
 
 RUN useradd -ms /sbin/nologin  mdl
