@@ -37,6 +37,7 @@ jobs:
             flake8: 'flake8/**'
             markdownlint: 'markdownlint/**'
             ruby/3.1/jammy: 'ruby/3.1/jammy/**'
+            ruby/3.1/slim-jammy: 'ruby/3.1/slim-jammy/**'
             shellcheck: 'shellcheck/**'
             python/3.10/jammy: 'python/3.10/jammy/**'
             python/3.8/jammy: 'python/3.8/jammy/**'
