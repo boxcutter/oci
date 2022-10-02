@@ -4,6 +4,8 @@ Ruby is a dynamic, reflective, object-oriented, general-purpose, open-source pro
 
 This image packages releases from https://github.com/docker-library/ruby
 
+Image source: https://github.com/boxcutter/oci/tree/main/ruby
+
 # Using ruby
 
 ## Running the Ruby Read-Eval-Print Loop (REPL)
