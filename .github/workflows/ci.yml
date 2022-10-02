@@ -42,6 +42,7 @@ jobs:
             python/3.10/jammy: 'python/3.10/jammy/**'
             python/3.8/jammy: 'python/3.8/jammy/**'
             python/3.9/jammy: 'python/3.9/jammy/**'
+            texlive/base: 'texlive/base/**'
 
   # Job to build and test each of the modified images
   build:
