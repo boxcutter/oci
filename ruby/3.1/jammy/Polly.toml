@@ -1,0 +1,4 @@
+[container_image]
+name = 'ruby'
+tags = ["3.1.2-slim-jammy", "3.1-slim-jammy", "3-slim-jammy", "slim-jammy"]
+readme="ruby/README.md"
