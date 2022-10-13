@@ -1,0 +1,39 @@
+# syntax=docker/dockerfile:1
+ARG CONTAINER_REGISTRY=docker.io
+FROM $CONTAINER_REGISTRY/ubuntu:focal-20220826 as build
+
+ARG PULUMI_VERSION=3.42.0
+RUN <<EOF
+  apt-get update
+  apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl
+EOF
+
+# Install the Pulumi SDK, including the CLI and language runtimes.
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN curl -fsSL https://get.pulumi.com/ | bash -s -- --version $PULUMI_VERSION
+
+# The runtime container
+# This is our base container, so let's copy all the runtimes to .pulumi/bin
+FROM $CONTAINER_REGISTRY/ubuntu:focal-20220826
+
+LABEL \
+    org.opencontainers.image.source="https://github.com/boxcutter/oci" \
+    org.opencontainers.image.licenses="Apache-2.0" \
+    org.opencontainers.image.description="Pulumi CLI container, bring your own SDK."
+
+WORKDIR /pulumi
+COPY --from=build /root/.pulumi/bin/ bin
+
+RUN --mount=type=cache,target=/var/lib/apt/list \
+    --mount=type=cache,target=/var/cache/apt <<EOF
+  apt-get update
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    ca-certificates \
+    git \
+    vim
+EOF
+
+ENV PATH "/pulumi/bin:${PATH}"
+CMD ["pulumi"]
