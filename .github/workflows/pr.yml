@@ -34,6 +34,8 @@ jobs:
             bootstrap/hadolint: 'bootstrap/hadolint/**'
             doctl: 'doctl/**'
             flake8: 'flake8/**'
+            pulumi/pulumi-base: 'pulumi/pulumi-base/**'
+            pulumi/pulumi-python: 'pulumi/pulumi-python/**'
             shellcheck: 'shellcheck/**'
 
   # Job to build and test each of the modified images
