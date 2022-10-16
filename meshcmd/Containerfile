@@ -1,0 +1,42 @@
+# syntax=docker/dockerfile:1
+ARG CONTAINER_REGISTRY=docker.io
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20221003 AS build
+
+RUN <<EOF
+  apt-get update
+  apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl
+  mkdir -p /tmp/meshcmd
+  dpkgArch="$(dpkg --print-architecture)"
+  case "${dpkgArch##*-}" in \
+    amd64) \
+      MESHCMD_URL='https://alt.meshcentral.com/meshagents?meshcmd=6' \
+      ;; \
+    arm64) \
+      MESHCMD_URL='https://alt.meshcentral.com/meshagents?meshcmd=26' \
+      ;; \
+    armhf) \
+      MESHCMD_URL='https://alt.meshcentral.com/meshagents?meshcmd=25' \
+      ;; \
+    *) echo "unsupported architecture"; exit 1 ;; \
+    esac
+  curl -o /tmp/meshcmd/meshcmd "$MESHCMD_URL"
+EOF
+
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20221003
+
+LABEL \
+    org.opencontainers.image.source="https://github.com/boxcutter/oci" \
+    org.opencontainers.image.licenses="Apache-2.0" \
+    org.opencontainers.image.description="Command line tool used to perform many tasks related to computer management of Intel Active Management Technology (AMT) devices."
+
+
+WORKDIR /opt/meshcmd/bin
+
+COPY --from=build --chmod=755 /tmp/meshcmd /opt/meshcmd/bin
+
+ENV PATH "/opt/meshcmd/bin:${PATH}"
+EXPOSE 3000
+
+ENTRYPOINT ["meshcmd"]
