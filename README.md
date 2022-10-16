@@ -15,6 +15,8 @@ Open container images for robotics, neuromorphic engineering, systems and embedd
 | [hadolint](https://hub.docker.com/r/boxcutter/hadolint) | Containerfile/Dockerfiles linter | [bootstrap/hadolint](https://github.com/boxcutter/oci/tree/main/bootstrap/hadolint) |
 | [markdownlint](https://hub.docker.com/r/boxcutter/markdownlint) | A tool to check markdown files and flag style issues | [markdownlint](https://github.com/boxcutter/oci/tree/main/markdownlint) |
 | [python](https://hub.docker.com/r/boxcutter/python) | The Python programming language | [python](https://github.com/boxcutter/oci/tree/main/python) |
+| [pulumi-base](https://hub.docker.com/r/boxcutter/pulumi-base) | Pulumi CLI container, bring your own SDK | [pulumi-base](https://github.com/boxcutter/oci/tree/main/pulumi/pulumi-base) |
+| [pulumi-python](https://hub.docker.com/r/boxcutter/pulumi-python) | Pulumi CLI container for python | [pulumi-python](https://github.com/boxcutter/oci/tree/main/pulumi/pulumi-python) |
 | [ruby](https://hub.docker.com/r/boxcutter/ruby) | Ruby is a dynamic, reflective, object-oriented, general-purpose, open-source programming language | [ruby](https://github.com/boxcutter/oci/tree/main/ruby) |
 | [shellcheck](https://hub.docker.com/r/boxcutter/shellcheck) | Static analysis tool for shell scripts | [shellcheck](https://github.com/boxcutter/oci/tree/main/shellcheck) |
 
