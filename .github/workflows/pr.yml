@@ -35,6 +35,7 @@ jobs:
             doctl: 'doctl/**'
             flake8: 'flake8/**'
             meshcmd: 'meshcmd/**'
+            perl: 'perl/**'
             pulumi/pulumi-base: 'pulumi/pulumi-base/**'
             pulumi/pulumi-python: 'pulumi/pulumi-python/**'
             shellcheck: 'shellcheck/**'
