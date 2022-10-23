@@ -40,7 +40,7 @@ jobs:
             ruby/3.1/jammy: 'ruby/3.1/jammy/**'
             ruby/3.1/slim-jammy: 'ruby/3.1/slim-jammy/**'
             shellcheck: 'shellcheck/**'
-            perl: 'perl/**'
+            perl: 'perl/5.032.001-main-jammy/**'
             pulumi/pulumi-base: 'pulumi/pulumi-base/**'
             pulumi/pulumi-python: 'pulumi/pulumi-python/**'
             python/3.10/jammy: 'python/3.10/jammy/**'
