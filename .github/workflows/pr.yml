@@ -38,6 +38,8 @@ jobs:
             perl/5.032.001-main-jammy: 'perl/5.032.001-main-jammy/**'
             pulumi/pulumi-base: 'pulumi/pulumi-base/**'
             pulumi/pulumi-python: 'pulumi/pulumi-python/**'
+            rust/1.64.0/focal: 'rust/1.64.0/focal/*'
+            rust/1.64.0/focal/slim: 'rust/1.64.0/focal/slim/**'
             shellcheck: 'shellcheck/**'
 
   # Job to build and test each of the modified images

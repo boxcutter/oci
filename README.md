@@ -20,6 +20,7 @@ Open container images for robotics, neuromorphic engineering, systems and embedd
 | [pulumi-base](https://hub.docker.com/r/boxcutter/pulumi-base) | Pulumi CLI container, bring your own SDK | [pulumi-base](https://github.com/boxcutter/oci/tree/main/pulumi/pulumi-base) |
 | [pulumi-python](https://hub.docker.com/r/boxcutter/pulumi-python) | Pulumi CLI container for python | [pulumi-python](https://github.com/boxcutter/oci/tree/main/pulumi/pulumi-python) |
 | [ruby](https://hub.docker.com/r/boxcutter/ruby) | Ruby is a dynamic, reflective, object-oriented, general-purpose, open-source programming language | [ruby](https://github.com/boxcutter/oci/tree/main/ruby) |
+| [rust](https://hub.docker.com/r/polymathrobotics/rust) |  Rust is a systems programming language sponsored by Mozilla Research. | [rust](https://github.com/polymathrobotics/oci/tree/main/rust) |
 | [shellcheck](https://hub.docker.com/r/boxcutter/shellcheck) | Static analysis tool for shell scripts | [shellcheck](https://github.com/boxcutter/oci/tree/main/shellcheck) |
 
 # Why are you re-publishing some official images?
