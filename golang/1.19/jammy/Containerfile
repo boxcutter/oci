@@ -18,6 +18,8 @@ ENV PATH /usr/local/go/bin:$PATH
 
 ENV GOLANG_VERSION 1.19.3
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+# hadolint ignore=DL3003, SC2086
 RUN set -eux; \
 	arch="$(dpkg --print-architecture)"; arch="${arch##*-}"; \
 	url=; \
@@ -65,7 +67,7 @@ RUN set -eux; \
 		echo >&2; \
 	fi; \
 	\
-	wget -O go.tgz.asc "$url.asc"; \
+	wget -O go.tgz.asc --progress=dot:giga; "$url.asc"; \
 	wget -O go.tgz "$url" --progress=dot:giga; \
 	echo "$sha256 *go.tgz" | sha256sum -c -; \
 	\
