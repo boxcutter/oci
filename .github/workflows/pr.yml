@@ -34,6 +34,7 @@ jobs:
             bootstrap/hadolint: 'bootstrap/hadolint/**'
             doctl: 'doctl/**'
             flake8: 'flake8/**'
+            golang/1.19/jammy: 'golang/1.19/jammy/**'
             meshcmd: 'meshcmd/**'
             perl/5.032.001-main-jammy: 'perl/5.032.001-main-jammy/**'
             pulumi/pulumi-base: 'pulumi/pulumi-base/**'

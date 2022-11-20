@@ -12,6 +12,7 @@ Open container images for robotics, neuromorphic engineering, systems and embedd
 | [dasel](https://hub.docker.com/r/boxcutter/dasel) | Command line process for JSON, YAML, TOML, XML and CSV files | [bootstrap/dasel](https://github.com/boxcutter/oci/tree/main/bootstrap/dasel) |
 | [doctl](https://hub.docker.com/r/boxcutter/doctl) | Command line interface for the DigitalOcean API | [doctl](https://github.com/boxcutter/oci/tree/main/doctl) |
 | [flake8](https://hub.docker.com/r/boxcutter/flake8) | flake8 is a python tool that glues together pycodestyle, pyflakes, mccabe, and third-party plugins to check the style and quality of some python code | [flake8](https://github.com/boxcutter/oci/tree/main/flake8) |
+| [golang](https://hub.docker.com/r/boxcutter/golang) | Go (a.k.a., Golang) is a statically-typed language with syntax loosely derived from C, but with additional features | [golang](https://github.com/boxcutter/oci/tree/main/golang) |
 | [hadolint](https://hub.docker.com/r/boxcutter/hadolint) | Containerfile/Dockerfiles linter | [bootstrap/hadolint](https://github.com/boxcutter/oci/tree/main/bootstrap/hadolint) |
 | [markdownlint](https://hub.docker.com/r/boxcutter/markdownlint) | A tool to check markdown files and flag style issues | [markdownlint](https://github.com/boxcutter/oci/tree/main/markdownlint) |
 | [meshcmd](https://hub.docker.com/r/boxcutter/meshcmd) | Command line tool used to perform many tasks related to computer management of Intel Active Management Technology (AMT) devices | [meshcmd](https://github.com/boxcutter/oci/tree/main/meshcmd) |
@@ -22,6 +23,7 @@ Open container images for robotics, neuromorphic engineering, systems and embedd
 | [ruby](https://hub.docker.com/r/boxcutter/ruby) | Ruby is a dynamic, reflective, object-oriented, general-purpose, open-source programming language | [ruby](https://github.com/boxcutter/oci/tree/main/ruby) |
 | [rust](https://hub.docker.com/r/polymathrobotics/rust) |  Rust is a systems programming language sponsored by Mozilla Research. | [rust](https://github.com/polymathrobotics/oci/tree/main/rust) |
 | [shellcheck](https://hub.docker.com/r/boxcutter/shellcheck) | Static analysis tool for shell scripts | [shellcheck](https://github.com/boxcutter/oci/tree/main/shellcheck) |
+| [texlive](https://hub.docker.com/r/boxcutter/texlive) | Cross-platform, free software distribution for the TeX typesetting system that includes major Tex-related programs, macro packages, and fonts | [texlive](https://github.com/boxcutter/oci/tree/main/texlive) |
 
 # Why are you re-publishing some official images?
 
