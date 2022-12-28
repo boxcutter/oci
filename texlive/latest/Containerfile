@@ -67,6 +67,7 @@ RUN curl https://tug.org/texlive/files/debian-equivs-2022-ex.txt --output texliv
   apt-get clean && \
   rm -rf /var/cache/apt/
 
+# hadolint ignore=DL3003
 RUN echo "Fetching installation from mirror $TLMIRRORURL" && \
   rsync -a --stats "$TLMIRRORURL" texlive && \
   cd texlive && \
