@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/ubuntu:jammy-20220815
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20221130
 
 ENV LANG=C.UTF-8 \
     LC_ALL=C.UTF-8 \
@@ -11,28 +11,23 @@ ENV LANG=C.UTF-8 \
     # install perl docs…
     NOPERLDOC=1
 
-RUN <<EOF
-  apt-get update
-  apt-get install -y --no-install-recommends \
-    ca-certificates \
-    curl \
-    default-jre \
-    fontconfig \
-    ghostscript \
-    git \
-    gnuplot-nox \
-    libdigest-perl-md5-perl \
-    libfile-homedir-perl \
-    libgetopt-long-descriptive-perl \
-    libncurses5 \
-    libncurses6 \
-    libsm6 \
-    libunicode-linebreak-perl \
-    libyaml-tiny-perl \
-    make \
-    perl \
-    python3 \
-    python3-pygments \
-    unzip
-  rm -rf /var/lib/apt/lists/*
-EOF
+RUN apt-get update && \
+  # basic utilities for TeX Live installation
+  apt-get install -qy --no-install-recommends curl git unzip \
+  # miscellaneous dependencies for TeX Live tools
+  make fontconfig perl default-jre libgetopt-long-descriptive-perl \
+  libdigest-perl-md5-perl libncurses5 libncurses6 \
+  # for latexindent (see #13)
+  libunicode-linebreak-perl libfile-homedir-perl libyaml-tiny-perl \
+  # for eps conversion (see #14)
+  ghostscript \
+  # for metafont (see #24)
+  libsm6 \
+  # for syntax highlighting
+  python3 python3-pygments \
+  # for gnuplot backend of pgfplots (see !13)
+  gnuplot-nox && \
+  rm -rf /var/lib/apt/lists/* && \
+  rm -rf /var/cache/apt/ && \
+  # bad fix for python handling
+  ln -s /usr/bin/python3 /usr/bin/python

@@ -50,6 +50,7 @@ jobs:
             rust/1.64.0/focal: 'rust/1.64.0/focal/*'
             rust/1.64.0/focal/slim: 'rust/1.64.0/focal/slim/**'
             texlive/base: 'texlive/base/**'
+            texlive/latest: 'texlive/latest/**'
 
   # Job to build and test each of the modified images
   build:
