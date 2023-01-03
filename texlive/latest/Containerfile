@@ -95,8 +95,6 @@ RUN echo "Fetching installation from mirror $TLMIRRORURL" && \
   # actually install TeX Live
   ./install-tl -profile install.profile && \
   cd .. && \
-  # bad fix for python handling
-  ln -s /usr/bin/python3 /usr/bin/python && \
   rm -rf texlive
 
 WORKDIR /
