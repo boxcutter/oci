@@ -2,6 +2,11 @@
 ARG CONTAINER_REGISTRY=docker.io
 FROM $CONTAINER_REGISTRY/boxcutter/texlive:base
 
+LABEL \
+    org.opencontainers.image.source="https://github.com/boxcutter/oci" \
+    org.opencontainers.image.licenses="Apache-2.0" \
+    org.opencontainers.image.description="Full-featured TeX Live images."
+
 # whether to install documentation and/or source files
 # this has to be yes or no
 ARG DOCFILES=no

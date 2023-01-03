@@ -2,6 +2,11 @@
 ARG CONTAINER_REGISTRY=docker.io
 FROM $CONTAINER_REGISTRY/ubuntu:jammy-20221130
 
+LABEL \
+    org.opencontainers.image.source="https://github.com/boxcutter/oci" \
+    org.opencontainers.image.licenses="Apache-2.0" \
+    org.opencontainers.image.description="Base image with all the prerequisite tools for TeX Live (does not include TeX Live applications/packages)."
+
 ENV LANG=C.UTF-8 \
     LC_ALL=C.UTF-8 \
     # ConTeXt cache can be created on runtime and does not need to

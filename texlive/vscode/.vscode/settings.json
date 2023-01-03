@@ -1,0 +1,5 @@
+{
+    "latex-workshop.docker.enabled": true,
+    "latex-workshop.docker.image.latex": "docker.io/boxcutter/texlive:latest",
+    "latex-workshop.latex.outDir": "./out",
+}

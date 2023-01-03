@@ -63,7 +63,7 @@ for that:
 - latexml: A Perl program that parses LaTeX documents and generates many 
   different output formats.
 
-# Getting started
+## Getting started
 
 To get started, just use `pdflatex` to generate a PDF document or `latex`
 to generate a DVI-based device-independent PostScript document. Both of
@@ -76,6 +76,40 @@ docker run -it --rm \
   --workdir /doc \
   docker.io/boxcutter/texlive:latest pdflatex example.tex
 ```
+
+## Using this image with the Visual Studio Code LaTeX Workshop Extension
+
+### Installation
+
+1. Install [Visual Studio code](https://code.visualstudio.com/).
+
+1. Install and configure Docker for your operating system.
+
+1. In VSCode, Open the Command Palette (Cmd+Shift+P) and run `shell command`
+   to install the `code` cli command.
+
+1. On macOS, because of [this issue](https://github.com/microsoft/vscode/issues/141738) if you see this error:
+   ```
+   /usr/local/bin/code: line 6: python: command not found
+/usr/local/bin/code: line 10: ./MacOS/Electron: No such file or directory
+   ```
+   Edit `/usr/local/bin/code` and change:
+   ```
+   # function realpath() { python -c ...
+   function realpath() { python3 -c ...
+   ```
+   This may also require that you give your terminal/editor "App Management"
+   permission in "Privacy & Security" to make this change.
+
+1. Install the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+   ```
+   code --install-extension ms-vscode-remote.remote-containers
+   ```
+
+1. Install the [LaTex Workshop extension](https://marketplace.visualstudio.com/items?itemName=James-Yu.latex-workshop)
+   ```
+   code --install-extension James-Yu.latex-workshop
+   ```
 
 # CLI
 
