@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/ubuntu:jammy-20220815
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20230126
 
 # ensure local python is preferred over distribution python
 ENV PATH /usr/local/bin:$PATH
@@ -13,30 +13,31 @@ ENV LANG C.UTF-8
 RUN set -eux; \
 	apt-get update; \
 	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-		libbluetooth-dev \
-		tk-dev \
-		uuid-dev \
-                ca-certificates \
-                dirmngr \
-                gcc \
-                gnupg \
-                libbz2-dev \
-                libcurl4-openssl-dev \
-                libffi-dev \
-                libgdbm-dev \
-                liblzma-dev \
-                libncurses5-dev \
+		ca-certificates \
+		libbz2-dev \
+		libc6-dev \
+		libffi-dev \
+		libgdbm-dev \
 		libncursesw5-dev \
-                libreadline-dev \
-                libsqlite3-dev \
-                libssl-dev \
-                wget \
-                tzdata \
+		libreadline-dev \
+		libsqlite3-dev \
+		libssl-dev \
+		tk-dev \
+		zlib1g-dev \
+	    libbluetooth-dev \
+        build-essential \
+        dpkg-dev \
+        gnupg \
+        libgdbm-compat-dev \
+        liblzma-dev \
+        uuid-dev \
+        wget \
+        xz-utils \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
 ENV GPG_KEY A035C8C19219BA821ECEA86B64E628F8D684696D
-ENV PYTHON_VERSION 3.10.7
+ENV PYTHON_VERSION 3.10.9
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # hadolint ignore=DL3003,SC2015
@@ -61,13 +62,26 @@ RUN set -eux; \
 		--enable-optimizations \
 		--enable-option-checking=fatal \
 		--enable-shared \
+		--with-lto \
 		--with-system-expat \
 		--without-ensurepip \
 	; \
 	nproc="$(nproc)"; \
 	make -j "$nproc" \
+		"EXTRA_CFLAGS=${EXTRA_CFLAGS:-}" \
+		"LDFLAGS=${LDFLAGS:-}" \
+		"PROFILE_TASK=${PROFILE_TASK:-}" \
 	; \
-	make install; \
+# https://github.com/docker-library/python/issues/784
+# prevent accidental usage of a system installed libpython of the same version
+	rm python; \
+	make -j "$nproc" \
+		"EXTRA_CFLAGS=${EXTRA_CFLAGS:-}" \
+		"LDFLAGS=${LDFLAGS:--Wl},-rpath='\$\$ORIGIN/../lib'" \
+		"PROFILE_TASK=${PROFILE_TASK:-}" \
+		python \
+	; \
+	make install; \	
 	\
 # enable GDB to load debugging data: https://github.com/docker-library/python/pull/701
 	bin="$(readlink -ve /usr/local/bin/python3)"; \
@@ -82,7 +96,6 @@ RUN set -eux; \
 		\( \
 			\( -type d -a \( -name test -o -name tests -o -name idle_test \) \) \
 			-o \( -type f -a \( -name '*.pyc' -o -name '*.pyo' -o -name 'libpython*.a' \) \) \
-			-o \( -type f -a -name 'wininst-*.exe' \) \
 		\) -exec rm -rf '{}' + \
 	; \
 	\
@@ -100,12 +113,12 @@ RUN set -eux; \
 	done
 
 # if this is called "PIP_VERSION", pip explodes with "ValueError: invalid truth value '<VERSION>'"
-ENV PYTHON_PIP_VERSION 22.2.2
+ENV PYTHON_PIP_VERSION 22.3.1
 # https://github.com/docker-library/python/issues/365
-ENV PYTHON_SETUPTOOLS_VERSION 63.2.0
+ENV PYTHON_SETUPTOOLS_VERSION 65.5.1
 # https://github.com/pypa/get-pip
-ENV PYTHON_GET_PIP_URL https://github.com/pypa/get-pip/raw/5eaac1050023df1f5c98b173b248c260023f2278/public/get-pip.py
-ENV PYTHON_GET_PIP_SHA256 5aefe6ade911d997af080b315ebcb7f882212d070465df544e1175ac2be519b4
+ENV PYTHON_GET_PIP_URL https://github.com/pypa/get-pip/raw/1a96dc5acd0303c4700e02655aefd3bc68c78958/public/get-pip.py
+ENV PYTHON_GET_PIP_SHA256 d1d09b0f9e745610657a528689ba3ea44a73bd19c60f4c954271b790c71c2653
 
 RUN set -eux; \
 	\
