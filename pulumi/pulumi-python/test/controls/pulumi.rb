@@ -13,5 +13,5 @@ end
 
 describe command('python --version') do
   its('exit_status') { should eq 0 }
-  its('stdout') { should match(/Python 3.8/) }
+  its('stdout') { should match(/Python 3.10/) }
 end
