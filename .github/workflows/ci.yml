@@ -45,6 +45,7 @@ jobs:
             pulumi/pulumi-base: 'pulumi/pulumi-base/**'
             pulumi/pulumi-python: 'pulumi/pulumi-python/**'
             python/3.10/jammy: 'python/3.10/jammy/**'
+            python/3.11/jammy: 'python/3.11/jammy/**'
             rust/1.64.0/focal: 'rust/1.64.0/focal/*'
             rust/1.64.0/focal/slim: 'rust/1.64.0/focal/slim/**'
             texlive/base: 'texlive/base/**'
