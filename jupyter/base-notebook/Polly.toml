@@ -1,0 +1,3 @@
+[container_image]
+name = "jupyter-base-notebook"
+tags = [ "python-3.10.8", "python-3.10", "hub-3.1.0", "lab-3.5.2", "ubuntu-22.04", "notebook-6.5.2" ]
