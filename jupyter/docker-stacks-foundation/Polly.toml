@@ -1,5 +1,5 @@
 [container_image]
 name = "jupyter-docker-stacks-foundation"
 tags = [ "python-3.10.9", "python-3.10", "ubuntu-22.04", "latest"  ]
-platforms = ["linux/arm64", "linux/amd64"]
+# platforms = ["linux/arm64", "linux/amd64"]
 readme = "jupyter/README.md"
