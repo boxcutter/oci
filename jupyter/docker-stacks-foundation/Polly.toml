@@ -1,4 +1,4 @@
 [container_image]
 name = "jupyter-docker-stacks-foundation"
-tags = [ "python-3.10.8", "ubuntu-22.04",  "latest" ]
+tags = [ "python-3.10.8", "ubuntu-22.04", "latest" ]
 platforms = ["linux/arm64", "linux/amd64"]
