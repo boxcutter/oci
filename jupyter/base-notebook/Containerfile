@@ -1,6 +1,11 @@
 # syntax=docker/dockerfile:1
 ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/boxcutter/docker-stacks-foundation:ubuntu-22.04
+FROM $CONTAINER_REGISTRY/boxcutter/jupyter-docker-stacks-foundation:ubuntu-22.04
+
+LABEL \
+    org.opencontainers.image.source="https://github.com/boxcutter/oci" \
+    org.opencontainers.image.licenses="Apache-2.0" \
+    org.opencontainers.image.description="Base Jupyter server applications like Notebook, Jupyter Lab and Jupyter Hub."
 
 USER root
 
