@@ -5,7 +5,7 @@ source. Cinc Auditor is 100% compatible with its upstream Chef Inspec
 counterpart. Chef Inspec is an open-source framework for testing
 infrastructure, applications and container images.
 
-This image packages releases from https://cinc.sh/
+This image packages releases from  https://cinc.sh/
 
 Image source: https://github.com/boxcutter/oci/tree/main/bootstrap/cinc-auditor
 
