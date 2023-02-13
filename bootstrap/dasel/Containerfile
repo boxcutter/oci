@@ -2,6 +2,7 @@
 ARG CONTAINER_REGISTRY=docker.io
 FROM $CONTAINER_REGISTRY/ubuntu:jammy-20220815 as build
 
+# hadolint ignore=DL4006
 RUN <<EOF
   apt-get update
   apt-get install --no-install-recommends -y \
