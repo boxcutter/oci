@@ -40,6 +40,7 @@ jobs:
             jupyter/base-notebook: 'jupyter/base-notebook/**'
             jupyter/minimal-notebook: 'jupyter/minimal-notebook/**'
             jupyter/scipy-notebook: 'jupyter/scipy-notebook/**'
+            jupyter/datascience-notebook: 'jupyter/datasciene-notebook/**'
             markdownlint: 'markdownlint/**'
             meshcmd: 'meshcmd/**'
             ruby/3.1/jammy: 'ruby/3.1/jammy/**'
