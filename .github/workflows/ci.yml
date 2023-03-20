@@ -102,6 +102,7 @@ jobs:
           $(git rev-parse --show-toplevel)/bin/test.sh
 
       - name: Set the platforms
+        if: github.event_name == 'push'
         id: platforms
         run: |
           echo "platforms=$($(git rev-parse --show-toplevel)/bin/list-platforms.sh -c)" >> $GITHUB_ENV
