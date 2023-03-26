@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/ubuntu:jammy-20230126 as build
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20230308 as build
 
 # hadolint ignore=DL4006
 RUN <<EOF
@@ -26,7 +26,7 @@ RUN <<EOF
 EOF
 
 
-FROM $CONTAINER_REGISTRY/ubuntu:jammy-20230126
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20230308
 
 LABEL \
     org.opencontainers.image.source="https://github.com/polymathrobotics/oci" \
