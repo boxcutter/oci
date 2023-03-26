@@ -91,7 +91,7 @@ docker run -it --rm \
 1. On macOS, because of [this issue](https://github.com/microsoft/vscode/issues/141738) if you see this error:
    ```
    /usr/local/bin/code: line 6: python: command not found
-/usr/local/bin/code: line 10: ./MacOS/Electron: No such file or directory
+   /usr/local/bin/code: line 10: ./MacOS/Electron: No such file or directory
    ```
    Edit `/usr/local/bin/code` and change:
    ```
