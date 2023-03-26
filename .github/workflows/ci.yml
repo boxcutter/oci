@@ -6,10 +6,6 @@ on:
   pull_request:
     branches: [ main ]
   workflow_dispatch:
-    inputs:
-      images:
-        description: 'Comma-separated list of image paths e.g. "buildpack-deps/ubuntu/focal/scm","golang/1.19/jammy"'
-        required: true
 jobs:
   # Job to run change detection
   changes:
@@ -69,7 +65,7 @@ jobs:
       matrix:
         # Parse JSON array containing names of all filters matching any of changed files
         # e.g. ['image1', 'image2'] if both image folders contains changes
-        image: ${{ fromJSON(inputs.images || needs.changes.outputs.images) }}
+        image: ${{ fromJSON(needs.changes.outputs.images) }}
     if: ${{ needs.changes.outputs.images != '[]' && needs.changes.outputs.images != '' }}
     runs-on: ubuntu-latest
     defaults:
