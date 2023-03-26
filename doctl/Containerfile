@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/ubuntu:jammy-20220815 AS build
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20230308 AS build
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN <<EOF
@@ -11,12 +11,12 @@ RUN <<EOF
   dpkgArch="$(dpkg --print-architecture)"
   case "${dpkgArch##*-}" in \
     amd64) \
-      DOCTL_URL='https://github.com/digitalocean/doctl/releases/download/v1.81.0/doctl-1.81.0-linux-amd64.tar.gz' \
-      DOCTL_SHA256='ab5be5b365bdea817fbe8925a2b3ea9f7d552de731dd58f235e0921ecdb978b4' \
+      DOCTL_URL='https://github.com/digitalocean/doctl/releases/download/v1.93.1/doctl-1.93.1-linux-amd64.tar.gz' \
+      DOCTL_SHA256='b84c96443815a4ee8857c82eba47e36cec953eb9d3f5c542a2c2ab9868f40f4f' \
       ;; \
     arm64) \
-      DOCTL_URL='https://github.com/digitalocean/doctl/releases/download/v1.81.0/doctl-1.81.0-linux-arm64.tar.gz' \
-      DOCTL_SHA256='8c449ac0dace0cf6bb9392f901cffe3cfe70a09a109d3af2a48d45011b0baf85' \
+      DOCTL_URL='https://github.com/digitalocean/doctl/releases/download/v1.93.1/doctl-1.93.1-linux-arm64.tar.gz' \
+      DOCTL_SHA256='6ea1955fd2e63937101549b6895272b71f21c83f3563cc9911f1b1891b34690c' \
       ;; \
     *) echo "unsupported architecture"; exit 1 ;; \
   esac
@@ -26,7 +26,7 @@ RUN <<EOF
   tar xzvf /tmp/doctl.tar.gz -C /tmp/doctl
 EOF
 
-FROM $CONTAINER_REGISTRY/ubuntu:jammy-20220815
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20230308
 
 LABEL \
     org.opencontainers.image.source="https://github.com/boxcutter/oci" \
