@@ -4,5 +4,5 @@ end
 
 describe command('flake8 --version') do
   its('exit_status') { should eq 0 }
-  its('stdout') { should match(/4/) }
+  its('stdout') { should match(/6/) }
 end
