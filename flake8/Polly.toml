@@ -1,2 +1,2 @@
 [container_image]
-tags = [ "5.0.4", "latest" ]
+tags = [ "6.0.0", "latest" ]
