@@ -7,3 +7,8 @@ describe command('rustc --version') do
   its('exit_status') { should eq 0 }
   its('stdout') { should match(/rustc 1/) }
 end
+
+describe command('rustfmt --version') do
+  its('exit_status') { should eq 0 }
+  its('stdout') { should match(/rustfmt 1/) }
+end

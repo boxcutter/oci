@@ -1,5 +1,0 @@
-[container_image]
-name = "rust"
-tags = ["1-focal", "1.64-focal", "1.64.0-focal", "focal" ]
-platforms=["linux/arm64","linux/amd64"]
-readme = "rust/README.md"
