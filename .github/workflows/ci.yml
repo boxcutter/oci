@@ -35,7 +35,7 @@ jobs:
             buildpack-deps/ubuntu/jammy/curl: 'buildpack-deps/ubuntu/jammy/curl/**'
             buildpack-deps/ubuntu/jammy/scm: 'buildpack-deps/ubuntu/jammy/scm/**'
             buildpack-deps/ubuntu/jammy: 'buildpack-deps/ubuntu/jammy/*'
-            cinc: 'cinc/cinc/**'
+            cinc/cinc: 'cinc/cinc/**'
             doctl: 'doctl/**'
             flake8: 'flake8/**'
             golang/1.19/jammy: 'golang/1.19/jammy/**'
