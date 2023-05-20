@@ -37,6 +37,7 @@ jobs:
             buildpack-deps/ubuntu/jammy: 'buildpack-deps/ubuntu/jammy/*'
             cinc/cinc: 'cinc/cinc/**'
             doctl: 'doctl/**'
+            dokken/ubuntu-20.04: 'dokken/ubuntu-20.04/**'
             flake8: 'flake8/**'
             golang/1.19/jammy: 'golang/1.19/jammy/**'
             jupyter/docker-stacks-foundation: 'jupyter/docker-stacks-foundation/**'
