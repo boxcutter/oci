@@ -7,9 +7,9 @@ LABEL \
     org.opencontainers.image.licenses="Apache-2.0" \
     org.opencontainers.image.description="Cinc Client is an automation platform built from Chef Infra"
 
-ARG VERSION=16.9.29
-ARG SHA256_AMD64=81cc8f6242dafdb33ad40c8fe4c70f7413115cb4d8d8b424799d031bd43c3931
-ARG SHA256_AARCH64=c2105a53022a8b42197c918b675cca12cc05da70eaedbffb7205b4deb1f8cf66
+ARG VERSION=16.9.32
+ARG SHA256_AMD64=92ab6a77a66fa788d5466b11c410fb618467da894e1ae6b4de2c7504956ed366
+ARG SHA256_AARCH64=56b76c146c051d88e433a10986f0cac2d74c0fee2009068ec81089fa9608fdd8
 # This argument is automatically populated by BuildKit
 ARG TARGETARCH
 
