@@ -7,7 +7,7 @@ instead of the default chef-client.
 Modify your `kitchen.yml` similar to the following in order to use cinc instead
 of chef in Test Kitchen:
 
-```yaml
+```
 ---
 driver:
   name: dokken
