@@ -35,6 +35,7 @@ jobs:
             buildpack-deps/ubuntu/jammy/curl: 'buildpack-deps/ubuntu/jammy/curl/**'
             buildpack-deps/ubuntu/jammy/scm: 'buildpack-deps/ubuntu/jammy/scm/**'
             buildpack-deps/ubuntu/jammy: 'buildpack-deps/ubuntu/jammy/*'
+            cinc: 'cinc/cinc/**'
             doctl: 'doctl/**'
             flake8: 'flake8/**'
             golang/1.19/jammy: 'golang/1.19/jammy/**'
@@ -98,7 +99,13 @@ jobs:
           file: ${{ matrix.image }}/Containerfile
           tags: ${{ env.tags }}
 
+      - name: Run tests on the cinc/cinc image with cinc-auditor
+        if: matrix.image == 'cinc/cinc'
+        run: |
+          $(git rev-parse --show-toplevel)/bin/test.sh "$( $(git rev-parse --show-toplevel)/bin/list-tags.sh | head -n 1 )" "/bin/sh"
+
       - name: Run tests on the image with cinc-auditor
+        if: matrix.image != 'cinc/cinc'
         run: |
           $(git rev-parse --show-toplevel)/bin/test.sh
 
