@@ -55,8 +55,8 @@ RUN <<EOF
     -or -name '*systemd-vconsole-setup*' \
     -or -name '*systemd-readahead*' \
     -or -name '*udev*' \) \
-    -exec rm -v \{\} \;
-  systemctl set-default multi-user.target \
+    -exec rm -v {} \;
+  systemctl set-default multi-user.target
   systemctl mask dev-hugepages.mount sys-fs-fuse-connections.mount network.service
 EOF
 
