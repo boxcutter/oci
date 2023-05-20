@@ -4,7 +4,7 @@ set -eu
 set -o pipefail
 
 BIN_DIR="$(dirname -- "$(readlink -f "${BASH_SOURCE[0]}")")"
-# Supported platforms: linux/arm64,linux/amd64,linux/arm/v7
+# Supported platforms: linux/amd64,linux/arm64/v8,linux/arm/v7
 PLATFORMS="$("${BIN_DIR}/list-platforms.sh" -t)"
 
 if [[ -z ${CONTAINER_REGISTRY_USERNAME} ]] || [[ -z ${CONTAINER_REGISTRY_PASSWORD} ]]; then

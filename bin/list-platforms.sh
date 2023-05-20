@@ -8,7 +8,7 @@ DASEL_CONTAINER_IMAGE=boxcutter/dasel:1.26.1
 CONTAINERFILE_DIR=$(pwd)
 
 MODE=plain
-DEFAULT_PLATFORMS=linux/arm64,linux/amd64,linux/arm/v7
+DEFAULT_PLATFORMS=linux/amd64,linux/arm64/v8,linux/arm/v7
 
 usage() {
   cat <<EOF
@@ -83,11 +83,11 @@ if [[ -f "${CONTAINERFILE_DIR}/Polly.toml" ]]; then
 else
   if [[ "$MODE" == "csv" ]]; then
     cat <<EOF
-"linux/arm64","linux/amd64","linux/arm/v7"
+"linux/amd64","linux/arm64/v8","linux/arm/v7"
 EOF
   else
     cat <<EOF
-linux/arm64,linux/amd64,linux/arm/v7
+linux/amd64,linux/arm64/v8,linux/arm/v7
 EOF
   fi
 fi

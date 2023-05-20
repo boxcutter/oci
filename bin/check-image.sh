@@ -27,7 +27,7 @@ ${image_name} does not appear to be available.
 If you need to bootstrap the image, go to the Containerfile directory and run:
 
   docker buildx build \
-    --platform linux/arm64,linux/amd64,linux/arm/v7 \
+    --platform linux/amd64,linux/arm64/v8,linux/arm/v7 \
     --file Containerfile \
     --tag ${image_name} \
     --push \
