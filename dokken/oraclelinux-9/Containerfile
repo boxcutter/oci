@@ -6,6 +6,7 @@ LABEL \
     org.opencontainers.image.licenses="Apache-2.0" \
     org.opencontainers.image.description="Oracle Linux 9 image for kitchen-dokken"
 
+# hadolint ignore=DL3041
 RUN <<EOF
   dnf -y install \
     at \
