@@ -37,6 +37,7 @@ jobs:
             buildpack-deps/ubuntu/jammy: 'buildpack-deps/ubuntu/jammy/*'
             cinc/cinc: 'cinc/cinc/**'
             doctl: 'doctl/**'
+            dokken/centos-7: 'dokken/centos-7/**'
             dokken/ubuntu-20.04: 'dokken/ubuntu-20.04/**'
             dokken/ubuntu-22.04: 'dokken/ubuntu-22.04/**'
             flake8: 'flake8/**'
