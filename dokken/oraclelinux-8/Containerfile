@@ -1,0 +1,61 @@
+ARG CONTAINER_REGISTRY=docker.io
+FROM $CONTAINER_REGISTRY/oraclelinux:8
+
+LABEL \
+    org.opencontainers.image.source="https://github.com/polymathrobotics/oci" \
+    org.opencontainers.image.licenses="Apache-2.0" \
+    org.opencontainers.image.description="Oracle Linux 8 image for kitchen-dokken"
+
+# hadolint ignore=DL3041
+RUN <<EOF
+  dnf -y install \
+    binutils \
+	ca-certificates \
+	cronie \
+	curl \
+	dmidecode \
+	ethtool \
+	file \
+	gnupg2 \
+	hostname \
+	initscripts \
+	iproute \
+	iptables \
+	iputils \
+	lsof \
+	nc \
+	net-tools \
+	nmap \
+	openssl \
+	passwd \
+	procps \
+	strace \
+	sudo \
+	systemd-sysv \
+	systemd-udev \
+	redhat-lsb-core \
+	tcpdump \
+	telnet \
+	util-linux \
+	vim-minimal \
+	wget \
+	which
+  dnf upgrade -y
+  dnf clean all
+  rm -rf /var/log/*
+  find /etc/systemd/system \
+    /lib/systemd/system \
+	-path '*.wants/*' \
+	\( -name '*getty*' \
+	-or -name '*dnf-makecache*' \
+	-or -name '*sshd*' \
+	-or -name '*systemd-logind*' \
+	-or -name '*systemd-vconsole-setup*' \
+	-or -name '*systemd-readahead*' \
+	-or -name '*udev*' \) \
+	-exec rm -v {} \;
+  systemctl set-default multi-user.target
+  systemctl mask dev-hugepages.mount sys-fs-fuse-connections.mount network.service systemd-journal-flush.service
+EOF
+
+# CMD [ "/usr/lib/systemd/systemd" ]

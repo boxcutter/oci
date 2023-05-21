@@ -1,22 +1,18 @@
 ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/centos:7
+FROM $CONTAINER_REGISTRY/oraclelinux:7
 
 LABEL \
     org.opencontainers.image.source="https://github.com/polymathrobotics/oci" \
     org.opencontainers.image.licenses="Apache-2.0" \
-    org.opencontainers.image.description="CentOS 7 image for kitchen-dokken"
+    org.opencontainers.image.description="Oracle Linux 7 image for kitchen-dokken"
 
 RUN <<EOF
-  yum -y install yum-plugin-copr
-  yum -y copr enable jsynacek/systemd-backports-for-centos-7
-  yum -y update systemd
   yum -y install \
       binutils \
       ca-certificates \
       cronie \
       curl \
       dmidecode \
-      e2fsprogs \
       ethtool \
       file \
       gnupg2 \
@@ -51,13 +47,14 @@ RUN <<EOF
       /lib/systemd/system \
       -path '*.wants/*' \
       \( -name '*getty*' \
+      -or -name '*sshd*' \
       -or -name '*systemd-logind*' \
       -or -name '*systemd-vconsole-setup*' \
       -or -name '*systemd-readahead*' \
       -or -name '*udev*' \) \
       -exec rm -v {} \;
   systemctl set-default multi-user.target
-  systemctl mask dev-hugepages.mount sys-fs-fuse-connections.mount network.service
+  systemctl mask dev-hugepages.mount sys-fs-fuse-connections.mount network.service rhnsd.service
 EOF
 
 CMD [ "/usr/lib/systemd/systemd" ]
