@@ -1,0 +1,46 @@
+ARG CONTAINER_REGISTRY=docker.io
+FROM $CONTAINER_REGISTRY/amazonlinux:2 as installer
+
+LABEL \
+    org.opencontainers.image.source="https://github.com/polymathrobotics/oci" \
+    org.opencontainers.image.licenses="Apache-2.0" \
+    org.opencontainers.image.description="AWS command-line interface."
+
+COPY aws-cli.key /tmp/aws-cli/aws-cli.key
+
+RUN yum update -y \
+  && yum install -y gnupg unzip \
+  && gpg --import /tmp/aws-cli/aws-cli.key \
+  && arch="$(arch)" \
+  && case "${arch##*-}" in \
+    x86_64) \
+      AWS_CLI_URL='https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.11.27.zip' \
+      ;; \
+    aarch64) \
+      AWS_CLI_URL='https://awscli.amazonaws.com/awscli-exe-linux-aarch64-2.11.27.zip' \
+      ;; \
+    armv7l) \
+      AWS_CLI_URL='https://awscli.amazonaws.com/awscli-exe-linux-armv7l-2.11.27.zip' \
+      ;; \
+    *) echo "unsupported architecture"; exit 1 ;; \
+    esac \
+  && curl -fsSL -o /tmp/aws-cli/awscliv2.zip ${AWS_CLI_URL} \
+  && curl -fsSL -o /tmp/aws-cli/awscliv2.sig ${AWS_CLI_URL}.sig \
+  && gpg --verify /tmp/aws-cli/awscliv2.sig /tmp/aws-cli/awscliv2.zip \
+  && unzip  /tmp/aws-cli/awscliv2.zip -d /tmp/aws-cli/awscliv2 \
+  # The --bin-dir is specified so that we can copy the
+  # entire bin directory from the installer stage into
+  # into /usr/local/bin of the final stage without
+  # accidentally copying over any other executables that
+  # may be present in /usr/local/bin of the installer stage.
+  && /tmp/aws-cli/awscliv2/aws/install --bin-dir /aws-cli-bin/ \
+  && yum clean all
+
+FROM amazonlinux:2
+RUN yum update -y \
+  && yum install -y less groff \
+  && yum clean all
+COPY --from=installer /usr/local/aws-cli/ /usr/local/aws-cli/
+COPY --from=installer /aws-cli-bin/ /usr/local/bin/
+WORKDIR /aws
+ENTRYPOINT ["/usr/local/bin/aws"]

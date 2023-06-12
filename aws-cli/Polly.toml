@@ -1,0 +1,3 @@
+[container_image]
+tags=["2.11.27", "latest"] 
+platforms=["linux/arm64","linux/amd64"]
