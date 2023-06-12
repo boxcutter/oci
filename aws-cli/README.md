@@ -4,7 +4,6 @@ Command-line interface v2 for Amazon Web Services
 
 Source location: https://github.com/boxcutter/oci/tree/main/aws-cli
 
-
 Based on https://github.com/aws/aws-cli/blob/v2/docker/Dockerfile
 
 Installing passed releases of the AWS CLI version 2:
