@@ -1,4 +1,4 @@
 [container_image]
 name = 'python'
-tags = ["3.10.9-jammy", "3.10-jammy", "3-jammy", "jammy"]
+tags = ["3.10.12-jammy", "3.10-jammy", "3-jammy", "jammy"]
 readme = "python/README.md"
