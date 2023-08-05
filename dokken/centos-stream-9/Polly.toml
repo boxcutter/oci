@@ -1,0 +1,5 @@
+[container_image]
+name = "dokken-oraclelinux-9"
+tags = [ "latest" ]
+readme = "dokken/README.md"
+platforms=["linux/arm64","linux/amd64"]
