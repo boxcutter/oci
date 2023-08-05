@@ -2,4 +2,4 @@
 name = "dokken-oraclelinux-8"
 tags = ["latest"]
 readme = "dokken/README.md"
-platforms=["linux/arm64","linux/amd64"]
+platforms = ["linux/arm64","linux/amd64"]
