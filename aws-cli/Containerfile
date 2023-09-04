@@ -2,7 +2,7 @@ ARG CONTAINER_REGISTRY=docker.io
 FROM $CONTAINER_REGISTRY/amazonlinux:2 as installer
 
 LABEL \
-    org.opencontainers.image.source="https://github.com/polymathrobotics/oci" \
+    org.opencontainers.image.source="https://github.com/boxcutter/oci" \
     org.opencontainers.image.licenses="Apache-2.0" \
     org.opencontainers.image.description="AWS command-line interface."
 
@@ -14,13 +14,13 @@ RUN yum update -y \
   && arch="$(arch)" \
   && case "${arch##*-}" in \
     x86_64) \
-      AWS_CLI_URL='https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.13.7.zip' \
+      AWS_CLI_URL='https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.13.15.zip' \
       ;; \
     aarch64) \
-      AWS_CLI_URL='https://awscli.amazonaws.com/awscli-exe-linux-aarch64-2.13.7.zip' \
+      AWS_CLI_URL='https://awscli.amazonaws.com/awscli-exe-linux-aarch64-2.13.15.zip' \
       ;; \
     armv7l) \
-      AWS_CLI_URL='https://awscli.amazonaws.com/awscli-exe-linux-armv7l-2.13.7.zip' \
+      AWS_CLI_URL='https://awscli.amazonaws.com/awscli-exe-linux-armv7l-2.13.15.zip' \
       ;; \
     *) echo "unsupported architecture"; exit 1 ;; \
     esac \

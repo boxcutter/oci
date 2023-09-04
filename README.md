@@ -5,6 +5,7 @@ Open container images for robotics, neuromorphic engineering, systems and embedd
 
 | Image | Description | Location
 | --- | --- | --- |
+| [aws-cli](https://hub.docker.com/r/boxcutter/aws-cli) | Amazon Web Services Command-Line Interface | [aws-cli](https://github.com/boxcutter/oci/tree/main/aws-cli)
 | [bats](https://hub.docker.com/r/boxcutter/bats) | Bash Automated Testing System | [bats](https://github.com/boxcutter/oci/tree/main/bats) |
 | [black](https://hub.docker.com/r/boxcutter/black) | The uncompromising Python code formatter | [black](https://github.com/boxcutter/oci/tree/main/black) |
 | [buildpack-deps](https://hub.docker.com/r/boxcutter/buildpack-deps) | A collection of common build dependencies used for installing various modules, e.g., gems | [buildpack-deps](https://github.com/boxcutter/oci/tree/main/buildpack-deps) |
