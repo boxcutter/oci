@@ -54,6 +54,7 @@ jobs:
             jupyter/datascience-notebook: 'jupyter/datasciene-notebook/**'
             markdownlint: 'markdownlint/**'
             meshcmd: 'meshcmd/**'
+            node/18/jammy: 'node/18/jammy/**'
             ruby/3.1/jammy: 'ruby/3.1/jammy/**'
             ruby/3.1/slim-jammy: 'ruby/3.1/slim-jammy/**'
             shellcheck: 'shellcheck/**'
