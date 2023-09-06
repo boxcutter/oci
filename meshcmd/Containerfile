@@ -1,6 +1,6 @@
 #syntax=docker/dockerfile:1
 ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/ubuntu:jammy-20230624 AS build
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20230816 AS build
 
 RUN <<EOF
   apt-get update
@@ -11,20 +11,20 @@ RUN <<EOF
   dpkgArch="$(dpkg --print-architecture)"
   case "${dpkgArch##*-}" in \
     amd64) \
-      MESHCMD_URL='https://meshcentral.com/meshagents?meshcmd=6' \
+      MESHCMD_URL='https://meshcentral.com/executables/meshcmd-linux-x86-64' \
       ;; \
     arm64) \
-      MESHCMD_URL='https://meshcentral.com/meshagents?meshcmd=26' \
+      MESHCMD_URL='https://meshcentral.com/executables/meshcmd-linux-arm-64' \
       ;; \
     armhf) \
-      MESHCMD_URL='https://meshcentral.com/meshagents?meshcmd=25' \
+      MESHCMD_URL='https://meshcentral.com/executables/meshcmd-linux-arm-32' \
       ;; \
     *) echo "unsupported architecture"; exit 1 ;; \
     esac
   curl -o /tmp/meshcmd/meshcmd "$MESHCMD_URL"
 EOF
 
-FROM $CONTAINER_REGISTRY/ubuntu:jammy-20230624
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20230816
 
 LABEL \
     org.opencontainers.image.source="https://github.com/boxcutter/oci" \
