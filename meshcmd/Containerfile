@@ -1,6 +1,6 @@
 #syntax=docker/dockerfile:1
 ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/ubuntu:jammy-20230816 AS build
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20231004 AS build
 
 RUN <<EOF
   apt-get update
@@ -24,7 +24,7 @@ RUN <<EOF
   curl -o /tmp/meshcmd/meshcmd "$MESHCMD_URL"
 EOF
 
-FROM $CONTAINER_REGISTRY/ubuntu:jammy-20230816
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20231004
 
 LABEL \
     org.opencontainers.image.source="https://github.com/boxcutter/oci" \
