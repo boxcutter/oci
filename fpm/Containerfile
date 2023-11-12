@@ -1,0 +1,24 @@
+# syntax=docker/dockerfile:1
+ARG CONTAINER_REGISTRY=docker.io
+
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20231004 as system-ruby
+RUN <<EOF
+  apt-get update
+  apt-get install --no-install-recommends --no-install-suggests -y \
+    'ruby=*'
+  rm -rf /var/lib/apt/lists/*
+EOF
+
+FROM system-ruby
+
+ENV GEM_PATH=/fpm
+ENV PATH="/fpm/bin:${PATH}"
+RUN <<EOF
+  useradd --create-home --shell /bin/bash fpm
+  gem install --no-document --install-dir=/fpm fpm:1.15.1
+EOF
+
+USER fpm
+WORKDIR /src
+ENTRYPOINT ["/fpm/bin/fpm"]
+CMD ["-h"]
