@@ -19,6 +19,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: docker.io/polymathrobotics/hadolint
+
       - name: Install QEMU static binaries
         uses: docker/setup-qemu-action@v3
 
