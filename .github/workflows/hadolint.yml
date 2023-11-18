@@ -54,3 +54,4 @@ jobs:
           username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
           password: ${{ secrets.CONTAINER_DESCRIPTION_PASSWORD }}
           repository: boxcutter/hadolint
+          description: ${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.description'] }}
