@@ -1,4 +1,4 @@
-name: bootstrap
+name: hadolint
 
 on:
   push:
