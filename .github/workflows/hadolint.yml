@@ -22,6 +22,7 @@ jobs:
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
+        images: polymathrobotics/hadolint
 
       - name: Install QEMU static binaries
         uses: docker/setup-qemu-action@v3
