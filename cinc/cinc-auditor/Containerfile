@@ -13,12 +13,12 @@ RUN <<EOF
   dpkgArch="$(dpkg --print-architecture)"
   case "${dpkgArch##*-}" in \
     amd64) \
-      CINC_AUDITOR_URL='http://downloads.cinc.sh/files/stable/cinc-auditor/5.21.29/ubuntu/22.04/cinc-auditor_5.21.29-1_amd64.deb' \
-      CINC_AUDITOR_SHA256='2926aa49a8cebcba32134a485296aa74b70d3f91370e5604ffc877307846ac21' \
+      CINC_AUDITOR_URL='http://downloads.cinc.sh/files/stable/cinc-auditor/6.6.0/ubuntu/22.04/cinc-auditor_6.6.0-1_amd64.deb'
+      CINC_AUDITOR_SHA256='f92ad5ba73bb3095521b455dcb99cd002c04e2e8a19e1b2344439c6d1fc41901'
       ;; \
     arm64) \
-      CINC_AUDITOR_URL='http://downloads.cinc.sh/files/stable/cinc-auditor/5.21.29/ubuntu/22.04/cinc-auditor_5.21.29-1_arm64.deb' \
-      CINC_AUDITOR_SHA256='5221c89573228dcfd377ac62890d88419350c08a88eddd102f3bcf93c11a59f8' \
+      CINC_AUDITOR_URL='http://downloads.cinc.sh/files/stable/cinc-auditor/6.6.0/ubuntu/22.04/cinc-auditor_6.6.0-1_arm64.deb'
+      CINC_AUDITOR_SHA256='5b916b629315d5a3324313bb521e6fabacfd36e45a1d065ccb89e494dbf98512'
       ;; \
     *) echo "unsupported architecture"; exit 1 ;; \
     esac
