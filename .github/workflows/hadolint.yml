@@ -38,12 +38,6 @@ jobs:
           workdir: hadolint
           push: ${{ github.event_name != 'pull_request' }}
 
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: docker.io/polymathrobotics/hadolint
-
       - name: Update Docker Hub Description
         if: github.event_name != 'pull_request'
         uses: peter-evans/dockerhub-description@v3
