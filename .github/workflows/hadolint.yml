@@ -19,12 +19,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: docker.io/polymathrobotics/hadolint
-
       - name: Install QEMU static binaries
         uses: docker/setup-qemu-action@v3
 
@@ -43,6 +37,12 @@ jobs:
         with:
           workdir: hadolint
           push: ${{ github.event_name != 'pull_request' }}
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: docker.io/polymathrobotics/hadolint
 
       - name: Update Docker Hub Description
         if: github.event_name != 'pull_request'
