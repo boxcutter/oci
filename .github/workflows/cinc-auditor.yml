@@ -13,6 +13,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: cinc/cinc-auditor
     steps:
       - uses: actions/checkout@v4
 
@@ -39,7 +42,7 @@ jobs:
         if: github.event_name != 'pull_request'
         uses: docker/bake-action@v4
         with:
-          workdir: hadolint
+          workdir: cinc/cinc-auditor
           push: ${{ github.even_name != 'pull_request' }}
           files: |
             ./docker-bake.hcl
