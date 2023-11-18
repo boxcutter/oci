@@ -19,6 +19,7 @@ variable "LOCAL_PLATFORM" {
 target "docker-metadata-action" { }
 
 target "_common" {
+  inherits = ["docker-metadata-action"]
   dockerfile = "Containerfile"
   tags = [
     # docker.io/boxcuter/hadolint:x.x.x
@@ -39,7 +40,7 @@ target "local" {
 }
 
 group "default" {
-  targets = ["docker-metadata-action", "lint", "release"]
+  targets = ["lint", "release"]
 }
 
 target "release" {
