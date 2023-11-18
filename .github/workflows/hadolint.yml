@@ -38,6 +38,10 @@ jobs:
           workdir: hadolint
           push: ${{ github.event_name != 'pull_request' }}
 
+      - name: List targets
+        id: foo
+        uses: docker/bake-action/subaction/list-targets@v4
+        
       - name: Update Docker Hub Description
         if: github.event_name != 'pull_request'
         uses: peter-evans/dockerhub-description@v3
