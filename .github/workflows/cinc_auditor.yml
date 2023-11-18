@@ -1,4 +1,4 @@
-name: bootstrap
+name: cinc_auditor
 
 on:
   push:
