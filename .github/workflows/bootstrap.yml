@@ -1,0 +1,37 @@
+name: bootstrap
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'hadolint/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'hadolint/**'
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: hadolint
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install QEMU static binaries
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
+          password: ${{ secrets.CONTAINER_REGISTRY_PASSWORD }}
+
+      - name: Build and push
+        uses: docker/bake-action@v4
+        with:
+          push: true
