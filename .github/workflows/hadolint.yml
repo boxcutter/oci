@@ -40,10 +40,10 @@ jobs:
 
       - name: List targets
         id: foo
+        if: github.event_name != 'pull_request'
         uses: docker/bake-action/subaction/list-targets@v4
         with:
           workdir: hadolint
-          push: ${{ github.event_name != 'pull_request' }}
         
       - name: Update Docker Hub Description
         if: github.event_name != 'pull_request'
