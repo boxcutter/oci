@@ -48,7 +48,7 @@ jobs:
             ${{ steps.meta.outputs.bake-file }}
 
       - name: Update Docker Hub Description
-        if: github.event_name != 'push'
+        if: github.event_name != 'pull_request'
         uses: peter-evans/dockerhub-description@v3
         with:
           username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
