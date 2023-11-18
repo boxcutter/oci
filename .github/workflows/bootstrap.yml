@@ -44,4 +44,5 @@ jobs:
         uses: peter-evans/dockerhub-description@v3
         with:
           username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
-          password: ${{ secrets.CONTAINER_DESCRIPTION_PASSWORD }} 
+          password: ${{ secrets.CONTAINER_DESCRIPTION_PASSWORD }}
+          repository: boxcutter/hadolint
