@@ -19,12 +19,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: polymathrobotics/cinc-auditor
-
       - name: Install QEMU static binaries
         uses: docker/setup-qemu-action@v3
 
@@ -44,9 +38,6 @@ jobs:
         with:
           workdir: cinc/cinc-auditor
           push: ${{ github.even_name != 'pull_request' }}
-          files: |
-            ./docker-bake.hcl
-            ${{ steps.meta.outputs.bake-file }}
 
       - name: Update Docker Hub Description
         if: github.event_name != 'pull_request'
@@ -55,5 +46,5 @@ jobs:
           username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
           password: ${{ secrets.CONTAINER_DESCRIPTION_PASSWORD }}
           repository: boxcutter/cinc-auditor
-          short-description: ${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.description'] }}
+          # short-description: ${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.description'] }}
           readme-filepath: cinc/cinc-auditor/README.md
