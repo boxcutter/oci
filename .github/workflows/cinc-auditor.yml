@@ -56,3 +56,4 @@ jobs:
           password: ${{ secrets.CONTAINER_DESCRIPTION_PASSWORD }}
           repository: boxcutter/cinc-auditor
           short-description: ${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.description'] }}
+          readme-filepath: cinc/cinc-auditor/README.md
