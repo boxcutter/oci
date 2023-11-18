@@ -42,7 +42,7 @@ jobs:
         id: foo
         uses: docker/bake-action/subaction/list-targets@v4
         with:
-          workdir: hadolist
+          workdir: hadolint
           push: ${{ github.event_name != 'pull_request' }}
         
       - name: Update Docker Hub Description
