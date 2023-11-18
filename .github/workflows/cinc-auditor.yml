@@ -1,4 +1,4 @@
-name: cinc_auditor
+name: cinc-auditor
 
 on:
   push:
