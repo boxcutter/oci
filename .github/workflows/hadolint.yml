@@ -25,6 +25,8 @@ jobs:
       - name: List targets
         id: list-targets
         uses: docker/bake-action/subaction/list-targets@v4
+        with:
+          workdir: hadolint
 
   build:
     runs-on: ubuntu-latest
