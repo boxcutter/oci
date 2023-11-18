@@ -4,11 +4,11 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'cinc-auditor/**'
+      - 'cinc/cinc-auditor/**'
   pull_request:
     branches: [ main ]
     paths:
-      - 'cinc-auditor/**'
+      - 'cinc/cinc-auditor/**'
   workflow_dispatch:
 jobs:
   build:
