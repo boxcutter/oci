@@ -1,4 +1,4 @@
-# hadolint
+#  hadolint
 
 Hadolint is a linter for Containerfiles/Dockerfiles. It helps you build [best practice](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/) container images. 
 
