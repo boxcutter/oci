@@ -15,6 +15,9 @@ variable "LOCAL_PLATFORM" {
   default = regex_replace("${BAKE_LOCAL_PLATFORM}", "^(darwin)", "linux")
 }
 
+# Special target: https://github.com/docker/metadata-action#bake-definition
+target "docker-metadata-action" { }
+
 target "_common" {
   dockerfile = "Containerfile"
   tags = [
@@ -36,7 +39,7 @@ target "local" {
 }
 
 group "default" {
-  targets = ["lint", "release"]
+  targets = ["docker-metadata-action", "lint", "release"]
 }
 
 target "release" {
