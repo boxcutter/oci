@@ -30,7 +30,6 @@ target "local" {
 
 target "default" {
   inherits = ["_common"]
-  target = "release"
   platforms = ["linux/amd64", "linux/arm64/v8"]
   labels = {
     "org.opencontainers.image.source" = "https://github.com/polymathrobotics/oci"
