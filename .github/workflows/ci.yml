@@ -58,14 +58,7 @@ jobs:
         with:
           workdir: ${{ matrix.image }}
           targets: local
-          
-      - name: Build locally for testing
-        uses: docker/build-push-action@v3
-        with:
           load: true
-          context: ${{ matrix.image }}
-          file: ${{ matrix.image }}/Containerfile
-          tags: ${{ env.tags }}
 
       - name: Run tests on the image with cinc-auditor
         run: |
