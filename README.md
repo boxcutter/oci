@@ -50,8 +50,6 @@ The repo has the following structure:
   everything uses the same code, whether or not you are building locally or
   using automated builds in the cloud.
 
-- `bootstrap/` contains the source code for the container images needed to bootstrap the build system.
-
 - Rest of the directories contain all the source code for the images, primarily Containerfiles/Dockerfiles in BuildKit format. An alphabetical index is also provided in this README.md.
   
 # Developing
@@ -59,29 +57,23 @@ The repo has the following structure:
 Following container image conventions there is a separate directory for each container image. The container image
 tools have a single target directory for source files and by default the image tools scan all files in a directory
 for some operations. Thus there is a subdirectory per image, though a single image may be built for multiple
-platforms. The source for all the container images is under the `src/` tree in this repo. GitHub Actions pipelines
-in `.github/workflows` have been set up to publish these images to the 
+platforms. GitHub Actions pipelines in `.github/workflows` have been set up to publish these images to the
 [boxcutter org](https://hub.docker.com/u/boxcutter) on DockerHub.
 
 Since container image source code packaging is small, for convenience all the source is together in one big
-repo. We try to organize the the subdirectories under `src/` by a broad category of application type, then by
-vendor. These kinds of hierarchies are rarely useful except to the people who have created them, so we also
-provide an alphabetical index for all the images below so it may be easier to find the source for a particular
-image.
+repo. There alphabetical index for all the images below.
 
 When a new image is added, the base directory is added to the list of directories in `.github/workflows/ci.yml`.
 There's a rule that fires a build for each image only when a particular directory contents are changed.
 
 Each source directory has a similar basic structure. The image directory is not required to be at any particular
-level in the directory hieararchy. In general, most of the image source is usually two or three levels deep
-under `src`, just because it started to get a little unwieldly finding images with a flat structure. A lot of
-images have a similar grouping by vendor or application type.
+level in the directory hieararchy. Some of images have are grouped vendor or application type.
 
 ```
 ├── <image name>
 │   ├── .dockerignore
 │   ├── Containerfile
-│   ├── Polly.toml
+│   ├── docker-bake.hcl
 │   ├── README.md
 │   ├── test
 │   │   ├── controls
@@ -94,56 +86,8 @@ The files are as follows:
 - `Containerfile` - a file using the Dockerfile DSL that includes commands for building an image. We process
   Containerfiles with BuildKit and encourge image authors to make use of BuildKit-specific features in
   image builds.
-- `Polly.toml` - toml-format file describing custom metadata options for the image build. "Polly" is
-  short for "polymath", a tool we use to help manage embedded system builds.
+- `docker-bake.hcl` - A Docker Bake file that builds the image with `docker buildx bake`.
 - `test/` - subdirectory containing an InSpec profile with tests for the contaimer image.
-
-## Polly.toml file
-
-The only section used by container image builds in a `Polly.toml` file is `[container_image]`. A
-`Polly.toml` configuration file is not required. The configuration file is only used to override
-default settings.
-
-```
-[container_image]
-name = "python"
-readme = "python/README.md"
-tags = ["3.8.12-focal", "3.8-focal"]
-platforms=["linux/arm64", "linux/amd64"]
-```
-
-### The `name` field
-
-The `name` field is used to produce the name portion of a tag for a container image (in the form 
-"<container_registry>/<name>:<tag>", e.g. `docker.io/ubuntu:20.04`). The `name` field is a string.
-
-By default the name of the subdirectory in which the image source resides is used. But sometimes
-image authors prefer to use a different name for the source, usually to group related images together.
-For example, such as having source directory names like `python/3.8/` and `python/3.9` that both
-produce images called `docker.io/python:3.8` and `docker.io/python:3.9`, respectively.
-
-### The `readme` field
-
-The `readme` field is used to provide the path to a shared README.md when an
-image has multiple Containerfiles.
-
-### The `tags` field
-
-The tags field is used to produce the name portion of a tag for a docker image (in the form 
-"<container_registry>/<name>:<tag>", e.g. `docker.io/ubuntu:20.04`). The `tags` field is an array
-of strings.
-
-The default value of the `tags` field is `tags = ["latest"]` if not specifieid.
-
-### The `platforms` field
-
-The `platforms` field is used to define the platforms used to produce a multi-architecture
-container image. The `platforms` field is an array of strings that are passed through as
-`--platform` parameter options to BuildKit. Each string must be a valid BuildKit platform
-name.
-
-The default value of the `platforms` field is `platforms = ["linux/amd64", "linux/arm64", "linux/arm/v7"]`.
-
 
 ## Building these container images locally
 
@@ -156,10 +100,11 @@ build any image locally on your machine. For example, to build `ros-core`:
 cd ros/ros-core
 # Check the Containerfile with hadolint
 $(git rev-parse --show-toplevel)/bin/lint.sh
-# Build the image for testing on the local processor architecture (image name is configured in the `Polly.toml`)
-$(git rev-parse --show-toplevel)/bin/build-local.sh
+# Build the image for testing on the local processor architecture
+docker buildx create --use
+docker buildx bake local --local
 # Run tests on the image with cinc-auditor
 $(git rev-parse --show-toplevel)/bin/test.sh
-# (Optional) push the image to the container repository on dockerhub - ideally this should be done via a GitHub Actions workflow and not locally
-$(git rev-parse --show-toplevel)/bin/build-push.sh
+# (Optional) build and push the image to the container repository on dockerhub - ideally this should be done via a GitHub Actions workflow and not locally
+docker build bake default
 ```
