@@ -7,6 +7,7 @@ Open container images for robotics, neuromorphic engineering, systems and embedd
 | --- | --- | --- |
 | [aws-cli](https://hub.docker.com/r/boxcutter/aws-cli) | Amazon Web Services Command-Line Interface | [aws-cli](https://github.com/boxcutter/oci/tree/main/aws-cli)
 | [cinc-auditor](https://hub.docker.com/r/boxcutter/cinc-auditor) | Framework compatible with Chef InSpec for testing infrastructure | [cinc/cinc-auditor](https://github.com/boxcutter/oci/tree/main/cinc/cinc-auditor) |
+| [fpm](https://hub.docker.com/r/boxcutter/fpm) | fpm Packaging made simple | [fpn](https://github.com/boxcutter/oci/tree/main/fpm) |
 | [hadolint](https://hub.docker.com/r/boxcutter/hadolint) | Containerfile/Dockerfiles linter | [hadolint](https://github.com/boxcutter/oci/tree/main/hadolint) |
 | [meshcmd](https://hub.docker.com/r/boxcutter/meshcmd) | Command line tool used to perform many tasks related to computer management of Intel Active Management Technology (AMT) devices | [meshcmd](https://github.com/boxcutter/oci/tree/main/meshcmd) |
 
