@@ -1,4 +1,0 @@
-[container_image]
-name = "buildpack-deps"
-tags = ["jammy-scm", "22.04-scm"]
-readme = "buildpack-deps/README.md"

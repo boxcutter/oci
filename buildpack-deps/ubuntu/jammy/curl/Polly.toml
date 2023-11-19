@@ -1,4 +1,0 @@
-[container_image]
-name = "buildpack-deps"
-tags = ["jammy-curl", "22.04-curl"]
-readme = "buildpack-deps/README.md"

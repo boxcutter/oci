@@ -36,6 +36,7 @@ jobs:
           base: ${{ github.ref }}
           filters: |
             aws-cli: 'aws-cli/**'
+            buildpack-deps/ubuntu/jammy: 'buildpack-deps/ubuntu/jammy/**'
             fpm: 'fpm/**'
             meshcmd: 'meshcmd/**'
             python/3.8/slim-jammy: 'python/3.8/slim-jammy/**'
