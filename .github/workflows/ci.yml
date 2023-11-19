@@ -88,13 +88,13 @@ jobs:
         if: github.event_name != 'pull_request'
         id: image_name
         run: |
-          echo "image_name=$(docker buildx bake --print 2> /dev/null | jq -r '.target.release.labels."org.opencontainers.image.title"')" >> $GITHUB_ENV
+          echo "image_name=$(docker buildx bake --print 2>/dev/null | jq -r '.target.default.labels."org.opencontainers.image.title"')" >> $GITHUB_ENV
 
       - name: Get the image description
         if: github.event_name != 'pull_request'
         id: image_description
         run: |
-          echo "image_description=$(docker buildx bake --print 2> /dev/null | jq -r '.target.release.labels."org.opencontainers.image.description"')" >> $GITHUB_ENV
+          echo "image_description=$(docker buildx bake --print 2>/dev/null | jq -r '.target.default.labels."org.opencontainers.image.description"')" >> $GITHUB_ENV
 
       - name: Update Docker Hub Description
         if: github.event_name != 'pull_request'
