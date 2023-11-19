@@ -11,13 +11,13 @@ RUN yum update -y \
   && arch="$(arch)" \
   && case "${arch##*-}" in \
     x86_64) \
-      AWS_CLI_URL="https://awscli.amazonaws.com/awscli-exe-linux-x86_64-${AWS_CLI_VERISON}.zip" \
+      AWS_CLI_URL="https://awscli.amazonaws.com/awscli-exe-linux-x86_64-${AWS_CLI_VERSION}.zip" \
       ;; \
     aarch64) \
-      AWS_CLI_URL="https://awscli.amazonaws.com/awscli-exe-linux-aarch64-${AWS_CLI_VERISON}.zip" \
+      AWS_CLI_URL="https://awscli.amazonaws.com/awscli-exe-linux-aarch64-${AWS_CLI_VERSION}.zip" \
       ;; \
     armv7l) \
-      AWS_CLI_URL="https://awscli.amazonaws.com/awscli-exe-linux-armv7l-${AWS_CLI_VERISON}.zip" \
+      AWS_CLI_URL="https://awscli.amazonaws.com/awscli-exe-linux-armv7l-${AWS_CLI_VERSION}.zip" \
       ;; \
     *) echo "unsupported architecture"; exit 1 ;; \
     esac \
