@@ -22,7 +22,7 @@ jobs:
 
       - name: Set context from workflow_dispatch
         if: github.event_name != 'workflow_dispatch'
-        id: filter
+        id: manual_filter
         run: |
           echo "changes={ ${{ inputs.build_context}}: '${{ inputs.build_context}}/**' }"
       - uses: dorny/paths-filter@v2
