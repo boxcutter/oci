@@ -11,31 +11,14 @@ on:
       - 'hadolint/**'
   workflow_dispatch:
 jobs:
-  prepare:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: hadolint
-    outputs:
-      targets: ${{ steps.list-targets.outputs.targets }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: List targets
-        id: list-targets
-        uses: docker/bake-action/subaction/list-targets@v4
-        with:
-          workdir: hadolint
-
   build:
     runs-on: ubuntu-latest
-    needs:
-      - prepare
     defaults:
       run:
         working-directory: hadolint
     steps:
+      - uses: actions/checkout@v4
+
       - name: Install QEMU static binaries
         uses: docker/setup-qemu-action@v3
 
@@ -55,12 +38,11 @@ jobs:
           workdir: hadolint
           push: ${{ github.event_name != 'pull_request' }}
 
-      - name: List targets
-        id: foo
+      - name: Get the image description
         if: github.event_name != 'pull_request'
-        uses: docker/bake-action/subaction/list-targets@v4
-        with:
-          workdir: hadolint
+        id: image_description
+        run: |
+          echo "image_description=$(docker buildx bake --print | jq -r '.target.release.labels.\"org.opencontainers.image.description\"') >> $GITHUB_ENV
         
       - name: Update Docker Hub Description
         if: github.event_name != 'pull_request'
