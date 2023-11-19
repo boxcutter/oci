@@ -3,12 +3,12 @@
 set -eu
 set -o pipefail
 
-CINC_AUDITOR_CONTAINER_IMAGE=docker.io/boxcutter/cinc-auditor:6.6.0
+CINC_AUDITOR_CONTAINER_IMAGE=boxcutter/cinc-auditor:5.18.14
 
 BIN_DIR="$(dirname -- "$(readlink -f "${BASH_SOURCE[0]}")")"
+DEFAULT_TAG="$("${BIN_DIR}/list-tags.sh" | head -n 1)"
 CONTAINERFILE_DIR=$(pwd)
 CINC_PROFILE_DIR="${CONTAINERFILE_DIR}/test"
-DEFAULT_TAG="$(docker buildx bake local --print 2>/dev/null | jq -r '.target.local.tags | first')"
 
 usage() {
   cat <<EOF
@@ -65,8 +65,8 @@ run_cinc_auditor() {
   echo "==> running cinc-auditor against ${TEST_CONTAINER_IMAGE}"
   echo "==> with command: '${ENTRYPOINT_COMMAND}'"
   docker container run -t --rm \
-    --mount type=bind,source="${CINC_PROFILE_DIR}",target=/share \
-    --mount type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock \
+    -v "${CINC_PROFILE_DIR}:/share" \
+    -v /var/run/docker.sock:/var/run/docker.sock \
     "${CINC_AUDITOR_CONTAINER_IMAGE}" exec . --no-create-lockfile -t "docker://${CONTAINER_ID}"
 }
 
@@ -83,7 +83,9 @@ cleanup_image_under_test() {
 
 trap cleanup_image_under_test EXIT
 
+"${BIN_DIR}/check-image.sh" "${CINC_AUDITOR_CONTAINER_IMAGE}"
 args "$@"
 check_profile
 start_image_under_test
 run_cinc_auditor
+

@@ -19,8 +19,8 @@ RUN yum update -y \
       ;; \
     *) echo "unsupported architecture"; exit 1 ;; \
     esac \
-  && curl -fsSL -o /tmp/aws-cli/awscliv2.zip ${AWS_CLI_URL} \
-  && curl -fsSL -o /tmp/aws-cli/awscliv2.sig ${AWS_CLI_URL}.sig \
+  && curl -fsSL -o /tmp/aws-cli/awscliv2.zip "${AWS_CLI_URL}" \
+  && curl -fsSL -o /tmp/aws-cli/awscliv2.sig "${AWS_CLI_URL}.sig" \
   && gpg --verify /tmp/aws-cli/awscliv2.sig /tmp/aws-cli/awscliv2.zip \
   && unzip  /tmp/aws-cli/awscliv2.zip -d /tmp/aws-cli/awscliv2 \
   # The --bin-dir is specified so that we can copy the
@@ -31,12 +31,7 @@ RUN yum update -y \
   && /tmp/aws-cli/awscliv2/aws/install --bin-dir /aws-cli-bin/ \
   && yum clean all
 
-FROM amazonlinux:2
-
-LABEL \
-    org.opencontainers.image.source="https://github.com/boxcutter/oci" \
-    org.opencontainers.image.licenses="Apache-2.0" \
-    org.opencontainers.image.description="AWS command-line interface."
+FROM installer as release
 
 RUN yum update -y \
   && yum install -y less groff \
