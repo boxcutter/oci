@@ -10,12 +10,13 @@ RUN <<EOF
 EOF
 
 FROM system-ruby
+ARG FPM_VERSION=1.15.1
 
 ENV GEM_PATH=/fpm
 ENV PATH="/fpm/bin:${PATH}"
 RUN <<EOF
   useradd --create-home --shell /bin/bash fpm
-  gem install --no-document --install-dir=/fpm fpm:1.15.1
+  gem install --no-document --install-dir=/fpm fpm:${FPM_VERSION}
 EOF
 
 USER fpm

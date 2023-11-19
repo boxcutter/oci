@@ -36,6 +36,7 @@ jobs:
           base: ${{ github.ref }}
           filters: |
             aws-cli: 'aws-cli/**'
+            fpm: 'fpm/**'
             meshcmd: 'meshcmd/**'
             
   # Job to build and test each of the modified images

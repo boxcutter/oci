@@ -1,4 +1,0 @@
-rule lint
-  command = docker container run --rm -i docker.io/boxcutter/hadolint hadolint - < Containerfile 
-
-build lint: lint
