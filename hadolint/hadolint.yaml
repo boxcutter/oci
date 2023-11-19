@@ -1,0 +1,4 @@
+ignored:
+  - DL3008 # Pin versions in apt-get install.
+  - DL3033 # Pin versions in yum install.
+  - DL3059 # Multiple consecutive RUN instructions.

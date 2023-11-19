@@ -34,5 +34,7 @@ COPY Containerfile /
 RUN /usr/local/bin/hadolint --ignore DL3008 --ignore DL3033 --ignore DL3059 Containerfile
 
 FROM base as release
-COPY --from=base --chmod=777 /usr/local/bin/hadolint /bin/hadolint
+COPY --from=base --chmod=777 /usr/local/bin/hadolint /usr/local/bin/hadolint
+WORKDIR /shared
+COPY hadolint.yaml .hadolint.yaml
 CMD ["/bin/hadolint", "-"]
