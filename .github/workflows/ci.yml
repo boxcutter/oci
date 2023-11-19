@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ main ]
   workflow_dispatch:
+    inputs:
+      build_context:
+        description: 'Build directory'
+        required: true
 jobs:
   # Job to run change detection
   changes:
