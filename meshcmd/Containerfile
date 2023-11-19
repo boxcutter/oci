@@ -22,10 +22,10 @@ RUN <<EOF
     *) echo "unsupported architecture"; exit 1 ;; \
     esac
   curl -o /tmp/meshcmd/meshcmd "$MESHCMD_URL"
+  rm -rf /var/lib/apt/lists/*
 EOF
 
 FROM build
-
 
 WORKDIR /opt/meshcmd/bin
 
