@@ -19,7 +19,14 @@ jobs:
       images: ${{ steps.filter.outputs.changes }}
     steps:
       - uses: actions/checkout@v4
+
+      - name: Set context from workflow_dispatch
+        if: github.event_name != 'workflow_dispatch'
+        id: filter
+        run: |
+          echo "changes={ ${{ inputs.build_context}}: '${{ inputs.build_context}}/**' }"
       - uses: dorny/paths-filter@v2
+        if: github.event_name != 'workflow_dispatch'
         id: filter
         with:
           # Use context to get the branch where commits were pushed.
