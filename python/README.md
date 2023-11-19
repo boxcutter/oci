@@ -14,7 +14,7 @@ The Python interpreter is the default command running in this image. Typing an e
 
 ```
 docker run -it --rm \
-  docker.io/boxcutter/python:3.11-jammy
+docker.io/boxcutter/python:3.11-jammy
 ```
 
 ### Run a single Python script
@@ -23,9 +23,9 @@ For single file projects, you can run a Python script by using the container ima
 
 ```
 docker run -it --rm \
-  --mount type=bind,source="$(pwd)",target=/usr/src/myapp \
-  --workdir /usr/src/myapp \
-  docker.io/boxcutter/python:3.11-jammy python your-script.py
+--mount type=bind,source="$(pwd)",target=/usr/src/myapp \
+--workdir /usr/src/myapp \
+docker.io/boxcutter/python:3.11-jammy python your-script.py
 ```
 
 ### Create a Containerfile in your Python app project
