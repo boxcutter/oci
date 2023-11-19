@@ -24,12 +24,7 @@ RUN <<EOF
   curl -o /tmp/meshcmd/meshcmd "$MESHCMD_URL"
 EOF
 
-FROM $CONTAINER_REGISTRY/ubuntu:jammy-20231004
-
-LABEL \
-    org.opencontainers.image.source="https://github.com/boxcutter/oci" \
-    org.opencontainers.image.licenses="Apache-2.0" \
-    org.opencontainers.image.description="Command line tool used to perform many tasks related to computer management of Intel Active Management Technology (AMT) devices."
+FROM build
 
 
 WORKDIR /opt/meshcmd/bin
