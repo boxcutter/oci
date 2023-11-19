@@ -1,4 +1,4 @@
-#  aws-cli
+# aws-cli
 
 Command-line interface v2 for Amazon Web Services
 
