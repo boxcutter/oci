@@ -79,7 +79,7 @@ jobs:
 
       - name: Get the image name
         if: github.event_name != 'pull_request'
-        id: image_description
+        id: image_name
         run: |
           echo "image_name=$(docker buildx bake --print 2> /dev/null | jq -r '.target.release.labels."org.opencontainers.image.title"')" >> $GITHUB_ENV
 
