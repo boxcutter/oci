@@ -36,5 +36,6 @@ target "default" {
     "org.opencontainers.image.source" = "https://github.com/polymathrobotics/oci"
     "org.opencontainers.image.licenses" = "Apache-2.0"
     "org.opencontainers.image.description" = "AWS command-line interface."
+    "org.opencontainers.image.title" = "aws-cli"
   }
 }
