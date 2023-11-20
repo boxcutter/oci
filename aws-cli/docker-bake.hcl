@@ -36,7 +36,7 @@ target "default" {
   target = "release"
   platforms = ["linux/amd64", "linux/arm64/v8"]
   labels = {
-    "org.opencontainers.image.source" = "https://github.com/polymathrobotics/oci"
+    "org.opencontainers.image.source" = "https://github.com/boxcutter/oci"
     "org.opencontainers.image.licenses" = "Apache-2.0"
     "org.opencontainers.image.description" = "AWS command-line interface."
     "org.opencontainers.image.title" = "${IMAGE_NAME}"
