@@ -1,5 +1,5 @@
 variable "IMAGE_NAME" {
-  default =  "dokken-centos-7"
+  default = "dokken-centos-7"
 }
 
 variable "CONTAINER_REGISTRY" {
