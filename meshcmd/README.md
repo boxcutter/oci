@@ -51,9 +51,9 @@ And then you can also access nearly all Intel AMT functionality through a web-ba
 
 ```
 % docker run -it --rm \
-  polymathrobotics/meshcmd
+  docker.io/boxcutter/meshcmd
 
-MeshCentral Command (MeshCmd)  v1.0.80
+MeshCentral Command (MeshCmd)  v1.1.9
 No action specified, use MeshCmd like this:
 
   meshcmd [action] [arguments...]
