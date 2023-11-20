@@ -31,7 +31,7 @@ docker.io/boxcutter/python:3.11-jammy python your-script.py
 ### Create a Containerfile in your Python app project
 
 ```
-FROM docker.io/polymathrobotics/python:3.11-jammy
+FROM docker.io/boxcutter/python:3.11-jammy
 
 WORKDIR /usr/src/app
 
