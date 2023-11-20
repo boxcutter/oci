@@ -23,19 +23,27 @@ target "_common" {
 
 target "curl" {
   inherits = ["_common"]
-  target = "curl"
   tags = [
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:jammy-curl",
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:22.04-curl"
   ]
+  # platforms = ["${LOCAL_PLATFORM}"]
 }
 
 target "scm" {
   inherits = ["_common"]
-  target = "scm"
   tags = [
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:jammy-scm",
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:22.04-scm"
+  ]  
+  # platforms = ["${LOCAL_PLATFORM}"]
+}
+
+target "default" {
+  inherits = ["_common"]
+  tags = [
+    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:jammy",
+    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:22.04"
   ]  
 }
 
@@ -44,11 +52,7 @@ group "local" {
   platforms = ["${LOCAL_PLATFORM}"]
 }
 
-target "default" {
-  inherits = ["_common"]
-  tags = [
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:jammy",
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:22.04"
-  ]
+group "default" {
+  targets = ["curl", "scm", "default"]
   platforms = ["linux/amd64", "linux/arm64/v8", "linux/arm/v7"]
 }
