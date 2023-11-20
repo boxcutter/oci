@@ -29,6 +29,7 @@ RUN <<EOF
   echo "${DOCTL_SHA256} /tmp/doctl.tar.gz" | sha256sum -c -
   mkdir -p /tmp/doctl
   tar xzvf /tmp/doctl.tar.gz -C /tmp/doctl
+  rm -rf /var/lib/apt/lists/*
 EOF
 
 FROM build
