@@ -1,5 +1,5 @@
 variable "IMAGE_NAME" {
-  default = "fpm"
+  default =  "fpm"
 }
 
 variable "VERSION" {
