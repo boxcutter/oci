@@ -22,7 +22,7 @@ target "_common" {
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${join(".", slice(split(".", "${VERSION}"), 0, 2))}-slim-jammy",
   ]
   labels = {
-    "org.opencontainers.image.source" = "https://github.com/polymathrobotics/oci"
+    "org.opencontainers.image.source" = "https://github.com/boxcutter/oci"
     "org.opencontainers.image.licenses" = "Apache-2.0"
     "org.opencontainers.image.description" = "Python is an interpreted, interactive, object-oriented, open-source programming language."
     "org.opencontainers.image.title" = "${IMAGE_NAME}"
