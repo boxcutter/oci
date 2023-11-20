@@ -100,13 +100,25 @@ jobs:
         if: github.event_name != 'pull_request'
         id: image_name
         run: |
-          echo "image_name=$(docker buildx bake --print 2>/dev/null | jq -r '.target.default.labels."org.opencontainers.image.title"')" >> $GITHUB_ENV
+          json_data="$(docker buildx bake local --print 2>/dev/null)"
+          if echo "$json_data" | jq -e '.target.default.labels["dev.polymathrobotics.image.readme-filepath"]' > /dev/null; then
+            image_name=$(echo $json_data | jq -r '.target."release-default".["dev.polymathrobotics.image.title"]')
+            echo "image_name=$image_name" >> $GITHUB_ENV
+          else
+            echo "image_name=$(docker buildx bake --print 2>/dev/null | jq -r '.target.default.labels."org.opencontainers.image.title"')" >> $GITHUB_ENV
+          fi
 
       - name: Get the image description
         if: github.event_name != 'pull_request'
         id: image_description
         run: |
-          echo "image_description=$(docker buildx bake --print 2>/dev/null | jq -r '.target.default.labels."org.opencontainers.image.description"')" >> $GITHUB_ENV
+          json_data="$(docker buildx bake local --print 2>/dev/null)"
+          if echo "$json_data" | jq -e '.target.default.labels["dev.polymathrobotics.image.readme-filepath"]' > /dev/null; then
+            image_description=$(echo $json_data | jq -r '.target."release-default".labels["dev.polymathrobotics.image.description"]')
+            echo "image_description=$image_name" >> $GITHUB_ENV
+          else
+            echo "image_description=$(docker buildx bake --print 2>/dev/null | jq -r '.target.default.labels."org.opencontainers.image.description"')" >> $GITHUB_ENV
+          fi
 
       - name: Get the image readme filepath
         if: github.event_name != 'pull_request'
