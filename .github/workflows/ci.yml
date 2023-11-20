@@ -37,6 +37,7 @@ jobs:
           filters: |
             aws-cli: 'aws-cli/**'
             buildpack-deps/ubuntu/jammy: 'buildpack-deps/ubuntu/jammy/**'
+            dokken/centos-7: 'dokken/centos-7/**'
             doctl: 'doctl/**'
             fpm: 'fpm/**'
             meshcmd: 'meshcmd/**'
