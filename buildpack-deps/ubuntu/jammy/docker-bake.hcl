@@ -1,5 +1,5 @@
 variable "IMAGE_NAME" {
-  default = "buildpack-deps"
+  default =  "buildpack-deps"
 }
 
 variable "CONTAINER_REGISTRY" {
