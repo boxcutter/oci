@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -x
+# set -x
 set -eu
 set -o pipefail
 
@@ -9,16 +9,13 @@ CINC_AUDITOR_CONTAINER_IMAGE=docker.io/boxcutter/cinc-auditor:6.6.0
 BIN_DIR="$(dirname -- "$(readlink -f "${BASH_SOURCE[0]}")")"
 CONTAINERFILE_DIR=$(pwd)
 CINC_PROFILE_DIR="${CONTAINERFILE_DIR}/test"
-# DEFAULT_TAG="$(docker buildx bake local --print 2>/dev/null | jq -r '.target.local.tags | first')"
 
 json_data="$(docker buildx bake local --print 2>/dev/null)"
 # Check if .group.local.targets.default exists, and if it does, extract its value
-exit_code=0
-result=$(echo "$json_data" | jq -e '.group.local.targets') || exit_code=$?
-if [ $exit_code -eq 0 ]; then
-  DEFAULT_TAG=$(echo "$json_data" | jq -r '.target.default.tags | first')
+if echo "$json_data" | jq -e '.group.local.targets' > /dev/null; then
+  DEFAULT_TAG=$(echo "$json_data" | jq -r '.target."local-default".tags | first')
 else
-  DEFAULT_TAG=$(echo "$json_data" | jq -r '.target.local-default.tags | first')
+  DEFAULT_TAG=$(echo "$json_data" | jq -r '.target.default.tags | first')
 fi
 
 usage() {
