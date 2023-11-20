@@ -18,7 +18,7 @@ result=$(echo "$json_data" | jq -e '.group.local.targets') || exit_code=$?
 if [ $exit_code -eq 0 ]; then
   DEFAULT_TAG=$(echo "$json_data" | jq -r '.target.default.tags | first')
 else
-  DEFAULT_TAG=$(echo "$json_data" | jq -r '.target.local.tags | first')
+  DEFAULT_TAG=$(echo "$json_data" | jq -r '.target.local-default.tags | first')
 fi
 
 usage() {
