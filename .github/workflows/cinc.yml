@@ -1,0 +1,70 @@
+name: hadolint
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'cinc/cinc/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'cinc/cinc/**'
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: cinc/cinc
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Check the Containerfile with hadolint
+        run: |
+          $(git rev-parse --show-toplevel)/bin/lint.sh
+
+      - name: Install QEMU static binaries
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Build locally for testing
+        uses: docker/bake-action@v4
+        with:
+          workdir: ${{ matrix.image }}
+          targets: local
+          load: true
+
+      - name: Run tests on the image with cinc-auditor
+        run: |
+          $(git rev-parse --show-toplevel)/bin/test.sh "docker.io/boxcutter/cinc:current" "/bin/sh"
+
+      - name: Login to DockerHub
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
+          password: ${{ secrets.CONTAINER_REGISTRY_PASSWORD }}
+
+      - name: Build and push
+        uses: docker/bake-action@v4
+        with:
+          workdir: hadolint
+          push: ${{ github.event_name != 'pull_request' }}
+
+      - name: Get the image description
+        if: github.event_name != 'pull_request'
+        id: image_description
+        run: |
+          echo "image_description=$(docker buildx bake --print 2> /dev/null | jq -r '.target.release.labels."org.opencontainers.image.description"')" >> $GITHUB_ENV
+        
+      - name: Update Docker Hub Description
+        if: github.event_name != 'pull_request'
+        uses: peter-evans/dockerhub-description@v3
+        with:
+          username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
+          password: ${{ secrets.CONTAINER_DESCRIPTION_PASSWORD }}
+          repository: boxcutter/cinc
+          short-description: ${{ env.image_description }}
+          readme-filepath: cinc/cinc/README.md
