@@ -1,11 +1,6 @@
 ARG CONTAINER_REGISTRY=docker.io
 FROM $CONTAINER_REGISTRY/oraclelinux:8
 
-LABEL \
-    org.opencontainers.image.source="https://github.com/polymathrobotics/oci" \
-    org.opencontainers.image.licenses="Apache-2.0" \
-    org.opencontainers.image.description="Oracle Linux 8 image for kitchen-dokken"
-
 # hadolint ignore=DL3041
 RUN <<EOF
   dnf -y install \
