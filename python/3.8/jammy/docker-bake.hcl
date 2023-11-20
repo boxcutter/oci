@@ -1,5 +1,5 @@
 variable "IMAGE_NAME" {
-  default = "python"
+  default =  "python"
 }
 
 variable "VERSION" {
