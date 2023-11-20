@@ -55,7 +55,7 @@ target "release" {
   inherits = ["_common"]
   platforms = ["linux/amd64", "linux/arm64/v8"]
   labels = {
-    "org.opencontainers.image.source" = "https://github.com/polymathrobotics/oci"
+    "org.opencontainers.image.source" = "https://github.com/boxcutter/oci"
     "org.opencontainers.image.licenses" = "Apache-2.0"
     "org.opencontainers.image.description" = "Cinc Auditing and Testing Framework."
   }
