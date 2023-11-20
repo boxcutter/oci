@@ -1,4 +1,0 @@
-[container_image]
-name = "dokken-ubuntu-22.04"
-tags = [ "latest" ]
-readme="dokken/README.md"
