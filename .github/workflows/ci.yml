@@ -112,11 +112,9 @@ jobs:
         if: github.event_name != 'pull_request'
         id: image_readme_filepath
         run: |
-          json_data="$(docker buildx bake local --print 2>/dev/null)"
           # Check if .group.local.targets.default exists, and if it does, extract its value
-          exit_code=0
-          result=$(echo "$json_data" | jq -e '.target.default.labels["dev.polymathrobotics.image.readme-filepath"]') || exit_code=$?
-          if [ $exit_code -eq 0 ]; then
+          json_data="$(docker buildx bake local --print 2>/dev/null)"
+          if echo "$json_data" | jq -e '.target.default.labels["dev.polymathrobotics.image.readme-filepath"]' > /dev/null; then
             readme_filepath=$(echo $json_data | jq -r '.target.default.labels["dev.polymathrobotics.image.readme-filepath"]')
             echo "image_readme_filepath=$readme_filepath" >> $GITHUB_ENV
           else
