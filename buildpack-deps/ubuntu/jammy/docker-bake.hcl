@@ -47,12 +47,40 @@ target "default" {
   ]  
 }
 
-group "local" {
-  targets = ["curl", "scm", "default"]
+target "local-curl" {
+  inherits = ["curl"]
   platforms = ["${LOCAL_PLATFORM}"]
 }
 
-group "default" {
-  targets = ["curl", "scm", "default"]
+target "local-scm" {
+  inherits = ["scm"]
+  platforms = ["${LOCAL_PLATFORM}"]
+}
+
+target "local-default" {
+  inherits = ["default"]
+  platforms = ["${LOCAL_PLATFORM}"]
+}
+
+target "release-curl" {
+  inherits = ["curl"]
   platforms = ["linux/amd64", "linux/arm64/v8", "linux/arm/v7"]
+}
+
+target "release-scm" {
+  inherits = ["scm"]
+  platforms = ["linux/amd64", "linux/arm64/v8", "linux/arm/v7"]
+}
+
+target "release-default" {
+  inherits = ["default"]
+  platforms = ["linux/amd64", "linux/arm64/v8", "linux/arm/v7"]
+}
+
+group "local" {
+  targets = ["local-curl", "local-scm", "local-default"]
+}
+
+group "default" {
+  targets = ["release-curl", "release-scm", "release-default"]
 }
