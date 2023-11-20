@@ -1,11 +1,6 @@
 ARG CONTAINER_REGISTRY=quay.io
 FROM $CONTAINER_REGISTRY/centos/centos:stream9
 
-LABEL \
-    org.opencontainers.image.source="https://github.com/polymathrobotics/oci" \
-    org.opencontainers.image.licenses="Apache-2.0" \
-    org.opencontainers.image.description="CentOS Stream 9 image for kitchen-dokken"
-
 # NOTE: CentOS Stream 9 is still under heavy development
 # hadolint ignore=DL3041
 RUN <<EOF
