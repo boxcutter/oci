@@ -3,7 +3,7 @@ variable "IMAGE_NAME" {
 }
 
 variable "VERSION" {
-  default = "3.12.0"
+  default = "3.9.18"
 }
 
 variable "CONTAINER_REGISTRY" {
@@ -17,8 +17,8 @@ variable "LOCAL_PLATFORM" {
 target "_common" {
   dockerfile = "Containerfile"
   tags = [
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${VERSION}-slim-jammy",
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:3.12-slim-jammy",
+    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${VERSION}-jammy",
+    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:3.9-jammy",
   ]
   labels = {
     "org.opencontainers.image.source" = "https://github.com/polymathrobotics/oci"

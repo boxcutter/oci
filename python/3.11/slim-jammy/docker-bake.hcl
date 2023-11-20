@@ -18,7 +18,7 @@ target "_common" {
   dockerfile = "Containerfile"
   tags = [
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${VERSION}-slim-jammy",
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:3.8-slim-jammy",
+    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:3.11-slim-jammy",
   ]
   labels = {
     "org.opencontainers.image.source" = "https://github.com/polymathrobotics/oci"
