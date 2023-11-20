@@ -22,13 +22,7 @@ target "_common" {
 }
 
 target "curl" {
-  dockerfile = "Containerfile"
-  labels = {
-    "org.opencontainers.image.source" = "https://github.com/polymathrobotics/oci"
-    "org.opencontainers.image.licenses" = "Apache-2.0"
-    "org.opencontainers.image.description" = "A collection of common build dependencies used for installing various modules."
-    "org.opencontainers.image.title" = "${IMAGE_NAME}"
-  }
+  inherits = ["_common"]
   tags = [
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:jammy-curl",
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:22.04-curl"
@@ -36,13 +30,7 @@ target "curl" {
 }
 
 target "scm" {
-  dockerfile = "Containerfile"
-  labels = {
-    "org.opencontainers.image.source" = "https://github.com/polymathrobotics/oci"
-    "org.opencontainers.image.licenses" = "Apache-2.0"
-    "org.opencontainers.image.description" = "A collection of common build dependencies used for installing various modules."
-    "org.opencontainers.image.title" = "${IMAGE_NAME}"
-  }
+  inherits = ["_common"]
   tags = [
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:jammy-scm",
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:22.04-scm"
@@ -50,13 +38,7 @@ target "scm" {
 }
 
 target "default" {
-  dockerfile = "Containerfile"
-  labels = {
-    "org.opencontainers.image.source" = "https://github.com/polymathrobotics/oci"
-    "org.opencontainers.image.licenses" = "Apache-2.0"
-    "org.opencontainers.image.description" = "A collection of common build dependencies used for installing various modules."
-    "org.opencontainers.image.title" = "${IMAGE_NAME}"
-  }
+  inherits = ["_common"]
   tags = [
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:jammy",
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:22.04"
