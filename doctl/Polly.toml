@@ -1,3 +1,0 @@
-[container_image]
-tags = [ "1.93.1", "latest" ]
-platforms = ["linux/arm64", "linux/amd64"]

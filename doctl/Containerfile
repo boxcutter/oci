@@ -1,6 +1,11 @@
 # syntax=docker/dockerfile:1
 ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/ubuntu:jammy-20230308 AS build
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20231004 AS build
+
+ARG DOCTL_URL_AMD64="https://github.com/digitalocean/doctl/releases/download/v1.93.1/doctl-1.93.1-linux-amd64.tar.gz"
+ARG DOCTL_SHA256_AMD64="b84c96443815a4ee8857c82eba47e36cec953eb9d3f5c542a2c2ab9868f40f4f"
+ARG DOCTL_URL_ARM64="https://github.com/digitalocean/doctl/releases/download/v1.93.1/doctl-1.93.1-linux-arm64.tar.gz"
+ARG DOCTL_SHA256_ARM64="6ea1955fd2e63937101549b6895272b71f21c83f3563cc9911f1b1891b34690c"
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN <<EOF
@@ -11,12 +16,12 @@ RUN <<EOF
   dpkgArch="$(dpkg --print-architecture)"
   case "${dpkgArch##*-}" in \
     amd64) \
-      DOCTL_URL='https://github.com/digitalocean/doctl/releases/download/v1.93.1/doctl-1.93.1-linux-amd64.tar.gz' \
-      DOCTL_SHA256='b84c96443815a4ee8857c82eba47e36cec953eb9d3f5c542a2c2ab9868f40f4f' \
+      DOCTL_URL="${DOCTL_URL_AMD64}" \
+      DOCTL_SHA256="${DOCTL_SHA256_AMD64}" \
       ;; \
     arm64) \
-      DOCTL_URL='https://github.com/digitalocean/doctl/releases/download/v1.93.1/doctl-1.93.1-linux-arm64.tar.gz' \
-      DOCTL_SHA256='6ea1955fd2e63937101549b6895272b71f21c83f3563cc9911f1b1891b34690c' \
+      DOCTL_URL="${DOCTL_URL_ARM64}" \
+      DOCTL_SHA256="${DOCTL_SHA256_AMD64}" \
       ;; \
     *) echo "unsupported architecture"; exit 1 ;; \
   esac
@@ -26,12 +31,7 @@ RUN <<EOF
   tar xzvf /tmp/doctl.tar.gz -C /tmp/doctl
 EOF
 
-FROM $CONTAINER_REGISTRY/ubuntu:jammy-20230308
-
-LABEL \
-    org.opencontainers.image.source="https://github.com/boxcutter/oci" \
-    org.opencontainers.image.licenses="Apache-2.0" \
-    org.opencontainers.image.description="Digital Ocean command-line interface."
+FROM build
 
 RUN <<EOF
   apt-get update
