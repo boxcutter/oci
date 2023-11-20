@@ -15,7 +15,7 @@ json_data="$(docker buildx bake local --print 2>/dev/null)"
 if echo "$json_data" | jq -e '.group.local.targets' > /dev/null; then
   DEFAULT_TAG=$(echo "$json_data" | jq -r '.target."local-default".tags | first')
 else
-  DEFAULT_TAG=$(echo "$json_data" | jq -r '.target.default.tags | first')
+  DEFAULT_TAG=$(echo "$json_data" | jq -r '.target.local.tags | first')
 fi
 
 usage() {
