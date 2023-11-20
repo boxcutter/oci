@@ -38,6 +38,12 @@ jobs:
             aws-cli: 'aws-cli/**'
             buildpack-deps/ubuntu/jammy: 'buildpack-deps/ubuntu/jammy/**'
             dokken/centos-7: 'dokken/centos-7/**'
+            dokken/centos-stream-9: 'dokken/centos-stream-9/**'
+            dokken/oraclelinux-7: 'dokken/oraclelinux-7/**'
+            dokken/oraclelinux-8: 'dokken/oraclelinux-8/**'
+            dokken/oraclelinux-9: 'dokken/oraclelinux-9/**'
+            dokken/ubuntu-20.04: 'dokken/ubuntu-20.04/**'
+            dokken/ubuntu-22.04: 'dokken/ubuntu-22.04/**'
             doctl: 'doctl/**'
             fpm: 'fpm/**'
             meshcmd: 'meshcmd/**'
@@ -108,14 +114,14 @@ jobs:
         id: image_name
         run: |
           json_data="$(docker buildx bake --print 2>/dev/null)"
-          echo "$json_data" | jq -r '.target.default.labels."org.opencontainers.image.title"')" >> $GITHUB_ENV
+          echo "image_name=$(echo "$json_data" | jq -r '.target.default.labels."org.opencontainers.image.title"')" >> $GITHUB_ENV
 
       - name: Get the image description
         if: github.event_name != 'pull_request'
         id: image_description
         run: |
           json_data="$(docker buildx bake --print 2>/dev/null)"
-          echo "$json_data" | jq -r '.target.default.labels."org.opencontainers.image.description"')" >> $GITHUB_ENV
+          echo "image_description=$(echo "$json_data" | jq -r '.target.default.labels."org.opencontainers.image.description"')" >> $GITHUB_ENV
 
       - name: Get the image readme filepath
         if: github.event_name != 'pull_request'
