@@ -1,6 +1,10 @@
 # syntax=docker/dockerfile:1
 ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/ubuntu:jammy-20230308 AS build
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20231004 AS build
+
+ARG SHELLCHECK_URL_AMD64="https://github.com/koalaman/shellcheck/releases/download/v0.9.0/shellcheck-v0.9.0.linux.x86_64.tar.xz"
+ARG SHELLCHECK_URL_ARM64="https://github.com/koalaman/shellcheck/releases/download/v0.9.0/shellcheck-v0.9.0.linux.aarch64.tar.xz"
+ARG SHELLCHECK_URL_ARMHF="https://github.com/koalaman/shellcheck/releases/download/v0.9.0/shellcheck-v0.9.0.linux.armv6hf.tar.xz"
 
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
@@ -10,13 +14,13 @@ RUN apt-get update \
   && dpkgArch="$(dpkg --print-architecture)" \
   && case "${dpkgArch##*-}" in \
     amd64) \
-      SHELLCHECK_URL=https://github.com/koalaman/shellcheck/releases/download/v0.9.0/shellcheck-v0.9.0.linux.x86_64.tar.xz \
+      SHELLCHECK_URL="$SHELLCHECK_URL_AMD64" \
       ;; \
     arm64) \
-      SHELLCHECK_URL=https://github.com/koalaman/shellcheck/releases/download/v0.9.0/shellcheck-v0.9.0.linux.aarch64.tar.xz \
+      SHELLCHECK_URL="$SHELLCHECK_URL_ARM64" \
       ;; \
     armhf) \
-      SHELLCHECK_URL=https://github.com/koalaman/shellcheck/releases/download/v0.9.0/shellcheck-v0.9.0.linux.armv6hf.tar.xz \
+      SHELLCHECK_URL="$SHELLCHECK_URL_ARMHF" \
       ;; \
     *) echo "unsupported architecture"; exit 1 ;; \
     esac \
@@ -24,11 +28,6 @@ RUN apt-get update \
   && tar -xf /tmp/shellcheck.tar.gz --wildcards '*/shellcheck' --strip-components=1
 
 FROM scratch
-
-LABEL \
-    org.opencontainers.image.source="https://github.com/boxcutter/oci" \
-    org.opencontainers.image.licenses="Apache-2.0" \
-    org.opencontainers.image.description="ShellCheck, a static analysis tool for shell scripts."
 
 COPY --from=build /shellcheck /usr/local/bin/shellcheck
 
