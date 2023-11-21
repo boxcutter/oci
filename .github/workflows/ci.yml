@@ -20,11 +20,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set context from workflow_dispatch
-        if: github.event_name != 'workflow_dispatch'
-        id: manual_filter
-        run: |
-          echo "changes={ ${{ inputs.build_context}}: '${{ inputs.build_context}}/**' }"
       - uses: dorny/paths-filter@v2
         id: filter
         with:
