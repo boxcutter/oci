@@ -24,6 +24,7 @@ jobs:
       - name: Determine Paths to Build for Manual Trigger
         if: github.event_name == 'workflow_dispatch' && github.event.inputs.custom_paths != ''
         run: |
+          echo "MISCHA ${{ github.event.inputs.custom_paths }}"
           echo "changes=${{ github.event.inputs.custom_paths }}" >> $GITHUB_ENV
         id: manual_paths        
 
@@ -68,6 +69,7 @@ jobs:
           if [[ -z ${{ steps.manual_paths.outputs.changes }} ]]; then
             echo "changes=[]" >> $GITHUB_ENV
           else
+            echo "MISCHA_OUTPUT ${{ steps.manual_paths.outputs.changes }}"
             echo "changes=${{ steps.manual_paths.outputs.changes }}" >> $GITHUB_ENV
           fi
         id: output_paths
