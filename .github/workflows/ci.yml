@@ -30,6 +30,8 @@ jobs:
           # If it's not configured, the repository default branch is used.
           base: ${{ github.ref }}
           filters: |
+            custom:
+              paths: ${{ github.event.inputs.custom_paths }}
             default:  
               aws-cli: 'aws-cli/**'
               buildpack-deps/ubuntu/jammy: 'buildpack-deps/ubuntu/jammy/**'
