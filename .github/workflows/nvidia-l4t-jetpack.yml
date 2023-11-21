@@ -1,4 +1,4 @@
-name: nvidiat-l4t-jetpack
+name: nvidia-l4t-jetpack
 
 on:
   push:
