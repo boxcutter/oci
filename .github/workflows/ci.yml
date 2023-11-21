@@ -66,11 +66,11 @@ jobs:
       - name: Set Output for Paths
         if: github.event_name == 'workflow_dispatch'
         run: |
-          if [[ -z "${{ steps.manual_paths.outputs.changes }}" ]]; then
+          if [[ -z "${{ steps.manual_paths.changes }}" ]]; then
             echo "changes=[]" >> $GITHUB_ENV
           else
-            echo "MISCHA_OUTPUT ${{ steps.manual_paths.outputs.changes }}"
-            echo "changes=${{ steps.manual_paths.outputs.changes }}" >> $GITHUB_ENV
+            echo "MISCHA_OUTPUT ${{ steps.manual_paths.changes }}"
+            echo "changes=${{ steps.manual_paths.changes }}" >> $GITHUB_ENV
           fi
         id: output_paths
 
