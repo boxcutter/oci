@@ -1,5 +1,5 @@
 variable "IMAGE_NAME" {
-  default = "aws-cli"
+  default  = "aws-cli"
 }
 
 variable "VERSION" {
