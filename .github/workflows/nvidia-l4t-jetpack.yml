@@ -1,4 +1,4 @@
-name: shellcheck
+name: nvidiat-l4t-jetpack
 
 on:
   push:

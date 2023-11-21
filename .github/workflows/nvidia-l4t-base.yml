@@ -1,4 +1,4 @@
-name: shellcheck
+name: nvidia-l4t-base
 
 on:
   push:
