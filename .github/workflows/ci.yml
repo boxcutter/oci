@@ -73,6 +73,11 @@ jobs:
             echo "changes=${{ steps.manual_paths.outputs.changes }}" >> $GITHUB_ENV
           fi
         id: output_paths
+
+      - name: Debug
+        if: github.event_name != 'workflow_dispatch'
+        run: |
+          echo "MISCHA_OUTPUT ${{ steps.filter.outputs.changes }}
             
   # Job to build and test each of the modified images
   build:
