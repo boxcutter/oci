@@ -7,8 +7,8 @@ on:
     branches: [ main ]
   workflow_dispatch:
     inputs:
-      build_context:
-        description: 'Build directory'
+      custom_paths:
+        description: 'Custom paths to check (comma-separated)'
         required: true
 jobs:
   # Job to run change detection
@@ -26,7 +26,6 @@ jobs:
         run: |
           echo "changes={ ${{ inputs.build_context}}: '${{ inputs.build_context}}/**' }"
       - uses: dorny/paths-filter@v2
-        if: github.event_name != 'workflow_dispatch'
         id: filter
         with:
           # Use context to get the branch where commits were pushed.
@@ -35,28 +34,32 @@ jobs:
           # If it's not configured, the repository default branch is used.
           base: ${{ github.ref }}
           filters: |
-            aws-cli: 'aws-cli/**'
-            buildpack-deps/ubuntu/jammy: 'buildpack-deps/ubuntu/jammy/**'
-            dokken/centos-7: 'dokken/centos-7/**'
-            dokken/centos-stream-9: 'dokken/centos-stream-9/**'
-            dokken/oraclelinux-7: 'dokken/oraclelinux-7/**'
-            dokken/oraclelinux-8: 'dokken/oraclelinux-8/**'
-            dokken/oraclelinux-9: 'dokken/oraclelinux-9/**'
-            dokken/ubuntu-20.04: 'dokken/ubuntu-20.04/**'
-            dokken/ubuntu-22.04: 'dokken/ubuntu-22.04/**'
-            doctl: 'doctl/**'
-            fpm: 'fpm/**'
-            meshcmd: 'meshcmd/**'
-            python/3.8/jammy: 'python/3.8/jammy/**'
-            python/3.8/slim-jammy: 'python/3.8/slim-jammy/**'
-            python/3.9/jammy: 'python/3.9/jammy/**'
-            python/3.9/slim-jammy: 'python/3.9/slim-jammy/**'
-            python/3.10/jammy: 'python/3.10/jammy/**'
-            python/3.10/slim-jammy: 'python/3.10/slim-jammy/**'
-            python/3.11/jammy: 'python/3.11/jammy/**'
-            python/3.11/slim-jammy: 'python/3.11/slim-jammy/**'
-            python/3.12/jammy: 'python/3.12/jammy/**'
-            python/3.12/slim-jammy: 'python/3.12/slim-jammy/**'
+            custom:
+              if: ${{ github.event_name == 'workflow_dispatch' }}
+              paths: ${{ github.event.inputs.custom_paths }}
+            default:  
+              aws-cli: 'aws-cli/**'
+              buildpack-deps/ubuntu/jammy: 'buildpack-deps/ubuntu/jammy/**'
+              dokken/centos-7: 'dokken/centos-7/**'
+              dokken/centos-stream-9: 'dokken/centos-stream-9/**'
+              dokken/oraclelinux-7: 'dokken/oraclelinux-7/**'
+              dokken/oraclelinux-8: 'dokken/oraclelinux-8/**'
+              dokken/oraclelinux-9: 'dokken/oraclelinux-9/**'
+              dokken/ubuntu-20.04: 'dokken/ubuntu-20.04/**'
+              dokken/ubuntu-22.04: 'dokken/ubuntu-22.04/**'
+              doctl: 'doctl/**'
+              fpm: 'fpm/**'
+              meshcmd: 'meshcmd/**'
+              python/3.8/jammy: 'python/3.8/jammy/**'
+              python/3.8/slim-jammy: 'python/3.8/slim-jammy/**'
+              python/3.9/jammy: 'python/3.9/jammy/**'
+              python/3.9/slim-jammy: 'python/3.9/slim-jammy/**'
+              python/3.10/jammy: 'python/3.10/jammy/**'
+              python/3.10/slim-jammy: 'python/3.10/slim-jammy/**'
+              python/3.11/jammy: 'python/3.11/jammy/**'
+              python/3.11/slim-jammy: 'python/3.11/slim-jammy/**'
+              python/3.12/jammy: 'python/3.12/jammy/**'
+              python/3.12/slim-jammy: 'python/3.12/slim-jammy/**'
             
   # Job to build and test each of the modified images
   build:
