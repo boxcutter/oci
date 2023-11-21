@@ -40,6 +40,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Install nvidia-vpi-dev for VPI developer packages
 # Use nvidia-vpi if need VPI runtime only
 #
+RUN mkdir -p /lib/firmware/
 RUN apt-get update && apt-get install -y --no-install-recommends \
     nvidia-vpi-dev \
     && rm -rf /var/lib/apt/lists/* \
