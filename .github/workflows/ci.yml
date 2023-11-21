@@ -31,9 +31,11 @@ jobs:
           base: ${{ github.ref }}
           filters: |
             custom:
-              if: github.event_name == 'workflow_dispatch'
-              paths: ${{ github.event.inputs.custom_paths }}
+              if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.custom_paths != '' }}
+              # if: github.event_name == 'workflow_dispatch'
+              # paths: ${{ github.event.inputs.custom_paths }}
               # paths: ${{ fromJson('["' + join('","', split(github.event.inputs.custom_paths, ',')) + '"]') }}
+              paths: ${{ format('["{0}"]', join('","', split(github.event.inputs.custom_paths, ','))) }}
             default:  
               aws-cli: 'aws-cli/**'
               buildpack-deps/ubuntu/jammy: 'buildpack-deps/ubuntu/jammy/**'
