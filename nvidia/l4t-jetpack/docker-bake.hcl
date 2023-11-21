@@ -8,7 +8,6 @@ variable "IMAGE_NAME" {
 
 target "default" {
   name = "${IMAGE_NAME}-${replace(tag, ".", "-")}"
-  target = "nvidia-l4t-jetpack"
   args = {
     TAG = tag
   }
