@@ -77,7 +77,7 @@ jobs:
       - name: Debug
         if: github.event_name != 'workflow_dispatch'
         run: |
-          echo "MISCHA_OUTPUT ${{ steps.filter.outputs.changes }}
+          echo "MISCHA_OUTPUT ${{ steps.filter.outputs.changes }}"
             
   # Job to build and test each of the modified images
   build:
