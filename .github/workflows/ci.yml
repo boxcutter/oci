@@ -25,7 +25,7 @@ jobs:
         if: github.event_name == 'workflow_dispatch' && github.event.inputs.custom_paths != ''
         run: |
           echo "MISCHA ${{ github.event.inputs.custom_paths }}"
-          echo "changes=${{ github.event.inputs.custom_paths }}" >> $GITHUB_ENV
+          echo "changes=[${{ github.event.inputs.custom_paths }}]" >> $GITHUB_ENV
         id: manual_paths        
 
       - name: Determine Paths to Build for Auto Trigger
