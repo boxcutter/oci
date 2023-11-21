@@ -35,7 +35,7 @@ jobs:
       - name: Build and push
         uses: docker/bake-action@v4
         with:
-          workdir: nvidia/jetpack
+          workdir: nvidia/l4t-jetpack
           push: ${{ github.event_name != 'pull_request' }}
 
       - name: Get the image description
