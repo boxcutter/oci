@@ -32,6 +32,7 @@ jobs:
             custom:
               if: github.event_name == 'workflow_dispatch'
               #   paths: ${{ github.event.inputs.custom_paths }}
+              paths: ${{ fromJson('["' + join('","', split(github.event.inputs.custom_paths, ',')) + '"]') }}
             default:  
               aws-cli: 'aws-cli/**'
               buildpack-deps/ubuntu/jammy: 'buildpack-deps/ubuntu/jammy/**'
