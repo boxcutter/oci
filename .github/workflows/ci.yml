@@ -63,16 +63,16 @@ jobs:
             python/3.12/slim-jammy: 'python/3.12/slim-jammy/**'
 
 
-      - name: Set Output for Paths
-        if: github.event_name == 'workflow_dispatch'
-        run: |
-          if [[ -z "${{ steps.manual_paths.changes }}" ]]; then
-            echo "changes=[]" >> $GITHUB_ENV
-          else
-            echo "MISCHA_OUTPUT ${{ steps.manual_paths.changes }}"
-            echo "changes=${{ steps.manual_paths.changes }}" >> $GITHUB_ENV
-          fi
-        id: output_paths
+      # - name: Set Output for Paths
+      #   if: github.event_name == 'workflow_dispatch'
+      #   run: |
+      #     if [[ -z "${{ steps.manual_paths.changes }}" ]]; then
+      #       echo "changes=[]" >> $GITHUB_ENV
+      #     else
+      #       echo "MISCHA_OUTPUT ${{ steps.manual_paths.changes }}"
+      #       echo "changes=${{ steps.manual_paths.changes }}" >> $GITHUB_ENV
+      #     fi
+      #   id: output_paths
 
       - name: Debug
         if: github.event_name != 'workflow_dispatch'
