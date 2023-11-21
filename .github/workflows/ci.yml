@@ -10,6 +10,7 @@ on:
       custom_paths:
         description: 'Custom paths to check (comma-separated)'
         required: true
+        default: ''
 jobs:
   # Job to run change detection
   changes:
@@ -31,8 +32,8 @@ jobs:
           filters: |
             custom:
               if: github.event_name == 'workflow_dispatch'
-              #   paths: ${{ github.event.inputs.custom_paths }}
-              paths: ${{ fromJson('["' + join('","', split(github.event.inputs.custom_paths, ',')) + '"]') }}
+              paths: ${{ github.event.inputs.custom_paths }}
+              # paths: ${{ fromJson('["' + join('","', split(github.event.inputs.custom_paths, ',')) + '"]') }}
             default:  
               aws-cli: 'aws-cli/**'
               buildpack-deps/ubuntu/jammy: 'buildpack-deps/ubuntu/jammy/**'
