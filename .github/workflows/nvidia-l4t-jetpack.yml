@@ -4,18 +4,18 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'nvidia/jetpack/**'
+      - 'nvidia/l4t-jetpack/**'
   pull_request:
     branches: [ main ]
     paths:
-      - 'nvidia/jetpack/**'
+      - 'nvidia/l4t-jetpack/**'
   workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: nvidia/jetpack
+        working-directory: nvidia/l4t-jjetpack
     steps:
       - uses: actions/checkout@v4
 
@@ -50,6 +50,6 @@ jobs:
         with:
           username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
           password: ${{ secrets.CONTAINER_DESCRIPTION_PASSWORD }}
-          repository: boxcutter/nvidia-jetpack
+          repository: boxcutter/nvidia-l4t-jetpack
           short-description: ${{ env.image_description }}
-          readme-filepath: nvidia/jetpack/README.md
+          readme-filepath: nvidia/l4t-jetpack/README.md
