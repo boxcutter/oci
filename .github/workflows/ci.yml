@@ -23,8 +23,9 @@ jobs:
 
       - name: Determine Paths to Build for Manual Trigger
         if: github.event_name == 'workflow_dispatch' && github.event.inputs.custom_paths != ''
-        run: echo "::set-output name=changes::[${{ github.event.inputs.custom_paths }}]"
-        id: manual_paths
+        run: |
+          echo "changes=${{ github.event.inputs.custom_paths }}" >> $GITHUB_ENV
+        id: manual_paths        
 
       - name: Determine Paths to Build for Auto Trigger
         if: github.event_name != 'workflow_dispatch'
@@ -60,9 +61,15 @@ jobs:
             python/3.12/jammy: 'python/3.12/jammy/**'
             python/3.12/slim-jammy: 'python/3.12/slim-jammy/**'
 
+
       - name: Set Output for Paths
         if: github.event_name == 'workflow_dispatch'
-        run: echo "::set-output name=changes::$([[ -z ${{ steps.manual_paths.outputs.changes }} ]] && echo '[]' || echo ${{ steps.manual_paths.outputs.changes }})"
+        run: |
+          if [[ -z ${{ steps.manual_paths.outputs.changes }} ]]; then
+            echo "changes=[]" >> $GITHUB_ENV
+          else
+            echo "changes=${{ steps.manual_paths.outputs.changes }}" >> $GITHUB_ENV
+          fi
         id: output_paths
             
   # Job to build and test each of the modified images
