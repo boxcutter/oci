@@ -29,9 +29,9 @@ jobs:
           # If it's not configured, the repository default branch is used.
           base: ${{ github.ref }}
           filters: |
-            # custom:
-            #   if: github.event_name == 'workflow_dispatch'
-            #   paths: ${{ github.event.inputs.custom_paths }}
+            custom:
+              if: github.event_name == 'workflow_dispatch'
+              #   paths: ${{ github.event.inputs.custom_paths }}
             default:  
               aws-cli: 'aws-cli/**'
               buildpack-deps/ubuntu/jammy: 'buildpack-deps/ubuntu/jammy/**'
