@@ -11,21 +11,6 @@ on:
 jobs:
   prepare-matrix:
     runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-    - id: set-matrix
-      run: echo "::set-output name=matrix::${{ toJson(fromJson(github.event.inputs.directories).split(',')) }}"
-
-  build:
-    needs: prepare-matrix
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        directory: ${{fromJson(needs.prepare-matrix.outputs.matrix)}}
-    steps:
-      - uses: boxcutter/container-build-publish-action@main
-        with:
-          workdir: ${{ matrix.directory }}
-          dockerhub-username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
-          dockerhub-password: ${{ secrets.CONTAINER_DESCRIPTION_PASSWORD }}
+    - run: |
+        echo "MISCHA ${{ github.event.inputs.directories }}
