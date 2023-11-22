@@ -68,13 +68,3 @@ jobs:
           workdir: ${{ matrix.image }}
           dockerhub-username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
           dockerhub-password: ${{ secrets.CONTAINER_DESCRIPTION_PASSWORD }}
-  
-  manual:
-    if: ${{ github.event.inputs.manual_paths != '' }}
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        manual_path: ${{ fromJSON(github.event.inputs.manual_paths) }}
-    steps:
-      - name: Debug
-        run: echo ${{ matrix.image }}
