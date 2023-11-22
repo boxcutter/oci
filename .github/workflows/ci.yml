@@ -17,13 +17,11 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       # Expose matched filters as job 'images' output variable
-      # images: ${{ steps.filter.outputs.changes }}
-      images: ${{ steps.images.outputs.paths }}
+      images: ${{ steps.filter.outputs.changes }}
     steps:
       - uses: actions/checkout@v4
 
       - name: Determine Paths to Build for Auto Trigger
-        if: github.event_name != 'workflow_dispatch'
         uses: dorny/paths-filter@v2
         id: filter
         with:
@@ -60,16 +58,9 @@ jobs:
             python/3.12/jammy: 'python/3.12/jammy/**'
             python/3.12/slim-jammy: 'python/3.12/slim-jammy/**'
             
-      - name: Calculate paths
-        id: images
-        run: |
-          echo "MISCHA ${{ steps.filter.outputs.changes }}" 
-          echo "paths=${{ toJson(steps.filter.outputs.changes) }}" >> "$GITHUB_OUTPUT"
-            
   # Job to build and test each of the modified images
   build:
     if: ${{ needs.changes.outputs.images != '' && needs.changes.outputs.images != '[]' }}
-    # if: ${{ needs.changes.outputs.images != '' && needs.changes.outputs.images != '[]' }}
     needs: changes
     strategy:
       matrix:
@@ -81,19 +72,5 @@ jobs:
       - uses: boxcutter/container-build-publish-action@main
         with:
           workdir: ${{ matrix.image }}
-          dockerhub-username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
-          dockerhub-password: ${{ secrets.CONTAINER_DESCRIPTION_PASSWORD }}
-
-  manual:
-    if: ${{ github.event_name == 'workflow_dispatch' }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        manual_path: ${{ fromJSON(github.event.inputs.manual_paths) }}
-    steps:
-      - uses: boxcutter/container-build-publish-action@main
-        with:
-          workdir: ${{ matrix.manual_path }}
           dockerhub-username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
           dockerhub-password: ${{ secrets.CONTAINER_DESCRIPTION_PASSWORD }}
