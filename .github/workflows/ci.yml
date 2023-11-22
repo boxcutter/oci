@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       manual_paths:
-        description: 'Custom paths to check (comma-separated)'
+        description: 'Custom paths to check, separated by spaces'
         required: true
         default: ''
 jobs:
@@ -68,6 +68,7 @@ jobs:
             
   # Job to build and test each of the modified images
   build:
+    if: ${{ github.event_name != 'workflow_dispatch' }}
     needs: changes
     strategy:
       matrix:
