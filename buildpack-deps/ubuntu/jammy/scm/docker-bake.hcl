@@ -21,8 +21,8 @@ target "_common" {
     "io.boxcutter.image.readme-filepath" = "buildpack-deps/README.md"
   }
   tags = [
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:jammy",
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:22.04"
+    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:jammy-scm",
+    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:22.04-scm"
   ]
 }
 
@@ -33,5 +33,5 @@ target "local" {
 
 target "default" {
   inherits = ["_common"]
-  platforms = ["linux/amd64", "linux/arm64/v8"]
-} 
+  platforms = ["linux/amd64", "linux/arm64/v8"]  
+}

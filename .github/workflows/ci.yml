@@ -34,6 +34,8 @@ jobs:
           base: ${{ github.ref }}
           filters: | 
             aws-cli: 'aws-cli/**'
+            buildpack-deps/ubuntu/jammy/curl: 'buildpack-deps/ubuntu/jammy/curl/**'
+            buildpack-deps/ubuntu/jammy/scm: 'buildpack-deps/ubuntu/jammy/scm/**'
             buildpack-deps/ubuntu/jammy: 'buildpack-deps/ubuntu/jammy/**'
             dokken/centos-7: 'dokken/centos-7/**'
             dokken/centos-stream-9: 'dokken/centos-stream-9/**'
