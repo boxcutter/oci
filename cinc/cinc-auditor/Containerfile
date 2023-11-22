@@ -27,7 +27,7 @@ RUN <<EOF
   rm -rf /var/lib/apt/lists/*
 EOF
 
-FROM base as release
+FROM base
 
 ENV PATH=/opt/cinc-auditor/bin:/opt/cinc-auditor/embedded/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
