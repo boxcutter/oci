@@ -13,9 +13,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: cinc/cinc
     steps:
       - uses: boxcutter/container-build-publish-action@main
         with:
