@@ -18,3 +18,5 @@ jobs:
         working-directory: shellcheck
     steps:
       - uses: boxcutter/container-build-publish-action@main
+        with:
+          workdir: shellcheck
