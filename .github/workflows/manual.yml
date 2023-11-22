@@ -1,0 +1,22 @@
+name: Manual Builds
+
+on:
+  workflow_dispatch:
+    inputs:
+      directories:
+        description: 'Comma-separated list of directories'
+        required: true
+        default: ''
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        directory: ${{fromJson(github.event.inputs.directories.split(','))}}
+    steps:
+      - uses: boxcutter/container-build-publish-action@main
+        with:
+          workdir: ${{ matrix.directory }}
+          dockerhub-username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
+          dockerhub-password: ${{ secrets.CONTAINER_DESCRIPTION_PASSWORD }}
