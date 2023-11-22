@@ -9,11 +9,20 @@ on:
         default: ''
 
 jobs:
+  prepare-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+    - id: set-matrix
+      run: echo "::set-output name=matrix::${{ toJson(fromJson(github.event.inputs.directories).split(',')) }}"
+
   build:
+    needs: prepare-matrix
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        directory: ${{fromJson(github.event.inputs.directories.split(','))}}
+        directory: ${{fromJson(needs.prepare-matrix.outputs.matrix)}}
     steps:
       - uses: boxcutter/container-build-publish-action@main
         with:
