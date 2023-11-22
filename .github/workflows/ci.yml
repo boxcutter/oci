@@ -7,7 +7,7 @@ on:
     branches: [ main ]
   workflow_dispatch:
     inputs:
-      custom_paths:
+      manual_paths:
         description: 'Custom paths to check (comma-separated)'
         required: true
         default: ''
@@ -15,19 +15,11 @@ jobs:
   # Job to run change detection
   changes:
     runs-on: ubuntu-latest
-    # outputs:
-    #   # Expose matched filters as job 'images' output variable
-    #  images: ${{ steps.filter.outputs.changes }}
+    outputs:
+      # Expose matched filters as job 'images' output variable
+      images: ${{ steps.filter.images.paths }}
     steps:
       - uses: actions/checkout@v4
-
-      - name: Determine Paths to Build for Manual Trigger
-        if: github.event_name == 'workflow_dispatch' && github.event.inputs.custom_paths != ''
-        id: manual_paths
-        run: |
-          echo "MISCHA ${{ github.event.inputs.custom_paths }}"
-          # echo "changes=[${{ github.event.inputs.custom_paths }}]" >> $GITHUB_ENV
-          echo "images=[${{ github.event.inputs.custom_paths }}]" >> $GITHUB_OUTPUT
 
       - name: Determine Paths to Build for Auto Trigger
         if: github.event_name != 'workflow_dispatch'
@@ -62,24 +54,16 @@ jobs:
             python/3.11/slim-jammy: 'python/3.11/slim-jammy/**'
             python/3.12/jammy: 'python/3.12/jammy/**'
             python/3.12/slim-jammy: 'python/3.12/slim-jammy/**'
-
-
-      # - name: Set Output for Paths
-      #   if: github.event_name == 'workflow_dispatch'
-      #   run: |
-      #     if [[ -z "${{ steps.manual_paths.changes }}" ]]; then
-      #       echo "changes=[]" >> $GITHUB_ENV
-      #     else
-      #       echo "MISCHA_OUTPUT ${{ steps.manual_paths.changes }}"
-      #       echo "changes=${{ steps.manual_paths.changes }}" >> $GITHUB_ENV
-      #     fi
-      #   id: output_paths
-
-      - name: Debug
-        if: github.event_name != 'workflow_dispatch'
+            
+      - name: Calculate paths
+        id: images
         run: |
-          echo "MISCHA_OUTPUT ${{ steps.filter.outputs.changes }}"
-          echo "images=${{ steps.filter.outputs.changes }}" >> $GITHUB_OUTPUT
+          changed_paths=${{ fromJSON(steps.filter.outputs.changes) }}
+          manual_paths=${{ github.event.inputs.manual_paths }}
+          paths="$changed_paths,$manual_paths"
+          # Remove empty entries and duplicates
+          paths=$(echo "$paths" | tr ',' '\n' | awk 'NF' | sort -u | tr '\n' ',' | sed 's/,$//')
+          echo "paths=[$paths]" >> $GITHUB_OUTPUT
             
   # Job to build and test each of the modified images
   build:
@@ -88,7 +72,8 @@ jobs:
       matrix:
         # Parse JSON array containing names of all filters matching any of changed files
         # e.g. ['image1', 'image2'] if both image folders contains changes
-        image: ${{ fromJSON(needs.changes.outputs.images) }}
+        # image: ${{ fromJSON(needs.changes.outputs.images) }}
+        image: ${{ needs.changes.outputs.images }}
     if: ${{ needs.changes.outputs.images != '[]' && needs.changes.outputs.images != '' }}
     runs-on: ubuntu-latest
     defaults:
