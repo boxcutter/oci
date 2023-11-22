@@ -8,6 +8,7 @@ RUN <<EOF
   apt-get install -y --no-install-recommends \
     ca-certificates \
     curl
+  rm -rf /var/lib/apt/lists/*
 EOF
 
 # Install the Pulumi SDK, including the CLI and language runtimes.
