@@ -1,8 +1,8 @@
 # syntax=docker/dockerfile:1
 ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/ubuntu:jammy-20230624 as build
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20231004 as build
 
-ARG PULUMI_VERSION=3.77.1
+ARG PULUMI_VERSION=3.94.2
 RUN <<EOF
   apt-get update
   apt-get install -y --no-install-recommends \
@@ -16,12 +16,7 @@ RUN curl -fsSL https://get.pulumi.com/ | bash -s -- --version $PULUMI_VERSION
 
 # The runtime container
 # This is our base container, so let's copy all the runtimes to .pulumi/bin
-FROM $CONTAINER_REGISTRY/ubuntu:jammy-20230624
-
-LABEL \
-    org.opencontainers.image.source="https://github.com/boxcutter/oci" \
-    org.opencontainers.image.licenses="Apache-2.0" \
-    org.opencontainers.image.description="Pulumi CLI container, bring your own SDK."
+FROM build
 
 WORKDIR /pulumi
 COPY --from=build /root/.pulumi/bin/ bin
