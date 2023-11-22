@@ -1,5 +1,5 @@
 variable "IMAGE_NAME" {
-  default = "meshcmd"
+  default =  "meshcmd"
 }
 
 variable "VERSION" {
