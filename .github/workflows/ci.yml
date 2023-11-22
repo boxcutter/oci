@@ -82,3 +82,17 @@ jobs:
           workdir: ${{ matrix.image }}
           dockerhub-username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
           dockerhub-password: ${{ secrets.CONTAINER_DESCRIPTION_PASSWORD }}
+
+  manual:
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        manual_path: ${{ fromJson(github.event.inputs.manual_paths) }}
+    steps:
+      - uses: boxcutter/container-build-publish-action@main
+        with:
+          workdir: ${{ matrix.manual_path }}
+          dockerhub-username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
+          dockerhub-password: ${{ secrets.CONTAINER_DESCRIPTION_PASSWORD }}
