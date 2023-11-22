@@ -15,9 +15,9 @@ jobs:
   # Job to run change detection
   changes:
     runs-on: ubuntu-latest
-    outputs:
-      # Expose matched filters as job 'images' output variable
-      images: ${{ steps.filter.outputs.changes }}
+    # outputs:
+    #   # Expose matched filters as job 'images' output variable
+    #  images: ${{ steps.filter.outputs.changes }}
     steps:
       - uses: actions/checkout@v4
 
@@ -79,6 +79,7 @@ jobs:
         if: github.event_name != 'workflow_dispatch'
         run: |
           echo "MISCHA_OUTPUT ${{ steps.filter.outputs.changes }}"
+          echo "images=${{ steps.filter.outputs.changes }}" >> $GITHUB_OUTPUT
             
   # Job to build and test each of the modified images
   build:
