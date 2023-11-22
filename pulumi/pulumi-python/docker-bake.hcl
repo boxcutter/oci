@@ -1,5 +1,5 @@
 variable "IMAGE_NAME" {
-  default = "pulumi-python"
+  default =  "pulumi-python"
 }
 
 variable "VERSION" {
