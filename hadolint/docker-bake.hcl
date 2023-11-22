@@ -19,13 +19,17 @@ variable "LOCAL_PLATFORM" {
 target "docker-metadata-action" { }
 
 target "_common" {
-  inherits = ["docker-metadata-action"]
   dockerfile = "Containerfile"
   tags = [
-    # docker.io/boxcuter/hadolint:x.x.x
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${VERSION}",
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:latest"
   ]
+  labels = {
+    "org.opencontainers.image.source" = "https://github.com/boxcutter/oci"
+    "org.opencontainers.image.licenses" = "Apache-2.0"
+    "org.opencontainers.image.description" = "Dockerfile linter, validate inline bash, written in Haskell." 
+    "org.opencontainers.image.title" = "${IMAGE_NAME}"
+  }
 }
 
 target "local" {
@@ -36,9 +40,4 @@ target "local" {
 target "default" {
   inherits = ["_common"]
   platforms = ["linux/amd64", "linux/arm64/v8"]
-  labels = {
-    "org.opencontainers.image.source" = "https://github.com/boxcutter/oci"
-    "org.opencontainers.image.licenses" = "Apache-2.0"
-    "org.opencontainers.image.description" = "Dockerfile linter, validate inline bash, written in Haskell." 
-  }
 }
