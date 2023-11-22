@@ -28,22 +28,12 @@ target "_common" {
   ]
 }
 
-target "lint" {
-  dockerfile = "Containerfile"
-  target = "lint"
-  output = ["type=cacheonly"]
-}
-
 target "local" {
   inherits = ["_common"]
   platforms = ["${LOCAL_PLATFORM}"]
 }
 
-group "default" {
-  targets = ["lint", "release"]
-}
-
-target "release" {
+target "default" {
   inherits = ["_common"]
   platforms = ["linux/amd64", "linux/arm64/v8"]
   labels = {
