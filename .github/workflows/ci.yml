@@ -68,8 +68,8 @@ jobs:
             
   # Job to build and test each of the modified images
   build:
-    # if: ${{ github.event_name != 'workflow_dispatch' }}
-    if: ${{ needs.changes.outputs.images != '[]' && needs.changes.outputs.images != '' }}
+    if: ${{ github.event_name != 'workflow_dispatch' }}
+    # if: ${{ needs.changes.outputs.images != '' && needs.changes.outputs.images != '[]' }}
     needs: changes
     strategy:
       matrix:
