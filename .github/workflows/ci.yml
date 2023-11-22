@@ -58,8 +58,9 @@ jobs:
       - name: Calculate paths
         id: images
         run: |
-          changed_paths=${{ fromJSON(steps.filter.outputs.changes) }}
-          echo "paths=$changed_paths" >> $GITHUB_OUTPUT
+          echo "paths=${{ steps.filter.outputs.changes }}" >> $GITHUB_OUTPUT
+          # changed_paths=${{ fromJSON(steps.filter.outputs.changes) }}
+          # echo "paths=$changed_paths" >> $GITHUB_OUTPUT
           # manual_paths=${{ github.event.inputs.manual_paths }}
           # paths="$changed_paths,$manual_paths"
           # # Remove empty entries and duplicates
@@ -73,8 +74,7 @@ jobs:
       matrix:
         # Parse JSON array containing names of all filters matching any of changed files
         # e.g. ['image1', 'image2'] if both image folders contains changes
-        # image: ${{ fromJSON(needs.changes.outputs.images) }}
-        image: ${{ needs.changes.outputs.images }}
+        image: ${{ fromJSON(needs.changes.outputs.images) }}
     if: ${{ needs.changes.outputs.images != '[]' && needs.changes.outputs.images != '' }}
     runs-on: ubuntu-latest
     defaults:
