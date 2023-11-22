@@ -15,9 +15,6 @@ variable "LOCAL_PLATFORM" {
   default = regex_replace("${BAKE_LOCAL_PLATFORM}", "^(darwin)", "linux")
 }
 
-# Special target: https://github.com/docker/metadata-action#bake-definition
-target "docker-metadata-action" { }
-
 target "_common" {
   inherits = ["docker-metadata-action"]
   dockerfile = "Containerfile"
@@ -26,12 +23,6 @@ target "_common" {
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${VERSION}",
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:latest"
   ]
-}
-
-target "lint" {
-  dockerfile = "../../hadolint/Containerfile"
-  target = "lint"
-  output = ["type=cacheonly"]
 }
 
 target "_common" {
@@ -47,11 +38,7 @@ target "local" {
   platforms = ["${LOCAL_PLATFORM}"]
 }
 
-group "default" {
-  targets = ["lint", "release"]
-}
-
-target "release" {
+target "default" {
   inherits = ["_common"]
   platforms = ["linux/amd64", "linux/arm64/v8"]
   labels = {
