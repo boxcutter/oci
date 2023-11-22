@@ -76,81 +76,9 @@ jobs:
         image: ${{ fromJSON(needs.changes.outputs.images) }}
     if: ${{ needs.changes.outputs.images != '[]' && needs.changes.outputs.images != '' }}
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ${{ matrix.image }}
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Check the Containerfile with hadolint
-        run: |
-          $(git rev-parse --show-toplevel)/bin/lint.sh
-      
-      - name: Install QEMU static binaries
-        uses: docker/setup-qemu-action@v3
-      
-      - name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v3
-      
-      - name: Build locally for testing
-        uses: docker/bake-action@v4
+      - uses: boxcutter/container-build-publish-action@main
         with:
           workdir: ${{ matrix.image }}
-          targets: local
-          load: true
-
-      - name: Run tests on the image with cinc-auditor
-        run: |
-          $(git rev-parse --show-toplevel)/bin/test.sh
-
-      - name: Login to DockerHub
-        if: github.event_name == 'push'
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
-          password: ${{ secrets.CONTAINER_REGISTRY_PASSWORD }}
-
-      - name: Build and push
-        uses: docker/bake-action@v4
-        with:
-          workdir: ${{ matrix.image }}
-          push: ${{ github.event_name != 'pull_request' }}
-
-      - name: Get the image name
-        if: github.event_name != 'pull_request'
-        id: image_name
-        run: |
-          json_data="$(docker buildx bake --print 2>/dev/null)"
-          echo "image_name=$(echo "$json_data" | jq -r '.target.default.labels."org.opencontainers.image.title"')" >> $GITHUB_ENV
-
-      - name: Get the image description
-        if: github.event_name != 'pull_request'
-        id: image_description
-        run: |
-          json_data="$(docker buildx bake --print 2>/dev/null)"
-          echo "image_description=$(echo "$json_data" | jq -r '.target.default.labels."org.opencontainers.image.description"')" >> $GITHUB_ENV
-
-      - name: Get the image readme filepath
-        if: github.event_name != 'pull_request'
-        id: image_readme_filepath
-        run: |
-          # Check if .group.local.targets.default exists, and if it does, extract its value
-          json_data="$(docker buildx bake --print 2>/dev/null)"
-          if echo "$json_data" | jq -e '.target.default.labels["io.boxcutter.image.readme-filepath"]' > /dev/null; then
-            readme_filepath=$(echo $json_data | jq -r '.target.default.labels["io.boxcutter.image.readme-filepath"]')
-            echo "image_readme_filepath=$readme_filepath" >> $GITHUB_ENV
-          else
-            echo "image_readme_filepath=${{ matrix.image }}/README.md" >> $GITHUB_ENV
-          fi
-
-      - name: Update Docker Hub Description
-        if: github.event_name != 'pull_request'
-        uses: peter-evans/dockerhub-description@v3
-        with:
-          username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
-          password: ${{ secrets.CONTAINER_DESCRIPTION_PASSWORD }}
-          repository: boxcutter/${{ env.image_name }}
-          short-description: ${{ env.image_description }}
-          readme-filepath: ${{ env.image_readme_filepath }}
-          
+          dockerhub-username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
+          dockerhub-password: ${{ secrets.CONTAINER_DESCRIPTION_PASSWORD }}
