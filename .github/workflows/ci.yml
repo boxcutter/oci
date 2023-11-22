@@ -59,7 +59,7 @@ jobs:
         id: images
         run: |
           changed_paths=${{ fromJSON(steps.filter.outputs.changes) }}
-          echo "paths=$changed_paths"
+          echo "paths=$changed_paths" >> $GITHUB_OUTPUT
           # manual_paths=${{ github.event.inputs.manual_paths }}
           # paths="$changed_paths,$manual_paths"
           # # Remove empty entries and duplicates
