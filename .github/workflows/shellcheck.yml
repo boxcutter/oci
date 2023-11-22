@@ -20,3 +20,5 @@ jobs:
       - uses: boxcutter/container-build-publish-action@main
         with:
           workdir: shellcheck
+          dockerhub-username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
+          dockerhub-password: ${{ secrets.CONTAINER_REGISTRY_PASSWORD }}
