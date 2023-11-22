@@ -21,4 +21,4 @@ jobs:
         with:
           workdir: shellcheck
           dockerhub-username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
-          dockerhub-password: ${{ secrets.CONTAINER_REGISTRY_PASSWORD }}
+          dockerhub-password: ${{ secrets.CONTAINER_DESCRIPTION_PASSWORD }}
