@@ -13,4 +13,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo "MISCHA ${{ github.event.inputs.directories }}
+        echo "MISCHA ${{ github.event.inputs.directories }}"
