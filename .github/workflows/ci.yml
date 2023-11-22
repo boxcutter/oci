@@ -90,7 +90,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        manual_path: ${{ github.event.inputs.manual_paths }}
+        manual_path: ${{ fromJSON(github.event.inputs.manual_paths) }}
     steps:
       - uses: boxcutter/container-build-publish-action@main
         with:
