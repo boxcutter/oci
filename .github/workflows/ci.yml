@@ -60,14 +60,15 @@ jobs:
         id: images
         run: |
           echo "MISCHA ${{ steps.filter.outputs.changes }}" 
-          echo "paths=${{ toJson(steps.filter.outputs.changes) }}" >> "$GITHUB_OUTPUT"
-          # changed_paths=${{ fromJSON(steps.filter.outputs.changes) }}
+          # echo "paths=${{ toJson(steps.filter.outputs.changes) }}" >> "$GITHUB_OUTPUT"
+          changed_paths=${{ fromJSON(steps.filter.outputs.changes) }}
           # echo "paths=$changed_paths" >> $GITHUB_OUTPUT
-          # manual_paths=${{ github.event.inputs.manual_paths }}
-          # paths="$changed_paths,$manual_paths"
-          # # Remove empty entries and duplicates
-          # paths=$(echo "$paths" | tr ',' '\n' | awk 'NF' | sort -u | tr '\n' ',' | sed 's/,$//')
+          manual_paths=${{ github.event.inputs.manual_paths }}
+          paths="$changed_paths,$manual_paths"
+          # Remove empty entries and duplicates
+          paths=$(echo "$paths" | tr ',' '\n' | awk 'NF' | sort -u | tr '\n' ',' | sed 's/,$//')
           # echo "paths=[$paths]" >> $GITHUB_OUTPUT
+          echo "paths=${{ toJson($paths) }}" >> "$GITHUB_OUTPUT"
             
   # Job to build and test each of the modified images
   build:
