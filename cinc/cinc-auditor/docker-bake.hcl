@@ -16,7 +16,6 @@ variable "LOCAL_PLATFORM" {
 }
 
 target "_common" {
-  inherits = ["docker-metadata-action"]
   dockerfile = "Containerfile"
   tags = [
     # docker.io/boxcutter/cinc-auditor:x.x.x
