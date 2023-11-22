@@ -17,7 +17,7 @@ jobs:
       - uses: boxcutter/container-build-publish-action@main
         with:
           workdir: hadolint
-          dockerhub-username: ${{ secrets.CONTAINER_DESCRIPTION_USERNAME }}
+          dockerhub-username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
           dockerhub-password: ${{ secrets.CONTAINER_DESCRIPTION_PASSWORD }}
           run-lint-stage: false
           run-test-stage: false
