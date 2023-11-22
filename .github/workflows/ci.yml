@@ -58,6 +58,7 @@ jobs:
       - name: Calculate paths
         id: images
         run: |
+          echo "MISCHA ${{ steps.filter.outputs.changes }}" 
           echo "paths=${{ steps.filter.outputs.changes }}" >> $GITHUB_OUTPUT
           # changed_paths=${{ fromJSON(steps.filter.outputs.changes) }}
           # echo "paths=$changed_paths" >> $GITHUB_OUTPUT
