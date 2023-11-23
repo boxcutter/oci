@@ -11,6 +11,9 @@ on:
 jobs:
   prepare-matrix:
     runs-on: ubuntu-latest
+    outputs:
+      directories: ${{ steps.set-matrix.outputs.directories }}
     steps:
-    - run: |
-        echo "MISCHA [${{ github.event.inputs.directories }}] "
+    - id: set-matrix
+      run: |
+        echo "directories=[${{ github.event.inputs.directories }}]" >> $GITHUB_OUTPUT
