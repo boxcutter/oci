@@ -1,3 +1,6 @@
+# cinc-auditor has its own workflow because it requires a special tag to work
+# with Test Kitchen and so it has a unique test harness, specified via the
+# "test-image" and "test-entrypoint" parameters.
 name: cinc
 
 on:
