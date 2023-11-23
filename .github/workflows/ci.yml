@@ -53,6 +53,8 @@ jobs:
             python/3.11/slim-jammy: 'python/3.11/slim-jammy/**'
             python/3.12/jammy: 'python/3.12/jammy/**'
             python/3.12/slim-jammy: 'python/3.12/slim-jammy/**'
+            ruby/3.1/jammy: 'ruby/3.1/jammy/**'
+            ruby/3.1/slim-jammy: 'ruby/3.1/slim-jammy/**'
             
   # Job to build and test each of the modified images
   build:
