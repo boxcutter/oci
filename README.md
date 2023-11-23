@@ -10,6 +10,7 @@ Open container images for robotics, neuromorphic engineering, systems and embedd
 | [cinc](https://hub.docker.com/r/boxcutter/cinc) | Cinc Client is an automation platform built from Chef Infra | [cinc](https://github.com/boxcutter/oci/tree/main/cinc/cinc) |
 | [cinc-auditor](https://hub.docker.com/r/boxcutter/cinc-auditor) | Framework compatible with Chef InSpec for testing infrastructure | [cinc/cinc-auditor](https://github.com/boxcutter/oci/tree/main/cinc/cinc-auditor) |
 | [doctl](https://hub.docker.com/r/boxcutter/doctl) | Digital Ocean command-line interface | [doctl](https://github.com/boxcutter/oci/tree/main/doctl) |
+| [flake8](https://hub.docker.com/r/boxcutter/flake8) | Flake8: Your Tool For Style Guide Enforcement | [flake8](https://github.com/boxcutter/oci/tree/main/flake8) |
 | [fpm](https://hub.docker.com/r/boxcutter/fpm) | fpm Packaging made simple | [fpm](https://github.com/boxcutter/oci/tree/main/fpm) |
 | [hadolint](https://hub.docker.com/r/boxcutter/hadolint) | Containerfile/Dockerfiles linter | [hadolint](https://github.com/boxcutter/oci/tree/main/hadolint) |
 | [meshcmd](https://hub.docker.com/r/boxcutter/meshcmd) | Command line tool used to perform many tasks related to computer management of Intel Active Management Technology (AMT) devices | [meshcmd](https://github.com/boxcutter/oci/tree/main/meshcmd) |

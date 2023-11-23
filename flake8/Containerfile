@@ -1,8 +1,9 @@
-ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/boxcutter/python:3.10-jammy
+ARG CONTAINER_REGISTRY=docker.io/boxcutter
+FROM $CONTAINER_REGISTRY/python:3.9-jammy
 
+ARG FLAKE8_VERSION=6.0.0
 WORKDIR /code
-RUN python3 -m pip install --no-cache-dir flake8==6.0.0
+RUN python3 -m pip install --no-cache-dir flake8==$FLAKE8_VERSION
 
 ENTRYPOINT ["flake8"]
 CMD ["--help"]

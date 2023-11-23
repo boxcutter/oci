@@ -38,6 +38,7 @@ jobs:
             dokken/ubuntu-20.04: 'dokken/ubuntu-20.04/**'
             dokken/ubuntu-22.04: 'dokken/ubuntu-22.04/**'
             doctl: 'doctl/**'
+            flake8: 'flake8/**'
             fpm: 'fpm/**'
             meshcmd: 'meshcmd/**'
             pulumi/pulumi-base: 'pulumi/pulumi-base/**'
