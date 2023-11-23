@@ -7,6 +7,7 @@ Open container images for robotics, neuromorphic engineering, systems and embedd
 | --- | --- | --- |
 | [aws-cli](https://hub.docker.com/r/boxcutter/aws-cli) | Amazon Web Services Command-Line Interface | [aws-cli](https://github.com/boxcutter/oci/tree/main/aws-cli) |
 | [black](https://hub.docker.com/r/boxcutter/black) | Black is the uncompromising Python code formatter | [black](https://github.com/boxcutter/oci/tree/main/black) |
+| [cic](https://hub.docker.com/r/boxcutter/cinc) | Cinc Client is an automation platform built from Chef Infra | [cinc](https://github.com/boxcutter/oci/tree/main/cinc/cinc) |
 | [cinc-auditor](https://hub.docker.com/r/boxcutter/cinc-auditor) | Framework compatible with Chef InSpec for testing infrastructure | [cinc/cinc-auditor](https://github.com/boxcutter/oci/tree/main/cinc/cinc-auditor) |
 | [fpm](https://hub.docker.com/r/boxcutter/fpm) | fpm Packaging made simple | [fpm](https://github.com/boxcutter/oci/tree/main/fpm) |
 | [hadolint](https://hub.docker.com/r/boxcutter/hadolint) | Containerfile/Dockerfiles linter | [hadolint](https://github.com/boxcutter/oci/tree/main/hadolint) |
