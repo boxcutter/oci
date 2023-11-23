@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        directory: ${{fromJson(needs.prepare-matrix.outputs.directories)}}
+        directory: ${{needs.prepare-matrix.outputs.directories}}
     steps:
     - run: |
         echo "MISCHA ${{ matrix.directory }}
