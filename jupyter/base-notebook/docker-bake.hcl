@@ -1,5 +1,5 @@
 variable "IMAGE_NAME" {
-  default = "jupyter-docker-stacks-foundation"
+  default = "jupyter-base-notebook"
 }
 
 variable "CONTAINER_REGISTRY" {
