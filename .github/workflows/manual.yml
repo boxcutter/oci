@@ -17,3 +17,13 @@ jobs:
     - id: set-matrix
       run: |
         echo "directories=[${{ github.event.inputs.directories }}]" >> $GITHUB_OUTPUT
+
+  build:
+    needs: prepare-matrix
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        directory: ${{fromJSON(needs.prepare-matrix.outputs.directories)}}
+    steps:
+    - run: |
+        echo "MISCHA ${{ matrix.directory }}
