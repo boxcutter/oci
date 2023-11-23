@@ -1,4 +1,0 @@
-[container_image]
-name = "example"
-platforms=["linux/amd64","linux/arm64/v8"]
-tags=["1.2.3", "latest"]
