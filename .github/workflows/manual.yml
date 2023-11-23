@@ -8,28 +8,12 @@ on:
         required: true
         default: ''
 
-jobs:
-  prepare-matrix:
-    runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{steps.set-matrix.outputs.matrix}}
-    steps:
-      - id: set-matrix
-        run: |
-          repos='${{ toJSON(github.event.inputs.list) }}'
-          echo "matrix=$repos" >> $GITHUB_OUTPUT
-          echo "MISCHA $repos"
-          # IFS=',' read -ra ADDR <<< "${{ github.event.inputs.list }}"
-          # MATRIX_JSON=$(printf '[%s]' "$(printf '{"item":"%s"},' "${ADDR[@]}")")
-          # MATRIX_JSON="${MATRIX_JSON%,}" # Remove the last comma
-          # echo "MISCHA $MATRIX_JSON"
-          # echo "matrix=$MATRIX_JSON" >> $GITHUB_OUTPUT
-          
+jobs:          
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-       directory: ${{ fromJSON(needs.prepare-matrix.outputs.matrix) }}
+       directory: ${{ fromJSON(github.event.inputs.list) }}
     steps:
     - run: |
         echo "MISCHA: ${{ matrix.directory }}"
