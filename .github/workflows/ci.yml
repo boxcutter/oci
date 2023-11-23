@@ -40,6 +40,8 @@ jobs:
             doctl: 'doctl/**'
             flake8: 'flake8/**'
             fpm: 'fpm/**'
+            golang/1.20/jammy: 'golang/1.20/jammy/**'
+            golang/1.21/jammy: 'golang/1.21/jammy/**'
             meshcmd: 'meshcmd/**'
             pulumi/pulumi-base: 'pulumi/pulumi-base/**'
             pulumi/pulumi-python: 'pulumi/pulumi-python/**'
