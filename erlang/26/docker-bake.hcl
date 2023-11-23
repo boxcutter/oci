@@ -24,8 +24,8 @@ target "_common" {
   }
   dockerfile = "Containerfile"
   tags = [
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${VERSION}-slim",
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:slim"
+    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${VERSION}",
+    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:latest"
   ]
   labels = {
     "org.opencontainers.image.source" = "https://github.com/boxcutter/oci"
