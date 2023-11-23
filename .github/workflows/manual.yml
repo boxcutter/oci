@@ -16,4 +16,4 @@ jobs:
        directory: ${{ fromJSON(github.event.inputs.directories) }}
     steps:
     - run: |
-        echo "MISCHA"
+        echo "MISCHA: ${{ matrix.directory }}"
