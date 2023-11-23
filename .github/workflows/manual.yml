@@ -19,7 +19,7 @@ jobs:
           IFS=',' read -ra ADDR <<< "${{ github.event.inputs.list }}"
           MATRIX_JSON=$(printf '[%s]' "$(printf '{"item":"%s"},' "${ADDR[@]}")")
           MATRIX_JSON="${MATRIX_JSON%,}" # Remove the last comma
-          ehco "matrix=$MATRIX_JSON" >> $GITHUB_OUTPUT
+          echo "matrix=$MATRIX_JSON" >> $GITHUB_OUTPUT
           
   build:
     runs-on: ubuntu-latest
