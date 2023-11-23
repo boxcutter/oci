@@ -38,6 +38,7 @@ jobs:
             dokken/ubuntu-20.04: 'dokken/ubuntu-20.04/**'
             dokken/ubuntu-22.04: 'dokken/ubuntu-22.04/**'
             doctl: 'doctl/**'
+            erlang/26/slim: 'erlang/26/slim/**'
             flake8: 'flake8/**'
             fpm: 'fpm/**'
             golang/1.20/jammy: 'golang/1.20/jammy/**'
