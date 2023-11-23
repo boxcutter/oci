@@ -1,4 +1,0 @@
-[container_image]
-tags=["2.12.0", "latest"]
-platforms=["linux/arm64", "linux/amd64"]
-readme="bootstrap/hadolint/README.md"
