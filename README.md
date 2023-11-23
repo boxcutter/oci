@@ -14,6 +14,8 @@ Open container images for robotics, neuromorphic engineering, systems and embedd
 | [fpm](https://hub.docker.com/r/boxcutter/fpm) | fpm Packaging made simple | [fpm](https://github.com/boxcutter/oci/tree/main/fpm) |
 | [hadolint](https://hub.docker.com/r/boxcutter/hadolint) | Containerfile/Dockerfiles linter | [hadolint](https://github.com/boxcutter/oci/tree/main/hadolint) |
 | [meshcmd](https://hub.docker.com/r/boxcutter/meshcmd) | Command line tool used to perform many tasks related to computer management of Intel Active Management Technology (AMT) devices | [meshcmd](https://github.com/boxcutter/oci/tree/main/meshcmd) |
+| [pulumi-base](https://hub.docker.com/r/boxcutter/pulumi-base) | A slim image that contains the Pulumi CLI, but no SDK(s) | [pulumi-base](https://github.com/boxcutter/oci/tree/main/pulumi-base) |
+| [pulumi-python](https://hub.docker.com/r/boxcutter/pulumi-python) | A slim image that contains the Pulumi CLI along with the Python runtime and Pulumi SDK | [pulumi-python](https://github.com/boxcutter/oci/tree/main/pulumi-python) |
 
 # Why are you re-publishing some official images?
 
