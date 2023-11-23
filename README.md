@@ -16,7 +16,8 @@ Open container images for robotics, neuromorphic engineering, systems and embedd
 | [meshcmd](https://hub.docker.com/r/boxcutter/meshcmd) | Command line tool used to perform many tasks related to computer management of Intel Active Management Technology (AMT) devices | [meshcmd](https://github.com/boxcutter/oci/tree/main/meshcmd) |
 | [pulumi-base](https://hub.docker.com/r/boxcutter/pulumi-base) | A slim image that contains the Pulumi CLI, but no SDK(s) | [pulumi-base](https://github.com/boxcutter/oci/tree/main/pulumi/pulumi-base) |
 | [pulumi-python](https://hub.docker.com/r/boxcutter/pulumi-python) | A slim image that contains the Pulumi CLI along with the Python runtime and Pulumi SDK | [pulumi-python](https://github.com/boxcutter/oci/tree/main/pulumi/pulumi-python) |
-| [python](https://hub.docker.com/r/boxcutter/python) | Python is an interpreted, interactive, object-oriented, open-source programming language. |[python](https://github.com/boxcutter/oci/tree/main/python) |
+| [python](https://hub.docker.com/r/boxcutter/python) | Python is an interpreted, interactive, object-oriented, open-source programming language. | [python](https://github.com/boxcutter/oci/tree/main/python) |
+| [ruby](https://hub.docker.com/r/boxcutter/ruby) | Ruby is a dynamic, reflective, object-oriented, general-purpose, open-source programming language. | [ruby](https://github.com/boxcutter/oci/tree/main/ruby) | 
 
 # Why are you re-publishing some official images?
 
