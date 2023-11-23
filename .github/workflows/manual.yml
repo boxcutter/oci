@@ -16,4 +16,4 @@ jobs:
     #    directory: ${{ fromJSON(format('[{0}]', inputs.directories)) }}
     steps:
     - run: |
-        echo "MISCHA ${{ format('[{0}]', github.event.inputs.directories) }}"
+        echo "MISCHA ${{ fromJSON(format('[{0}]', github.event.inputs.directories)) }}"
