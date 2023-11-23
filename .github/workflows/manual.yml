@@ -11,9 +11,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        directory: ${{ fromJSON(format('[{0}]', inputs.directories)) }}
+    # strategy:
+    #   matrix:
+    #    directory: ${{ fromJSON(format('[{0}]', inputs.directories)) }}
     steps:
     - run: |
-        echo "MISCHA ${{ matrix.directory }}
+        echo "MISCHA ${{ format('[{0}]', github.event.inputs.directories) }}
