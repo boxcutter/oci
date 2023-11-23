@@ -6,14 +6,14 @@ on:
       directories:
         description: 'Comma-separated list of directories'
         required: true
-        default: ''
+        default: '[]'
 
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-       directory: ${{ fromJSON(format("[{0}]", github.event.inputs.directories)) }}
+       directory: ${{ fromJSON(github.event.inputs.directories) }}
     steps:
     - run: |
         echo "MISCHA"
