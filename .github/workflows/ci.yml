@@ -26,6 +26,7 @@ jobs:
           base: ${{ github.ref }}
           filters: | 
             aws-cli: 'aws-cli/**'
+            black: 'black/**'
             buildpack-deps/ubuntu/jammy/curl: 'buildpack-deps/ubuntu/jammy/curl/**'
             buildpack-deps/ubuntu/jammy/scm: 'buildpack-deps/ubuntu/jammy/scm/**'
             buildpack-deps/ubuntu/jammy: 'buildpack-deps/ubuntu/jammy/**'
