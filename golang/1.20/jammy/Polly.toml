@@ -1,4 +1,0 @@
-[container_image]
-name = "golang"
-tags = ["1.19.3-jammy", "1.19-jammy", "1-jammy", "jammy"]
-readme="golang/README.md"
