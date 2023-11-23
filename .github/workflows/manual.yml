@@ -9,21 +9,11 @@ on:
         default: ''
 
 jobs:
-  prepare-matrix:
-    runs-on: ubuntu-latest
-    outputs:
-      directories: ${{ toJson(steps.set-matrix.outputs.directories) }}
-    steps:
-    - id: set-matrix
-      run: |
-        echo "directories=[${{ github.event.inputs.directories }}]" >> $GITHUB_OUTPUT
-
   build:
-    needs: prepare-matrix
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        directory: ${{needs.prepare-matrix.outputs.directories}}
+        directory: ${{ fromJSON(format('[{0}]', inputs.directories)) }}
     steps:
     - run: |
         echo "MISCHA ${{ matrix.directory }}
