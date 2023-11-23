@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-       directory: ${{ fromJSON(format('[{0}]', github.event.inputs.directories)) }}
+       directory: ${{ fromJSON(format("[{0}]", github.event.inputs.directories)) }}
     steps:
     - run: |
         echo "MISCHA"
