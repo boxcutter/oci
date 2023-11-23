@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       list:
-        description: 'Comma-separated list of directories'
+        description: 'Comma-separated list of directories in the form: ["dir1", "dir2"]'
         required: true
         default: ''
 
@@ -14,6 +14,10 @@ jobs:
     strategy:
       matrix:
        directory: ${{ fromJSON(github.event.inputs.list) }}
+    if: ${{ github.event.inputs.list != '' && github.event.inputs.list != '[]' }}
     steps:
-    - run: |
-        echo "MISCHA: ${{ matrix.directory }}"
+      - uses: boxcutter/container-build-publish-action@main
+        with:
+          workdir: ${{ matrix.directory }}
+          dockerhub-username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
+          dockerhub-password: ${{ secrets.CONTAINER_DESCRIPTION_PASSWORD }}
