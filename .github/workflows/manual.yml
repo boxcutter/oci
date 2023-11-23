@@ -12,7 +12,7 @@ jobs:
   prepare-matrix:
     runs-on: ubuntu-latest
     outputs:
-      directories: ${{ steps.set-matrix.outputs.directories }}
+      directories: ${{ toJson(steps.set-matrix.outputs.directories) }}
     steps:
     - id: set-matrix
       run: |
@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        directory: ${{needs.prepare-matrix.outputs.directories}}
+        directory: ${{fromJson(needs.prepare-matrix.outputs.directories)}}
     steps:
     - run: |
         echo "MISCHA ${{ matrix.directory }}
