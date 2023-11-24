@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 ARG CONTAINER_REGISTRY=docker.io/boxcutter
-FROM $CONTAINER_REGISTRY/scipy-notebook
+FROM $CONTAINER_REGISTRY/jupyter-scipy-notebook
 
 # Fix: https://github.com/hadolint/hadolint/wiki/DL4006
 # Fix: https://github.com/koalaman/shellcheck/wiki/SC3014
