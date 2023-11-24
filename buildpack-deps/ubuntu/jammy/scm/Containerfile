@@ -1,4 +1,5 @@
 # syntax=docker/dockerfile:1
+<<<<<<< HEAD
 ARG CONTAINER_REGISTRY=docker.io/boxcutter
 FROM $CONTAINER_REGISTRY/buildpack-deps:jammy-curl
 

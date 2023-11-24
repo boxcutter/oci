@@ -14,7 +14,7 @@ variable "LOCAL_PLATFORM" {
 target "_common" {
   dockerfile = "Containerfile"
   labels = {
-    "org.opencontainers.image.source" = "https://github.com/polymathrobotics/oci"
+    "org.opencontainers.image.source" = "https://github.com/pboxcutter/oci"
     "org.opencontainers.image.licenses" = "Apache-2.0"
     "org.opencontainers.image.description" = "A collection of common build dependencies used for installing various modules."
     "org.opencontainers.image.title" = "${IMAGE_NAME}"
