@@ -2,11 +2,6 @@
 ARG CONTAINER_REGISTRY=docker.io
 FROM $CONTAINER_REGISTRY/boxcutter/jupyter-minimal-notebook:ubuntu-22.04
 
-LABEL \
-    org.opencontainers.image.source="https://github.com/boxcutter/oci" \
-    org.opencontainers.image.licenses="Apache-2.0" \
-    org.opencontainers.image.description="Scientific Jupyter Notebook Python Stack."
-
 # Fix: https://github.com/hadolint/hadolint/wiki/DL4006
 # Fix: https://github.com/koalaman/shellcheck/wiki/SC3014
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -26,8 +21,12 @@ RUN apt-get update --yes && \
 
 USER ${NB_UID}
 
+# mamba downgrades these packages to previous major versions, which causes issues
+RUN echo 'jupyterlab >=4.0.4' >> "${CONDA_DIR}/conda-meta/pinned" && \
+    echo 'notebook >=7.0.2' >> "${CONDA_DIR}/conda-meta/pinned"
+
 # Install Python 3 packages
-RUN mamba install --quiet --yes \
+RUN mamba install --yes \
     'altair' \
     'beautifulsoup4' \
     'bokeh' \
@@ -40,8 +39,7 @@ RUN mamba install --quiet --yes \
     'h5py' \
     'ipympl'\
     'ipywidgets' \
-    # Temporary fix for: https://github.com/jupyter/docker-stacks/issues/1851
-    'jupyter_server>=2.0.0' \
+    'jupyterlab-git' \
     'matplotlib-base' \
     'numba' \
     'numexpr' \
@@ -65,14 +63,11 @@ RUN mamba install --quiet --yes \
 
 # Install facets which does not have a pip or conda package at the moment
 WORKDIR /tmp
-RUN git clone https://github.com/PAIR-code/facets.git && \
-    jupyter nbextension install facets/facets-dist/ --sys-prefix && \
+RUN git clone https://github.com/PAIR-code/facets && \
+    jupyter nbclassic-extension install facets/facets-dist/ --sys-prefix && \
     rm -rf /tmp/facets && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
-
-# Import matplotlib the first time to build the font cache.
-ENV XDG_CACHE_HOME="/home/${NB_USER}/.cache/"
 
 RUN MPLBACKEND=Agg python -c "import matplotlib.pyplot" && \
     fix-permissions "/home/${NB_USER}"
