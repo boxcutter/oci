@@ -29,7 +29,7 @@ target "local" {
   }
   target = ros_package
   tags = [
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:humble-${ros_package}-jammy"
+    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:iron-${ros_package}-jammy"
   ]
   platforms = ["${LOCAL_PLATFORM}"]
 }
@@ -42,7 +42,7 @@ target "default" {
   }
   target = ros_package
   tags = [
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:humble-${ros_package}-jammy"
+    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:iron-${ros_package}-jammy"
   ]
   platforms = ["linux/amd64", "linux/arm64/v8"]
 }

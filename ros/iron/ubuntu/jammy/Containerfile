@@ -27,11 +27,11 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C1CF6E31E6
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 
-ENV ROS_DISTRO humble
+ENV ROS_DISTRO iron
 
 # install ros2 packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ros-humble-ros-core=0.10.0-1* \
+    ros-iron-ros-core=0.10.0-3* \
     && rm -rf /var/lib/apt/lists/*
 
 # setup entrypoint
@@ -54,7 +54,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 
 # bootstrap rosdep
 RUN rosdep init && \
-  rosdep update --rosdistro "$ROS_DISTRO"
+  rosdep update --rosdistro $ROS_DISTRO
 
 # setup colcon mixin and metadata
 RUN colcon mixin add default \
@@ -66,33 +66,33 @@ RUN colcon mixin add default \
 
 # install ros2 packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ros-humble-ros-base=0.10.0-1* \
+    ros-iron-ros-base=0.10.0-3* \
     && rm -rf /var/lib/apt/lists/*
 
 FROM ros-base as perception
 
 # install ros2 packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ros-humble-perception=0.10.0-1* \
+    ros-iron-perception=0.10.0-3* \
     && rm -rf /var/lib/apt/lists/*
 
 FROM ros-base as simulation
 
 # install ros2 packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ros-humble-simulation=0.10.0-1* \
+    ros-iron-simulation=0.10.0-3* \
     && rm -rf /var/lib/apt/lists/*
 
 FROM ros-base as desktop
 
 # install ros2 packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ros-humble-desktop=0.10.0-1* \
+    ros-iron-desktop=0.10.0-3* \
     && rm -rf /var/lib/apt/lists/*
 
 FROM desktop as desktop-full
 
 # install ros2 packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ros-humble-desktop-full=0.10.0-1* \
+    ros-iron-desktop-full=0.10.0-3* \
     && rm -rf /var/lib/apt/lists/*
