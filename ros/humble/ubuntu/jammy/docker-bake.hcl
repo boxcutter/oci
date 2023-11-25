@@ -25,7 +25,7 @@ target "local" {
   name = "local-${ros_package}"
   inherits = ["_common"]
   matrix = {
-    ros_package = ["ros-core", "ros-base", "perception", "desktop"]
+    ros_package = ["ros-core", "ros-base", "perception", "desktop", "desktop-full"]
   }
   target = ros_package
   tags = [
@@ -38,7 +38,7 @@ target "default" {
   name = "default-${ros_package}"
   inherits = ["_common"]
   matrix = {
-    ros_package = ["ros-core", "ros-base", "perception", "desktop"]
+    ros_package = ["ros-core", "ros-base", "perception", "desktop", "desktop-full"]
   }
   target = ros_package
   tags = [

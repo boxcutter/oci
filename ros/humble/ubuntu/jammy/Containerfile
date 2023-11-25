@@ -82,3 +82,10 @@ FROM ros-base as desktop
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-humble-desktop=0.10.0-1* \
     && rm -rf /var/lib/apt/lists/*
+
+FROM desktop as desktop-full
+
+# install ros2 packages
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ros-humble-desktop-full=0.10.0-1* \
+    && rm -rf /var/lib/apt/lists/*
