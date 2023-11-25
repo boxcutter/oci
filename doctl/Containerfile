@@ -1,6 +1,7 @@
 # syntax=docker/dockerfile:1
 ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/ubuntu:jammy-20231004 AS build
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20231004 AS base
+FROM base AS build
 
 ARG DOCTL_URL_AMD64="https://github.com/digitalocean/doctl/releases/download/v1.93.1/doctl-1.93.1-linux-amd64.tar.gz"
 ARG DOCTL_SHA256_AMD64="b84c96443815a4ee8857c82eba47e36cec953eb9d3f5c542a2c2ab9868f40f4f"
@@ -32,7 +33,7 @@ RUN <<EOF
   rm -rf /var/lib/apt/lists/*
 EOF
 
-FROM build
+FROM base
 
 RUN <<EOF
   apt-get update
