@@ -2,6 +2,8 @@
 ARG CONTAINER_REGISTRY=docker.io
 FROM $CONTAINER_REGISTRY/ubuntu:jammy-20231004 as base
 
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20231004 as download
+
 ARG DEBIAN_FRONTEND=noninteractive
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -48,7 +50,7 @@ ENV LANG=en_US.UTF-8 \
 
 WORKDIR /share
 
-COPY --from=base /tmp/cinc-auditor.deb  /tmp/cinc-auditor.deb
+COPY --from=download /tmp/cinc-auditor.deb  /tmp/cinc-auditor.deb
 
 RUN <<EOF
   apt-get update 
