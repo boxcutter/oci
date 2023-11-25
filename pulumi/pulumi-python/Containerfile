@@ -1,6 +1,7 @@
 # syntax=docker/dockerfile:1
 ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/ubuntu:jammy-20231004 as build
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20231004 as base
+FROM base as build
 
 ARG PULUMI_VERSION=3.94.2
 RUN <<EOF
