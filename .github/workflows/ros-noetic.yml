@@ -1,4 +1,4 @@
-name: ros
+name: ros-noetic
 
 on:
   push:
