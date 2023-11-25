@@ -1,5 +1,7 @@
 ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/amazonlinux:2 as installer
+
+FROM $CONTAINER_REGISTRY/amazonlinux:2 as base
+FROM base as installer
 
 ARG AWS_CLI_VERSION=2.13.28
 
@@ -33,7 +35,7 @@ RUN yum update -y \
   && /tmp/aws-cli/awscliv2/aws/install --bin-dir /aws-cli-bin/ \
   && yum clean all
 
-FROM installer as release
+FROM base as release
 
 RUN yum update -y \
   && yum install -y less groff \
