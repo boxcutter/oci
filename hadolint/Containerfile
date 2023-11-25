@@ -1,6 +1,7 @@
 # syntax=docker/dockerfile:1
 ARG CONTAINER_REGISTRY=docker.io
 FROM $CONTAINER_REGISTRY/ubuntu:jammy-20231004 as base
+FROM base as download
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN <<EOF
@@ -27,14 +28,8 @@ RUN <<EOF
   echo "${HADOLINT_SHA256} /usr/local/bin/hadolint" | sha256sum -c -
 EOF
 
-FROM base as lint
-COPY --from=base --chmod=777 /usr/local/bin/hadolint /usr/local/bin/hadolint
-COPY Containerfile /
-
-RUN /usr/local/bin/hadolint --ignore DL3008 --ignore DL3033 --ignore DL3059 Containerfile
-
-FROM base as release
-COPY --from=base --chmod=777 /usr/local/bin/hadolint /usr/local/bin/hadolint
+FROM base
+COPY --from=download --chmod=777 /usr/local/bin/hadolint /usr/local/bin/hadolint
 WORKDIR /shared
 COPY hadolint.yaml .hadolint.yaml
 CMD ["/bin/hadolint", "-"]
