@@ -1,0 +1,49 @@
+#syntax=docker/dockerfile:1
+ARG CONTAINER_REGISTRY=docker.io
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20231004 AS base
+
+FROM base as download
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN <<EOF
+  apt-get update
+  apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl
+  mkdir -p /tmp/blackbox_exporter
+  dpkgArch="$(dpkg --print-architecture)"
+  case "${dpkgArch##*-}" in \
+    amd64) \
+      BLACKBOX_EXPORTER_URL='https://github.com/prometheus/blackbox_exporter/releases/download/v0.23.0/blackbox_exporter-0.23.0.linux-amd64.tar.gz'; \
+      BLACKBOX_EXPORTER_SHA256='63bd4fde6984db79c95e1502a0ab47da6194d763bff22a04d1f50c4fd8322b84' \
+      ;; \
+    arm64) \
+      BLACKBOX_EXPORTER_URL='https://github.com/prometheus/blackbox_exporter/releases/download/v0.23.0/blackbox_exporter-0.23.0.linux-arm64.tar.gz'; \
+      BLACKBOX_EXPORTER_SHA256='4750a91055a53093c7fdb4817ca39ba02b429232b0ac659de3cbe156d018b8fd' \
+      ;; \
+    armhf) \
+      BLACKBOX_EXPORTER_URL='https://github.com/prometheus/blackbox_exporter/releases/download/v0.23.0/blackbox_exporter-0.23.0.linux-armv7.tar.gz'; \
+      BLACKBOX_EXPORTER_SHA256='1fdd52e860f358e6f514fe3372cbd238d2fe4a82ca2e4116c02d9e5b263c61c6' \
+      ;; \
+    *) echo "unsupported architecture"; exit 1 ;; \
+  esac
+  curl -fsSL -o /tmp/blackbox_exporter.tar.gz ${BLACKBOX_EXPORTER_URL}
+  echo "${BLACKBOX_EXPORTER_SHA256} /tmp/blackbox_exporter.tar.gz" | sha256sum -c -
+  tar xvf /tmp/blackbox_exporter.tar.gz -C /tmp/blackbox_exporter --strip-components 1
+EOF
+
+FROM base
+
+RUN <<EOF
+  apt-get update
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    ca-certificates
+  rm -rf /var/lib/apt/lists/*  
+EOF
+
+COPY --chmod=755 --from=download /tmp/blackbox_exporter/blackbox_exporter /usr/local/bin/blackbox_exporter
+COPY --from=download /tmp/blackbox_exporter/blackbox.yml /etc/blackbox_exporter/config.yml
+
+EXPOSE 9115
+USER nobody
+ENTRYPOINT [ "/usr/local/bin/blackbox_exporter" ]
+CMD ["--config.file=/etc/blackbox_exporter/config.yml"]
