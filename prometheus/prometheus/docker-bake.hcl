@@ -17,6 +17,14 @@ variable "LOCAL_PLATFORM" {
 
 target "_common" {
   dockerfile = "Containerfile"
+  args = {
+    PROMETHEUS_URL_AMD64 = "https://github.com/prometheus/prometheus/releases/download/v2.43.0/prometheus-2.43.0.linux-amd64.tar.gz"
+    PROMETHEUS_SHA256_AMD64 = "cfea92d07dfd9a9536d91dff6366d897f752b1068b9540b3e2669b0281bb8ebf"
+    PROMETHEUS_URL_ARM64 = "https://github.com/prometheus/prometheus/releases/download/v2.43.0/prometheus-2.43.0.linux-arm64.tar.gz"
+    PROMETHEUS_SHA256_ARM64 = "79c4262a27495e5dff45a2ce85495be2394d3eecd51f0366c706f6c9c729f672"
+    PROMETHEUS_URL_ARMHF = "https://github.com/prometheus/prometheus/releases/download/v2.43.0/prometheus-2.43.0.linux-armv7.tar.gz"
+    PROMETHEUS_SHA256_ARMHF = "2c973310a4be2792d80016102ec115800493a322c301fd51da57469374f274af"
+  }
   tags = [
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${VERSION}",
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:latest"

@@ -17,6 +17,14 @@ variable "LOCAL_PLATFORM" {
 
 target "_common" {
   dockerfile = "Containerfile"
+  args = {
+    BLACKBOX_EXPORTER_URL_AMD64 = "https://github.com/prometheus/blackbox_exporter/releases/download/v0.23.0/blackbox_exporter-0.23.0.linux-amd64.tar.gz"
+    BLACKBOX_EXPORTER_SHA256_AMD64 = "63bd4fde6984db79c95e1502a0ab47da6194d763bff22a04d1f50c4fd8322b84"
+    BLACKBOX_EXPORTER_URL_ARM64 = "https://github.com/prometheus/blackbox_exporter/releases/download/v0.23.0/blackbox_exporter-0.23.0.linux-arm64.tar.gz"
+    BLACKBOX_EXPORTER_SHA256_ARM64 = "4750a91055a53093c7fdb4817ca39ba02b429232b0ac659de3cbe156d018b8fd"
+    BLACKBOX_EXPORTER_URL_ARMHF = "https://github.com/prometheus/blackbox_exporter/releases/download/v0.23.0/blackbox_exporter-0.23.0.linux-armv7.tar.gz"
+    BLACKBOX_EXPORTER_SHA256_ARMHF = "1fdd52e860f358e6f514fe3372cbd238d2fe4a82ca2e4116c02d9e5b263c61c6"
+  }
   tags = [
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${VERSION}",
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:latest"

@@ -17,6 +17,14 @@ variable "LOCAL_PLATFORM" {
 
 target "_common" {
   dockerfile = "Containerfile"
+  args = {
+    NODE_EXPORTER_URL_AMD64 = "https://github.com/prometheus/node_exporter/releases/download/v1.5.0/node_exporter-1.5.0.linux-amd64.tar.gz"
+    NODE_EXPORTER_SHA256_AMD64 = "af999fd31ab54ed3a34b9f0b10c28e9acee9ef5ac5a5d5edfdde85437db7acbb"
+    NODE_EXPORTER_URL_ARM64 = "https://github.com/prometheus/node_exporter/releases/download/v1.5.0/node_exporter-1.5.0.linux-arm64.tar.gz"
+    NODE_EXPORTER_SHA256_ARM64 = "e031a539af9a619c06774788b54c23fccc2a852d41437315725a086ccdb0ed16"
+    NODE_EXPORTER_URL_ARMHF = "https://github.com/prometheus/node_exporter/releases/download/v1.5.0/node_exporter-1.5.0.linux-armv7.tar.gz"
+    NODE_EXPORTER_SHA256_ARMHF = "27d8853a3f2d131f97f3817761bd0714582482c97cafa2f27689fc7e9f30d9cc"
+  }
   tags = [
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${VERSION}",
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:latest"
