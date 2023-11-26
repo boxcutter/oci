@@ -14,5 +14,5 @@ docker container run -it --rm \
 --mount type=bind,source="$(pwd)/prometheus.yml",target=/etc/prometheus/prometheus.yml,readonly \
 --mount type=bind,source="$(pwd)/targets.yml",target=/etc/prometheus/targets.yml,readonly \
 --mount type=volume,source=prometheus-data,target=/prometheus,volume-driver=local \
-polymathrobotics/prometheus
+docker.io/boxcutter/prometheus
 ```

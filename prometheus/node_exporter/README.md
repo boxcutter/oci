@@ -6,7 +6,7 @@ https://github.com/prometheus/node_exporter/releases
 The image is based on
 https://github.com/prometheus/node_exporter/blob/master/Dockerfile
 
-Image source: https://github.com/polymathrobotics/oci/tree/main/prometheus/node_exporter
+Image source: https://github.com/boxcutter/oci/tree/main/prometheus/node_exporter
 
 For more information on using node_exporter, refer to https://prometheus.io/docs/guides/node-exporter/
 
@@ -30,14 +30,14 @@ docker container run -it --rm \
   --mount type=bind,source=/,target=/host/root,readonly \
   --mount type=bind,source=/sys,target=/host/sys,readonly \
   --mount type=bind,source=/proc,target=/host/proc,readonly \
-  docker.io/polymathrobotics/node_exporter \
+  docker.io/boxcutter/node_exporter \
     --path.rootfs=/host
 ```
 
 CLI
 ---
 ```
-% docker container run -it --rm docker.io/polymathrobotics/node_exporter --help
+% docker container run -it --rm docker.io/boxcutter/node_exporter --help
 usage: node_exporter [<flags>]
 
   Flags:

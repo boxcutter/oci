@@ -25,11 +25,10 @@ RUN <<EOF
       NODE_EXPORTER_SHA256='27d8853a3f2d131f97f3817761bd0714582482c97cafa2f27689fc7e9f30d9cc' \
       ;; \
     *) echo "unsupported architecture"; exit 1 ;; \
-    curl -fsSL -o /tmp/node_exporter.tar.gz ${NODE_EXPORTER_URL}
-    echo "${NODE_EXPORTER_SHA256} /tmp/node_exporter.tar.gz" | sha256sum -c -
-    tar xvf /tmp/node_exporter.tar.gz -C /tmp/node_exporter --strip-components 1
   esac
-  
+  curl -fsSL -o /tmp/node_exporter.tar.gz ${NODE_EXPORTER_URL}
+  echo "${NODE_EXPORTER_SHA256} /tmp/node_exporter.tar.gz" | sha256sum -c -
+  tar xvf /tmp/node_exporter.tar.gz -C /tmp/node_exporter --strip-components 1
 EOF
 
 FROM base

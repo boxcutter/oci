@@ -5,12 +5,12 @@ https://github.com/prometheus/blackbox_exporter/releases
 
 This image is based on https://github.com/prometheus/blackbox_exporter/blob/master/Dockerfile
 
-Image Source: https://github.com/polymathrobotics/oci/tree/main/prometheus/blackbox_exporter
+Image Source: https://github.com/boxcutter/oci/tree/main/prometheus/blackbox_exporter
 
 CLI
 ---
 ```
-% docker run -it --rm docker.io/polymathrobotics/blackbox_exporter --help
+% docker run -it --rm docker.io/boxcutter/blackbox_exporter --help
 usage: blackbox_exporter [<flags>]
 
     Flags:
