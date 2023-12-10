@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/ubuntu:jammy-20231004
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20231128
 
 # ensure local python is preferred over distribution python
 ENV PATH /usr/local/bin:$PATH
