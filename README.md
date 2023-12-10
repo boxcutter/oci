@@ -15,6 +15,7 @@ Open container images for robotics, neuromorphic engineering, systems and embedd
 | [golang](https://hub.docker.com/r/boxcutter/golang) | Go (golang) is a general purpose, higher-level, imperative programming language | [golang](https://github.com/boxcutter/oci/tree/main/golang) |
 | [hadolint](https://hub.docker.com/r/boxcutter/hadolint) | Containerfile/Dockerfiles linter | [hadolint](https://github.com/boxcutter/oci/tree/main/hadolint) |
 | [meshcmd](https://hub.docker.com/r/boxcutter/meshcmd) | Command line tool used to perform many tasks related to computer management of Intel Active Management Technology (AMT) devices | [meshcmd](https://github.com/boxcutter/oci/tree/main/meshcmd) |
+| [pgweb](https://hub.docker.com/r/boxcutter/pgweb) | Simple web-based and cross platform PostgreSQL database explorer. | [pgweb](https://github.com/boxcutter/oci/tree/main/pgweb) |
 | [postgres](https://hub.docker.com/r/boxcutter/postgres) | The PostgreSQL object-relational database system provides reliability and data integrity. | [postgres](https://github.com/boxcutter/oci/tree/main/postgres) |
 | [prometheus/blackbox_exporter](https://hub.docker.com/r/boxcutter/blackbox_exporter) | Blackbox exporter for probing remote machine metrics | [prometheus/blackbox_exporter](https://github.com/boxcutter/oci/tree/main/prometheus/blackbox_exporter) |
 | [prometheus/node_exporter](https://hub.docker.com/r/boxcutter/node_exporter) | Prometheus node exporter for machine metrics | [prometheus/node_exporter](https://github.com/boxcutter/oci/tree/main/prometheus/node_exporter) |

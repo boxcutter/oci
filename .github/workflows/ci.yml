@@ -51,6 +51,7 @@ jobs:
             jupyter/scipy-notebook: 'jupyter/scipy-notebook/**'
             jupyter/tensorflow-notebook: 'jupyter/tensorflow-notebook/**'
             meshcmd: 'meshcmd/**'
+            pgweb: 'pgweb/**'
             postgres/15/jammy: 'postgres/15/jammy/**'
             prometheus/blackbox_exporter: 'prometheus/blackbox_exporter/**'
             prometheus/node_exporter: 'prometheus/node_exporter/**'

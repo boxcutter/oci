@@ -1,0 +1,63 @@
+#syntax=docker/dockerfile:1
+ARG CONTAINER_REGISTRY=docker.io
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20231128 AS base
+
+ARG PGWEB_URL_AMD64="https://github.com/sosedoff/pgweb/releases/download/v0.14.2/pgweb_linux_amd64.zip"
+ARG PGWEB_SHA256_AMD64="0a35e450f1a7bdf5aa23fe56f5203e5400f47e7fa62d83f6433f7e8a8121de6a"
+ARG PGWEB_URL_ARM64="https://github.com/sosedoff/pgweb/releases/download/v0.14.2/pgweb_linux_arm64.zip"
+ARG PGWEB_SHA256_ARM64="588608795c70d6f75ccacbb0899cc792366deb47d5608545be4bba3c6deba6e3"
+ARG PGWEB_URL_ARMHF="https://github.com/sosedoff/pgweb/releases/download/v0.14.2/pgweb_linux_arm_v5.zip"
+ARG PGWEB_SHA256_ARMHF="2fdd5e94e78d9ff8bd498aeaf135cfd513cceaab08101b84c9e5ab61b8fb61e1"
+
+FROM base as download
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN <<EOF
+  apt-get update
+  apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    unzip
+  mkdir -p /tmp/pgweb
+  dpkgArch="$(dpkg --print-architecture)"
+  case "${dpkgArch##*-}" in \
+    amd64) \
+      PGWEB_URL="${PGWEB_URL_AMD64}" \
+      PGWEB_SHA256="${PGWEB_SHA256_AMD64}" \
+      ;; \
+    arm64) \
+      PGWEB_URL="${PGWEB_URL_ARM64}" \
+      PGWEB_SHA256="${PGWEB_SHA256_ARM64}" \
+      ;; \
+    armhf) \
+      PGWEB_URL="${PGWEB_URL_ARMHF}" \
+      PGWEB_SHA256="${PGWEB_SHA256_ARMHF}" \
+      ;; \
+    *) echo "unsupported architecture"; exit 1 ;; \
+  esac
+  curl -fsSL -o /tmp/pgweb.zip "${PGWEB_URL}"
+  echo "${PGWEB_SHA256} /tmp/pgweb.zip" | sha256sum -c -
+  unzip /tmp/pgweb.zip -d /tmp/pgweb
+EOF
+
+FROM base
+
+RUN <<EOF
+  apt-get update
+  apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl
+  install -d /usr/share/postgresql-common/pgdg
+  curl -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc
+  echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt jammy-pgdg main" > /etc/apt/sources.list.d/pgdg.list
+  apt-get update
+  apt-get install -y --no-install-recommends postgresql-client
+  rm -rf /var/lib/apt/lists/*
+EOF
+
+COPY --from=download /tmp/pgweb/pgweb_linux* /usr/local/bin/pgweb
+
+RUN useradd --uid 1000 --no-create-home --shell /bin/false pgweb
+USER pgweb
+
+EXPOSE 8081
+ENTRYPOINT ["/usr/local/bin/pgweb", "--bind=0.0.0.0", "--listen=8081"]
