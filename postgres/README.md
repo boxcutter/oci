@@ -6,14 +6,14 @@ PostgreSQL implements the majority of the SQL:2011 standard, is ACID-compliant a
 
 This image packages releases from https://github.com/docker-library/postgres
 
-Image source: https://github.com/polymathrobotics/oci/tree/main/postgres
+Image source: https://github.com/boxcutter/oci/tree/main/postgres
 
 ## How to use this image
 
 ### start a postgres instance
 
 ```bash
-$ docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d docker.io/polymathrobotics/postgres-focal
+$ docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d docker.io/boxcutter/postgres-focal
 ```
 
 The default `postgres` user and database are created in the entrypoint with `initdb`.
@@ -23,7 +23,7 @@ The postgres database is a default database meant for use by users, utilities an
 ### ... or via psql
 
 ```
-$ docker run -it --rm --network some-network docker.io/polymathrobotics/postgres-focal psql -h some-postgres -U postgres
+$ docker run -it --rm --network some-network docker.io/boxcutter/postgres-focal psql -h some-postgres -U postgres
 psql (14.3)
 Type "help" for help.
 

@@ -7,7 +7,7 @@ variable "VERSION" {
 }
 
 variable "CONTAINER_REGISTRY" {
-  default = "docker.io/polymathrobotics"
+  default = "docker.io/boxcutter"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
@@ -26,11 +26,11 @@ target "_common" {
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:jammy",
   ]
   labels = {
-    "org.opencontainers.image.source" = "https://github.com/polymathrobotics/oci"
+    "org.opencontainers.image.source" = "https://github.com/boxcutter/oci"
     "org.opencontainers.image.licenses" = "MIT"
     "org.opencontainers.image.description" = "The PostgreSQL object-relational database system provides reliability and data integrity."
     "org.opencontainers.image.title" = "${IMAGE_NAME}"
-    "dev.polymathrobotics.image.readme-filepath" = "postgres/README.md"
+    "io.boxcutter.image.readme-filepath" = "postgres/README.md"
   }
 }
 
