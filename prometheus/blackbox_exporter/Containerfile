@@ -1,6 +1,6 @@
 #syntax=docker/dockerfile:1
 ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/ubuntu:jammy-20231004 AS base
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20231128 AS base
 
 ARG BLACKBOX_EXPORTER_URL_AMD64="https://github.com/prometheus/blackbox_exporter/releases/download/v0.24.0/blackbox_exporter-0.24.0.linux-amd64.tar.gz"
 ARG BLACKBOX_EXPORTER_SHA256_AMD64="81b36cece040491ac0d9995db2a0964c40e24838a03a151c3333a7dc3eef94ff"
