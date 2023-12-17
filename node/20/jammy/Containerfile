@@ -1,5 +1,5 @@
 ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/ubuntu:jammy-20230816
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20231211.1
 
 RUN groupadd --gid 1000 node \
   && useradd --uid 1000 --gid node --shell /bin/bash --create-home node

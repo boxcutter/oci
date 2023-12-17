@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/ubuntu:jammy-20231004 AS build
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20231211.1 AS build
 
 ARG SHELLCHECK_URL_AMD64="https://github.com/koalaman/shellcheck/releases/download/v0.9.0/shellcheck-v0.9.0.linux.x86_64.tar.xz"
 ARG SHELLCHECK_URL_ARM64="https://github.com/koalaman/shellcheck/releases/download/v0.9.0/shellcheck-v0.9.0.linux.aarch64.tar.xz"

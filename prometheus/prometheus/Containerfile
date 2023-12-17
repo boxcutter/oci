@@ -1,6 +1,6 @@
 #syntax=docker/dockerfile:1
 ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/ubuntu:jammy-20231004 AS base
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20231211.1 AS base
 
 ARG PROMETHEUS_URL_AMD64="https://github.com/prometheus/prometheus/releases/download/v2.43.0/prometheus-2.43.0.linux-amd64.tar.gz"
 ARG PROMETHEUS_SHA256_AMD64="cfea92d07dfd9a9536d91dff6366d897f752b1068b9540b3e2669b0281bb8ebf"
