@@ -11,6 +11,10 @@ variable "LOCAL_PLATFORM" {
   default = regex_replace("${BAKE_LOCAL_PLATFORM}", "^(darwin)", "linux")
 }
 
+variable "ROS_PACKAGE" {
+  default = ["ros-core", "ros-base", "perception", "simulation", "desktop", "desktop-full"]
+}
+
 target "_common" {
   dockerfile = "Containerfile"
   labels = {
@@ -18,6 +22,7 @@ target "_common" {
     "org.opencontainers.image.licenses" = "Apache-2.0"
     "org.opencontainers.image.description" = "The Robot Operating System (ROS) is an open source project for building robot applications."
     "org.opencontainers.image.title" = "${IMAGE_NAME}"
+    "io.boxcutter.image.readme-filepath" = "ros/README.md"
   }
 }
 
@@ -25,7 +30,7 @@ target "local" {
   name = "local-${ros_package}"
   inherits = ["_common"]
   matrix = {
-    ros_package = ["ros-core", "ros-base", "perception", "simulation", "desktop", "desktop-full"]
+    ros_package = ROS_PACKAGE
   }
   target = ros_package
   tags = [
@@ -38,7 +43,7 @@ target "default" {
   name = "default-${ros_package}"
   inherits = ["_common"]
   matrix = {
-    ros_package = ["ros-core", "ros-base", "perception", "simulation", "desktop", "desktop-full"]
+    ros_package = ROS_PACKAGE
   }
   target = ros_package
   tags = [
