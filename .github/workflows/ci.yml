@@ -72,7 +72,7 @@ jobs:
             ruby/3.1/slim-jammy: 'ruby/3.1/slim-jammy/**'
             ruby/3.2/jammy: 'ruby/3.2/jammy/**'
             ruby/3.2/slim-jammy: 'ruby/3.2/slim-jammy/**'
-            shellcheck/shellcheck: 'shellcheck/**'
+            shellcheck: 'shellcheck/**'
             
   # Job to build and test each of the modified images
   build:
