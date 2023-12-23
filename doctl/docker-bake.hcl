@@ -17,7 +17,6 @@ variable "LOCAL_PLATFORM" {
 
 target "_common" {
   args = {
-    DOCTL_VERSION = "${VERSION}"
     DOCTL_URL_AMD64 = "https://github.com/digitalocean/doctl/releases/download/v1.93.1/doctl-1.93.1-linux-amd64.tar.gz"    
     DOCTL_SHA256_AMD64 = "b84c96443815a4ee8857c82eba47e36cec953eb9d3f5c542a2c2ab9868f40f4f"
     DOCTL_URL_ARM64 = "https://github.com/digitalocean/doctl/releases/download/v1.93.1/doctl-1.93.1-linux-arm64.tar.gz"
