@@ -30,7 +30,7 @@ target "_common" {
     "org.opencontainers.image.licenses" = "Apache-2.0"
     "org.opencontainers.image.description" = "Ruby is a dynamic, reflective, object-oriented, general-purpose, open-source programming language."
     "org.opencontainers.image.title" = "${IMAGE_NAME}"
-    "io.boxcutter.image.readme-filepath" = "ruby/README.md"
+    "dev.boxcutter.image.readme-filepath" = "ruby/README.md"
   }
 }
 
