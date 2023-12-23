@@ -22,7 +22,7 @@ target "_common" {
     "org.opencontainers.image.licenses" = "Apache-2.0"
     "org.opencontainers.image.description" = "The Robot Operating System (ROS) is an open source project for building robot applications."
     "org.opencontainers.image.title" = "${IMAGE_NAME}"
-    "io.boxcutter.image.readme-filepath" = "ros/README.md"
+    "dev.boxcutter.image.readme-filepath" = "ros/README.md"
   }
 }
 
