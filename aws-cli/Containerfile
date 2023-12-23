@@ -3,7 +3,7 @@ ARG CONTAINER_REGISTRY=docker.io
 FROM $CONTAINER_REGISTRY/amazonlinux:2 as base
 FROM base as installer
 
-ARG AWS_CLI_VERSION=2.13.28
+ARG AWS_CLI_VERSION
 
 COPY aws-cli.key /tmp/aws-cli/aws-cli.key
 
