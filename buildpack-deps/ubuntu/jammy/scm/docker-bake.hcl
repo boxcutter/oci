@@ -17,7 +17,7 @@ target "_common" {
     "org.opencontainers.image.source" = "https://github.com/boxcutter/oci"
     "org.opencontainers.image.description" = "A collection of common build dependencies used for installing various modules."
     "org.opencontainers.image.title" = "${IMAGE_NAME}"
-    "io.boxcutter.image.readme-filepath" = "buildpack-deps/README.md"
+    "dev.boxcutter.image.readme-filepath" = "buildpack-deps/README.md"
   }
   tags = [
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:jammy-scm",
