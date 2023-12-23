@@ -34,7 +34,7 @@ target "_common" {
     "org.opencontainers.image.licenses" = "Apache-2.0"
     "org.opencontainers.image.description" = "Prometheus node exporter for machine metrics."
     "org.opencontainers.image.title" = "${IMAGE_NAME}"
-    "io.boxcutter.image.readme-filepath" = "prometheus/node_exporter/README.md"
+    "dev.boxcutter.image.readme-filepath" = "prometheus/node_exporter/README.md"
   }
 }
 
