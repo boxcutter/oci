@@ -2,10 +2,10 @@
 ARG CONTAINER_REGISTRY=docker.io
 FROM $CONTAINER_REGISTRY/busybox:1.36.1
 
-ARG CINC_URL_AMD64="http://ftp-osl.osuosl.org/pub/cinc/files/stable/cinc/${VERSION}/el/7/cinc-18.2.7-1.el7.x86_64.rpm"
-ARG CINC_SHA256_AMD64="0b6424931f8ace5fc1010f4c22d63e464f155f5227c6c30d8994b5e0341f6ac3"
-ARG CINC_URL_ARM64="http://ftp-osl.osuosl.org/pub/cinc/files/stable/cinc/${VERSION}/el/7/cinc-18.2.7-1.el7.aarch64.rpm"
-ARG CINC_SHA256_ARM64="4701f352f0571c4386d2978f81b2cda68de124e8dbc553b364c80e710ca94592"
+ARG CINC_URL_AMD64
+ARG CINC_SHA256_AMD64
+ARG CINC_URL_ARM64
+ARG CINC_SHA256_ARM64
 # This argument is automatically populated by BuildKit
 ARG TARGETARCH
 
