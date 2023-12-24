@@ -17,9 +17,6 @@ variable "LOCAL_PLATFORM" {
 
 target "_common" {
   dockerfile = "Containerfile"
-  args = {
-    PORTAINER_VERSION = "${VERSION}"
-  }
   tags = [
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${VERSION}-jammy",
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${join(".", slice(split(".", "${VERSION}"), 0, 1))}-jammy",
@@ -30,7 +27,7 @@ target "_common" {
     "org.opencontainers.image.licenses" = "MIT"
     "org.opencontainers.image.description" = "The PostgreSQL object-relational database system provides reliability and data integrity."
     "org.opencontainers.image.title" = "${IMAGE_NAME}"
-    "io.boxcutter.image.readme-filepath" = "postgres/README.md"
+    "dev.boxcutter.image.readme-filepath" = "postgres/README.md"
   }
 }
 
