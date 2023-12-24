@@ -3,7 +3,7 @@ variable "IMAGE_NAME" {
 }
 
 variable "VERSION" {
-  default = "3.94.2"
+  default = "3.99.0"
 }
 
 variable "CONTAINER_REGISTRY" {
@@ -29,7 +29,7 @@ target "_common" {
     "org.opencontainers.image.licenses" = "Apache-2.0"
     "org.opencontainers.image.description" = "Pulumi CLI container for python."
     "org.opencontainers.image.title" = "${IMAGE_NAME}"
-    "io.boxcutter.image.readme-filepath" = "pulumi/README.md"
+    "dev.boxcutter.image.readme-filepath" = "pulumi/README.md"
   }
 }
 
