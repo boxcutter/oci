@@ -1,4 +1,0 @@
-[container_image]
-name = "texlive"
-tags = ["latest"]
-readme = "texlive/README.md"

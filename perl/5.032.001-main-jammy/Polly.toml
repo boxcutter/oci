@@ -1,4 +1,0 @@
-[container_image]
-name = "perl"
-tags = [ "5.36.0-jammy", "5.36-jammy", "5-jammy", "jammy" ]
-readme = "perl/README.md"

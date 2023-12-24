@@ -1,4 +1,0 @@
-[container_image]
-name = "texlive"
-tags = ["base"]
-readme = "texlive/README.md"
