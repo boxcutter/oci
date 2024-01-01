@@ -1,0 +1,27 @@
+# syntax=docker/dockerfile:1
+ARG CONTAINER_REGISTRY=docker.io
+ARG CONTAINER_NAMESPACE=boxcutter
+FROM $CONTAINER_REGISTRY/$CONTAINER_NAMESPACE/golang:1.21-jammy as build
+
+WORKDIR /usr/src
+
+RUN git clone https://github.com/facebookincubator/go2chef.git
+
+WORKDIR /usr/src/go2chef
+
+RUN <<EOF
+  dpkgArch="$(dpkg --print-architecture)"
+  case "${dpkgArch##*-}" in \
+    amd64) \
+      mkdir -p build/linux
+      GOARCH=amd64 go build -o build/linux/go2chef ./bin
+      ;; \
+    arm64) \
+      mkdir -p build/linux
+      GOARCH=arm64 go build -o build/linux/go2chef ./bin
+      ;;
+  esac
+EOF
+
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20231211.1
+COPY --from=build --chmod=777 /usr/src/go2chef/build/linux/go2chef /usr/local/bin/go2chef
