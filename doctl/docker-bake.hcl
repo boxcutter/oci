@@ -1,5 +1,5 @@
 variable "IMAGE_NAME" {
-  default =  "doctl"
+  default = "doctl"
 }
 
 variable "VERSION" {
