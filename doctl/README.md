@@ -1,4 +1,4 @@
-#  doctl
+# doctl
 
 The command line interface for the Digital Ocean API.
 
