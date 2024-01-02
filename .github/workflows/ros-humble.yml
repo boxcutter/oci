@@ -57,7 +57,7 @@ jobs:
         run: |
           json_data="$(docker buildx bake --print 2>/dev/null)"
           first_build_target=$(echo "$json_data" | jq -r '.target | to_entries[0].value')
-          echo "image_name=$(echo "$first_build_target" | jq -r '.labels.\"org.opencontainers.image.title\"')" >> $GITHUB_ENV
+          echo "image_name=$(echo "$first_build_target" | jq -r '.labels."org.opencontainers.image.title"')" >> $GITHUB_ENV
 
       - name: Get the image description
         if: ${{ github.event_name != 'pull_request' }}
@@ -66,7 +66,7 @@ jobs:
         run: |
           json_data="$(docker buildx bake --print 2>/dev/null)"
           first_build_target=$(echo "$json_data" | jq -r '.target | to_entries[0].value')
-          echo "image_name=$(echo "$first_build_target" | jq -r '.labels.\"org.opencontainers.image.description\"')" >> $GITHUB_ENV
+          echo "image_name=$(echo "$first_build_target" | jq -r '.labels."org.opencontainers.image.description"')" >> $GITHUB_ENV
 
       - name: Get the image readme filepath
         if: ${{ github.event_name != 'pull_request' }}
@@ -75,8 +75,8 @@ jobs:
         run: |
           json_data="$(docker buildx bake --print 2>/dev/null)"
           first_build_target=$(echo "$json_data" | jq -r '.target | to_entries[0].value')
-          if echo "$first_build_target" | jq -e '.labels.\"dev.boxcutter.image.readme-filepath\"' > /dev/null; then
-            readme_filepath=$(echo "$json_data" | jq -r 'labels.\"dev.boxcutter.image.readme-filepath\"')
+          if echo "$first_build_target" | jq -e '.labels."dev.boxcutter.image.readme-filepath"' > /dev/null; then
+            readme_filepath=$(echo "$json_data" | jq -r 'labels."dev.boxcutter.image.readme-filepath"')
             echo "image_readme_filepath=$readme_filepath" >> $GITHUB_ENV
           else
             echo "image_readme_filepath=${PWD##*/}/README.md" >> $GITHUB_ENV
