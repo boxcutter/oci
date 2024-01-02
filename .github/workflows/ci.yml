@@ -70,6 +70,7 @@ jobs:
             python/3.12/jammy: 'python/3.12/jammy/**'
             python/3.12/slim-jammy: 'python/3.12/slim-jammy/**'
             ros/humble/ubuntu/jammy: 'ros/humble/ubuntu/jammy/**'
+            ros/iron/ubuntu/jammy: 'ros/iron/ubuntu/jammy/**'
             ruby/3.1/jammy: 'ruby/3.1/jammy/**'
             ruby/3.1/slim-jammy: 'ruby/3.1/slim-jammy/**'
             ruby/3.2/jammy: 'ruby/3.2/jammy/**'
