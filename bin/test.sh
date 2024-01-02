@@ -10,6 +10,9 @@ BIN_DIR="$(dirname -- "$(readlink -f "${BASH_SOURCE[0]}")")"
 CONTAINERFILE_DIR=$(pwd)
 CINC_PROFILE_DIR="${CONTAINERFILE_DIR}/test"
 
+# Assume we're building one image in this case. Even if we have multiple
+# tags, there shouldn't be any difference between them. So just grab the
+# first tag in the list, as it is as good as any other.
 json_data="$(docker buildx bake local --print 2>/dev/null)"
 DEFAULT_TAG=$(echo "$json_data" | jq -r '.target[] | .tags[0]' | head -n 1)
 
