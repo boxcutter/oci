@@ -69,7 +69,7 @@ jobs:
         id: image_readme_filepath
         shell: bash
         run: |
-          echo "readme_filepath=$($(git rev-parse --show-toplevel)/bin/image-readme.sh)" >> $GITHUB_ENV
+          echo "image_readme_filepath=$($(git rev-parse --show-toplevel)/bin/image-readme.sh)" >> $GITHUB_ENV
         
       - name: Update Docker Hub Description
         if: ${{ github.event_name != 'pull_request' }}
