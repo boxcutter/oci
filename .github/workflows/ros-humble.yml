@@ -55,32 +55,21 @@ jobs:
         id: image_name
         shell: bash
         run: |
-          json_data="$(docker buildx bake --print 2>/dev/null)"
-          first_build_target=$(echo "$json_data" | jq -r '.target | to_entries[0].value')
-          echo "image_name=$(echo "$first_build_target" | jq -r '.labels."org.opencontainers.image.title"')" >> $GITHUB_ENV
+          echo "image_name=$($(git rev-parse --show-toplevel)/bin/image-name.sh)" >> $GITHUB_ENV
 
       - name: Get the image description
         if: ${{ github.event_name != 'pull_request' }}
         id: image_description
         shell: bash
         run: |
-          json_data="$(docker buildx bake --print 2>/dev/null)"
-          first_build_target=$(echo "$json_data" | jq -r '.target | to_entries[0].value')
-          echo "image_description=$(echo "$first_build_target" | jq -r '.labels."org.opencontainers.image.description"')" >> $GITHUB_ENV
+          echo "image_description=$($(git rev-parse --show-toplevel)/bin/image-description.sh)" >> $GITHUB_ENV
 
       - name: Get the image readme filepath
         if: ${{ github.event_name != 'pull_request' }}
         id: image_readme_filepath
         shell: bash
         run: |
-          json_data="$(docker buildx bake --print 2>/dev/null)"
-          first_build_target=$(echo "$json_data" | jq -r '.target | to_entries[0].value')
-          if echo "$first_build_target" | jq -e '.labels."dev.boxcutter.image.readme-filepath"' > /dev/null; then
-            readme_filepath=$(echo "$first_build_target" | jq -r '.labels."dev.boxcutter.image.readme-filepath"')
-            echo "image_readme_filepath=$readme_filepath" >> $GITHUB_ENV
-          else
-            echo "image_readme_filepath=${PWD##*/}/README.md" >> $GITHUB_ENV
-          fi
+          echo "readme_filepath=$($(git rev-parse --show-toplevel)/bin/image-readme.sh)" >> $GITHUB_ENV
         
       - name: Update Docker Hub Description
         if: ${{ github.event_name != 'pull_request' }}
