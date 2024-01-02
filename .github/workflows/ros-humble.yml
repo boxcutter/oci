@@ -76,7 +76,7 @@ jobs:
           json_data="$(docker buildx bake --print 2>/dev/null)"
           first_build_target=$(echo "$json_data" | jq -r '.target | to_entries[0].value')
           if echo "$first_build_target" | jq -e '.labels."dev.boxcutter.image.readme-filepath"' > /dev/null; then
-            readme_filepath=$(echo "$json_data" | jq -r 'labels."dev.boxcutter.image.readme-filepath"')
+            readme_filepath=$(echo "$json_data" | jq -r '.labels."dev.boxcutter.image.readme-filepath"')
             echo "image_readme_filepath=$readme_filepath" >> $GITHUB_ENV
           else
             echo "image_readme_filepath=${PWD##*/}/README.md" >> $GITHUB_ENV
