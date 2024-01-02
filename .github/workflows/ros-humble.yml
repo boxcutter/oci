@@ -57,7 +57,7 @@ jobs:
         run: |
           json_data="$(docker buildx bake --print 2>/dev/null)"
           first_build_target=$(echo "$json_data" | jq -r '.target | to_entries[0].value')
-          echo "image_name=$(echo "$first_build_target" | jq -r 'labels.\"org.opencontainers.image.title\"')" >> $GITHUB_ENV
+          echo "image_name=$(echo "$first_build_target" | jq -r '.labels.\"org.opencontainers.image.title\"')" >> $GITHUB_ENV
 
       - name: Get the image description
         if: ${{ github.event_name != 'pull_request' }}
@@ -66,7 +66,7 @@ jobs:
         run: |
           json_data="$(docker buildx bake --print 2>/dev/null)"
           first_build_target=$(echo "$json_data" | jq -r '.target | to_entries[0].value')
-          echo "image_name=$(echo "$first_build_target" | jq -r 'labels.\"org.opencontainers.image.description\"')" >> $GITHUB_ENV
+          echo "image_name=$(echo "$first_build_target" | jq -r '.labels.\"org.opencontainers.image.description\"')" >> $GITHUB_ENV
 
       - name: Get the image readme filepath
         if: ${{ github.event_name != 'pull_request' }}
@@ -75,7 +75,7 @@ jobs:
         run: |
           json_data="$(docker buildx bake --print 2>/dev/null)"
           first_build_target=$(echo "$json_data" | jq -r '.target | to_entries[0].value')
-          if echo "$first_build_target" | jq -e 'labels.\"dev.boxcutter.image.readme-filepath\"' > /dev/null; then
+          if echo "$first_build_target" | jq -e '.labels.\"dev.boxcutter.image.readme-filepath\"' > /dev/null; then
             readme_filepath=$(echo "$json_data" | jq -r 'labels.\"dev.boxcutter.image.readme-filepath\"')
             echo "image_readme_filepath=$readme_filepath" >> $GITHUB_ENV
           else
@@ -86,8 +86,8 @@ jobs:
         if: ${{ github.event_name != 'pull_request' }}
         uses: peter-evans/dockerhub-description@v3
         with:
-          username: ${{ inputs.dockerhub-username }}
-          password: ${{ inputs.dockerhub-password }}
+          username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
+          password: ${{ secrets.CONTAINER_REGISTRY_PASSWORD }}
           repository: boxcutter/${{ env.image_name }}
           short-description: ${{ env.image_description }}
           readme-filepath: ${{ env.image_readme_filepath }}
