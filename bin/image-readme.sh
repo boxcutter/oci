@@ -8,5 +8,5 @@ if echo "$first_build_target" | jq -e '.labels."dev.boxcutter.image.readme-filep
   readme_filepath=$(echo "$first_build_target" | jq -r '.labels."dev.boxcutter.image.readme-filepath"')
   echo "$readme_filepath"
 else
-  echo "./README.md"
+  echo "$(git rev-parse --show-prefix)README.md"
 fi
