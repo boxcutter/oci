@@ -28,6 +28,8 @@ jobs:
       - name: Build locally for testing
         uses: docker/bake-action@v4
         with:
+          workdir: ros/humble/ubuntu/jammy
+          targets: local
           load: true
 
       - name: Run tests on the image matrix with cinc-auditor
