@@ -1,5 +1,5 @@
 variable "IMAGE_NAME" {
-  default =  "ros"
+  default = "ros"
 }
 
 variable "CONTAINER_REGISTRY" {
