@@ -38,7 +38,8 @@ matrix_test() {
   exit $overall_exit_code
 }
 
-if docker buildx bake --print 2>/dev/null | jq -e '.group' >/dev/null 2>&1; then
+matrix_build=$(docker buildx bake --print 2>/dev/null | jq 'has("group")')
+if [ "${matrix_build}" = 'true' ];  then
   echo "==> Matrix build detected"
   matrix_test
 else
