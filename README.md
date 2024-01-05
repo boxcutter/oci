@@ -121,8 +121,8 @@ $(git rev-parse --show-toplevel)/bin/lint.sh
 # Build the image for testing on the local processor architecture
 docker buildx create --use
 docker buildx bake local --local
-# Run tests on the image with cinc-auditor
-$(git rev-parse --show-toplevel)/bin/test.sh
+# Run tests on the image with cinc-auditor - use wrapper that can handle tests on matrix builds
+$(git rev-parse --show-toplevel)/bin/test-matrix.sh
 # (Optional) build and push the image to the container repository on dockerhub - ideally this should be done via a GitHub Actions workflow and not locally
-docker build bake default
+docker buildx bake default --push
 ```
