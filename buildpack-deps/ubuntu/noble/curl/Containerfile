@@ -2,6 +2,7 @@
 ARG CONTAINER_REGISTRY=docker.io
 FROM $CONTAINER_REGISTRY/ubuntu:noble-20240114
 
+ARG DEBIAN_FRONTEND=noninteractive
 RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
