@@ -1,0 +1,17 @@
+# syntax=docker/dockerfile:1
+ARG CONTAINER_REGISTRY=docker.io
+FROM $CONTAINER_REGISTRY/ubuntu:noble-20240114
+
+RUN set -eux; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
+		ca-certificates \
+		curl \
+		gnupg \
+		netbase \
+		sq \
+		wget \
+# https://bugs.debian.org/929417
+		tzdata \
+	; \
+	rm -rf /var/lib/apt/lists/*
