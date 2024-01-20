@@ -82,10 +82,10 @@ RUN set -ex; \
 	gpgconf --kill all; \
 	rm -rf "$GNUPGHOME"
 
-ENV PG_MAJOR 15
+ENV PG_MAJOR 16
 ENV PATH $PATH:/usr/lib/postgresql/$PG_MAJOR/bin
 
-ENV PG_VERSION 15.5-1.pgdg22.04+1
+ENV PG_VERSION 16.1-1.pgdg22.04+1
 
 # hadolint ignore=DL3003, SC2086
 RUN set -ex; \
@@ -177,7 +177,7 @@ RUN set -eux; \
 	sed -ri "s!^#?(listen_addresses)\s*=\s*\S+.*!\1 = '*'!" /usr/share/postgresql/postgresql.conf.sample; \
 	grep -F "listen_addresses = '*'" /usr/share/postgresql/postgresql.conf.sample
 
-RUN mkdir -p /var/run/postgresql && chown -R postgres:postgres /var/run/postgresql && chmod 2777 /var/run/postgresql
+RUN mkdir -p /var/run/postgresql && chown -R postgres:postgres /var/run/postgresql && chmod 3777 /var/run/postgresql
 
 ENV PGDATA /var/lib/postgresql/data
 # this 1777 will be replaced by 0700 at runtime (allows semi-arbitrary "--user" values)
