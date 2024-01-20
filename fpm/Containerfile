@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 ARG CONTAINER_REGISTRY=docker.io
 
-FROM $CONTAINER_REGISTRY/ubuntu:jammy-20231211.1 as system-ruby
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20240111 as system-ruby
 RUN <<EOF
   apt-get update
   apt-get install --no-install-recommends --no-install-suggests -y \
