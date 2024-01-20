@@ -1,0 +1,58 @@
+ARG CONTAINER_REGISTRY=docker.io
+FROM $CONTAINER_REGISTRY/ubuntu:24.04
+
+# hadolint ignore=DL3015
+RUN <<EOF
+  apt-get update
+  DEBIAN_FRONTEND=noninteractive apt-get -y install \
+    apt-transport-https \
+    apt-utils \
+    curl \
+    dbus \
+    cron \
+    dirmngr \
+    dmidecode \
+    gnupg \
+    iproute2 \
+    iptables \
+    iputils-ping \
+    kmod \
+    less \
+    linux-base \
+    locales \
+    lsb-release \
+    lsof \
+    net-tools \
+    netcat-openbsd \
+    nmap \
+    perl \
+    procps \
+    snapd \
+    strace \
+    sudo \
+    systemd \
+    tcpdump \
+    telnet \
+    tzdata \
+    udev \
+    vim-tiny \
+    wget 
+  apt-get clean
+  apt-get -y autoremove
+  rm -rf /tmp/* /var/tmp/*
+  find /etc/systemd/system \
+    /lib/systemd/system \
+    -path '*.wants/*' \
+    \( -name '*getty*' \
+    -or -name '*apt-daily*' \
+    -or -name '*systemd-timesyncd*' \
+    -or -name '*systemd-logind*' \
+    -or -name '*systemd-vconsole-setup*' \
+    -or -name '*systemd-readahead*' \
+    -or -name '*udev*' \) \
+    -exec rm -v {} \;
+  systemctl set-default multi-user.target
+  systemctl mask dev-hugepages.mount sys-fs-fuse-connections.mount network.service
+EOF
+
+CMD [ "/bin/systemd" ]
