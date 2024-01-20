@@ -3,7 +3,7 @@ variable "IMAGE_NAME" {
 }
 
 variable "VERSION" {
-  default = "18.2.7"
+  default = "18.3.0"
 }
 
 variable "CONTAINER_REGISTRY" {
@@ -17,10 +17,10 @@ variable "LOCAL_PLATFORM" {
 
 target "_common" {
   args = {
-    CINC_URL_AMD64 = "http://ftp-osl.osuosl.org/pub/cinc/files/stable/cinc/${VERSION}/el/7/cinc-18.2.7-1.el7.x86_64.rpm"
-    CINC_SHA256_AMD64 = "0b6424931f8ace5fc1010f4c22d63e464f155f5227c6c30d8994b5e0341f6ac3"
-    CINC_URL_ARM64 = "http://ftp-osl.osuosl.org/pub/cinc/files/stable/cinc/${VERSION}/el/7/cinc-18.2.7-1.el7.aarch64.rpm"
-    CINC_SHA256_ARM64 = "4701f352f0571c4386d2978f81b2cda68de124e8dbc553b364c80e710ca94592"
+    CINC_URL_AMD64 = "http://downloads.cinc.sh/files/stable/cinc/18.3.0/ubuntu/22.04/cinc_18.3.0-1_amd64.deb"
+    CINC_SHA256_AMD64 = "0cb609faf055c3c43a23be755cc869b404df21d91876cad7981a6d2956ef1f7e"
+    CINC_URL_ARM64 = "http://downloads.cinc.sh/files/stable/cinc/18.3.0/ubuntu/22.04/cinc_18.3.0-1_arm64.deb"
+    CINC_SHA256_ARM64 = "db9a4cfbc463697c1e4cea2fc40c32863bc03469c28af86c32a43f21ae8aeb15"
   }
   dockerfile = "Containerfile"
   tags = [
