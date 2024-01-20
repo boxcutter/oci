@@ -33,6 +33,8 @@ jobs:
             buildpack-deps/ubuntu/noble/curl: 'buildpack-deps/ubuntu/noble/curl/**'
             buildpack-deps/ubuntu/noble/scm: 'buildpack-deps/ubuntu/noble/scm/**'
             buildpack-deps/ubuntu/noble: 'buildpack-deps/ubuntu/noble/*'
+            dokken/amazonlinux-2: 'dokken/amazonlinux-2/**'
+            dokken/amazonlinux-2023: 'dokken/amazonlinux-2023/**'
             dokken/centos-7: 'dokken/centos-7/**'
             dokken/centos-stream-9: 'dokken/centos-stream-9/**'
             dokken/oraclelinux-7: 'dokken/oraclelinux-7/**'
