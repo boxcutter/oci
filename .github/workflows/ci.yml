@@ -76,6 +76,8 @@ jobs:
             python/3.11/slim-jammy: 'python/3.11/slim-jammy/**'
             python/3.12/jammy: 'python/3.12/jammy/**'
             python/3.12/slim-jammy: 'python/3.12/slim-jammy/**'
+            redis/7.0/jammy: 'redis/7.0/jammy/**'
+            redis/7.2/jammy: 'redis/7.2/jammy/**'
             ros/humble/ubuntu/jammy: 'ros/humble/ubuntu/jammy/**'
             ros/iron/ubuntu/jammy: 'ros/iron/ubuntu/jammy/**'
             ros/noetic/ubuntu/focal: 'ros/noetic/ubuntu/focal/**'
