@@ -29,6 +29,7 @@ target "_common" {
     "org.opencontainers.image.licenses" = "Apache-2.0"
     "org.opencontainers.image.description" = "Haskell is an advanced purely-functional programming language."
     "org.opencontainers.image.title" = "${IMAGE_NAME}"
+    "dev.boxcutter.image.readme-filepath" = "haskell/README.md"
   }
 }
 
