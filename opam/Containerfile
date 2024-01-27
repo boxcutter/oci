@@ -1,0 +1,71 @@
+#syntax=docker/dockerfile:1
+ARG CONTAINER_REGISTRY=docker.io
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20240111
+
+RUN <<EOF
+  groupadd --gid 1000 opam
+  useradd --uid 1000 --gid opam --create-home opam
+EOF
+
+RUN <<EOF
+  apt-get update
+  apt-get install -y --no-install-recommends \
+    build-essential \
+    ca-certificates \
+    curl \
+    git \
+    rsync \
+    sudo \
+    nano \
+    unzip \
+    vim-tiny \
+    libcap-dev \
+    libx11-dev \
+    bubblewrap
+EOF
+
+# https://discuss.ocaml.org/t/is-16-minutes-normal-to-install-opam-deps-in-a-docker-build/12008/7
+
+ARG OPAM_URL_AMD64="https://github.com/ocaml/opam/releases/download/2.1.5/opam-2.1.5-x86_64-linux"
+ARG OPAM_SHA512_AMD64="3ccad7d4f89d6f781dfce74b30369236109663681df84d3aca41502022ce058a9b77d8fe1b3a301b2c020e8ebb9dce164c3251e08468070ace57391070bb7a71"
+ARG OPAM_URL_ARM64="https://github.com/ocaml/opam/releases/download/2.1.5/opam-2.1.5-arm64-linux"
+ARG OPAM_SHA512_ARM64="fd24154a6c1353279ed85c4acd5e24a3dc31d81c7ed3e292ec9b6bd7825bb248aa70c734d08e63d553d2a9ffff08d1224efc037a39a917402aef7d7e169aa45d"
+
+RUN <<EOF
+  apt-get update
+  apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl
+  dpkgArch="$(dpkg --print-architecture)"
+  case "${dpkgArch##*-}" in \
+    amd64) \
+      OPAM_URL="${OPAM_URL_AMD64}" \
+      OPAM_SHA512="${OPAM_SHA512_AMD64}" \
+      ;; \
+    arm64) \
+      OPAM_URL="${OPAM_URL_ARM64}" \
+      OPAM_SHA512="${OPAM_SHA512_ARM64}" \
+      ;; \
+    *) echo "unsupported architecture"; exit 1 ;; \
+  esac 
+  curl -fsSL -o /tmp/opam ${OPAM_URL}
+  echo "${OPAM_SHA512} /tmp/opam" | sha512sum -c -
+  install -m 755 "/tmp/opam" "/usr/local/bin/opam"
+EOF
+
+USER opam
+WORKDIR /home/opam
+
+RUN <<EOF
+   opam init \
+     --disable-sandboxing \
+     --auto-setup
+   opam switch create 5.1.1
+   eval $(opam env)
+   opam install -y core core_bench utop
+EOF
+
+
+# eval $(opam env --switch=default)
+ENTRYPOINT ["opam", "exec", "--"]
+CMD ["bash"]
