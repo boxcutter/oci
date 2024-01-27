@@ -51,6 +51,7 @@ jobs:
             go2chef: 'go2chef/**'
             golang/1.20/jammy: 'golang/1.20/jammy/**'
             golang/1.21/jammy: 'golang/1.21/jammy/**'
+            haskell/9.8/slim-jammy: 'haskell/9.8/slim-jammy/**'
             jupyter/docker-stacks-foundation: 'jupyter/docker-stacks-foundation/**'
             jupyter/base-notebook: 'jupyter/base-notebook/**'
             jupyter/minimal-notebook: 'jupyter/minimal-notebook/**'
