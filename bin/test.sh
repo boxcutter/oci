@@ -72,7 +72,7 @@ run_cinc_auditor() {
   docker container run -t --rm \
     --mount type=bind,source="${CINC_PROFILE_DIR}",target=/share \
     --mount type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock \
-    "${CINC_AUDITOR_CONTAINER_IMAGE}" exec . --no-create-lockfile --input test_container_image="${TEST_CONTAINER_IMAGE}" -t "docker://${CONTAINER_ID}"
+    "${CINC_AUDITOR_CONTAINER_IMAGE}" exec .  --no-distinct-exit --no-create-lockfile --input test_container_image="${TEST_CONTAINER_IMAGE}" -t "docker://${CONTAINER_ID}"
 }
 
 cleanup_image_under_test() {
