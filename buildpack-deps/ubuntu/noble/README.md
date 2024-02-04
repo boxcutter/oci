@@ -4,7 +4,7 @@ In spirit, `buildpack-deps` is similar to Heroku's stack images. It includes a l
 
 ## Usage Notes
 
-Primary used as a base image:
+Primarily used as a base image:
 
 ```
 FROM docker.io/boxcutter/buildpack-deps:[version]
