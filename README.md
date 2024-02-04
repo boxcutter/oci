@@ -24,6 +24,7 @@ Open container images for robotics, neuromorphic engineering, systems and embedd
 | [redis](https://hub.docker.com/r/boxcutter/redis) | Redis is an open source key-value store that functions as a data structure server. | [redis](https://github.com/boxcutter/oci/tree/main/redis) |
 | [ros](https://hub.docker.com/r/boxcutter/ros) | The Robot Operating System (ROS) is an open source project for building robot applications. | [humble-jammy](https://github.com/boxcutter/oci/tree/main/ros/humble/ubuntu/jammy)<br>[iron-jammy](https://github.com/boxcutter/oci/tree/main/ros/iron/ubuntu/jammy)<br>[noetic-focal](https://github.com/boxcutter/oci/tree/main/ros/noetic/ubuntu/focal)<br>[rolling-jammy](https://github.com/boxcutter/oci/tree/main/ros/rolling/ubuntu/jammy) |
 | [ruby](https://hub.docker.com/r/boxcutter/ruby) | Ruby is a dynamic, reflective, object-oriented, general-purpose, open-source programming language. | [ruby](https://github.com/boxcutter/oci/tree/main/ruby) | 
+| [shellcheck](https://hub.docker.com/r/boxcutter/shellcheck) | Linter for bash/sh shell scripts | [shellcheck](https://github.com/boxcutter/oci/tree/main/shellcheck) |
 
 # Why are you re-publishing some official images?
 
