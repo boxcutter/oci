@@ -1,6 +1,34 @@
 # syntax=docker/dockerfile:1
-ARG CONTAINER_REGISTRY=docker.io/boxcutter
-FROM $CONTAINER_REGISTRY/buildpack-deps:noble-scm
+ARG CONTAINER_REGISTRY=docker.io
+ARG UBUNTU_BASE
+FROM $CONTAINER_REGISTRY/ubuntu:${UBUNTU_BASE} AS curl
+
+RUN set -eux; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
+		ca-certificates \
+		curl \
+		gnupg \
+		netbase \
+		wget \
+# https://bugs.debian.org/929417
+		tzdata \
+	; \
+	rm -rf /var/lib/apt/lists/*
+
+FROM curl AS scm
+
+# procps is very common in build systems, and is a reasonably small package
+RUN apt-get update && apt-get install -y --no-install-recommends \
+		git \
+		mercurial \
+		openssh-client \
+		subversion \
+		\
+		procps \
+	&& rm -rf /var/lib/apt/lists/*
+
+FROM scm AS buildpack-deps
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # hadolint ignore=SC2046

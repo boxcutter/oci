@@ -27,12 +27,7 @@ jobs:
           filters: | 
             aws-cli: 'aws-cli/**'
             black: 'black/**'
-            buildpack-deps/ubuntu/jammy/curl: 'buildpack-deps/ubuntu/jammy/curl/**'
-            buildpack-deps/ubuntu/jammy/scm: 'buildpack-deps/ubuntu/jammy/scm/**'
-            buildpack-deps/ubuntu/jammy: 'buildpack-deps/ubuntu/jammy/*'
-            buildpack-deps/ubuntu/noble/curl: 'buildpack-deps/ubuntu/noble/curl/**'
-            buildpack-deps/ubuntu/noble/scm: 'buildpack-deps/ubuntu/noble/scm/**'
-            buildpack-deps/ubuntu/noble: 'buildpack-deps/ubuntu/noble/*'
+            buildpack-deps/ubuntu: 'buildpack-deps/ubuntu/**'
             dokken/amazonlinux-2: 'dokken/amazonlinux-2/**'
             dokken/amazonlinux-2023: 'dokken/amazonlinux-2023/**'
             dokken/centos-7: 'dokken/centos-7/**'
