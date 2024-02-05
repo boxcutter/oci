@@ -3,7 +3,7 @@ variable "IMAGE_NAME" {
 }
 
 variable "VERSION" {
-  default = "1.103.0"
+  default = "1.104.0"
 }
 
 variable "CONTAINER_REGISTRY" {
@@ -17,10 +17,10 @@ variable "LOCAL_PLATFORM" {
 
 target "_common" {
   args = {
-    DOCTL_URL_AMD64 = "https://github.com/digitalocean/doctl/releases/download/v1.103.0/doctl-1.103.0-linux-amd64.tar.gz"
-    DOCTL_SHA256_AMD64 = "14c9f6984299a80ad3fbe8e9711d503667c203e2768c04cdcde8dcf4a61ca8fe"
-    DOCTL_URL_ARM64 = "https://github.com/digitalocean/doctl/releases/download/v1.103.0/doctl-1.103.0-linux-arm64.tar.gz"
-    DOCTL_SHA256_ARM64 = "e8f923281c274bbc1a60c8ade8a8b5beeb6d9832e8257eeb34a5413e5d8a1ae4"
+    DOCTL_URL_AMD64 = "https://github.com/digitalocean/doctl/releases/download/v1.104.0/doctl-1.104.0-linux-amd64.tar.gz"
+    DOCTL_SHA256_AMD64 = "f758b0c2fb7857db2bd00439155154f2ab8bee71c4f3640f90f64ec35256ca53"
+    DOCTL_URL_ARM64 = "https://github.com/digitalocean/doctl/releases/download/v1.104.0/doctl-1.104.0-linux-arm64.tar.gz"
+    DOCTL_SHA256_ARM64 = "c98ef379b6fb43a342e537cfa45ac90910c8ee4a9bea34105234c1a7652f8fc8"
   }
   dockerfile = "Containerfile"
   tags = [
