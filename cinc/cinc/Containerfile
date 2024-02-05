@@ -24,7 +24,7 @@ RUN <<EOF
      *) echo "unsupported architecture"; exit 1 ;; \
   esac
   wget -q -O /tmp/cinc-client.rpm ${CINC_URL}
-  echo "${CINC_SHA256} cinc-client.deb" | sha256sum -c -
+  echo "${CINC_SHA256} cinc-client.rpm" | sha256sum -c -
   rpm2cpio /tmp/cinc-client.rpm | cpio -idmv
   rm -f /tmp/cinc-client.rpm
 EOF

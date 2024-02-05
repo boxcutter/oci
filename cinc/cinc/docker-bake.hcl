@@ -17,10 +17,10 @@ variable "LOCAL_PLATFORM" {
 
 target "_common" {
   args = {
-    CINC_URL_AMD64 = "http://downloads.cinc.sh/files/stable/cinc/18.4.2/ubuntu/22.04/cinc_18.4.2-1_amd64.deb"
-    CINC_SHA256_AMD64 = "ce16e634d9f5ca41765a233e56f327ed0b1a3a2ac81844956261f6121c896f8e"
-    CINC_URL_ARM64 = "http://downloads.cinc.sh/files/stable/cinc/18.4.2/ubuntu/22.04/cinc_18.4.2-1_arm64.deb"
-    CINC_SHA256_ARM64 = "165dba28364aa45456684578073e32e54d1c1fa3dc69814cc55a8b1332712e34"
+    CINC_URL_AMD64 = "http://downloads.cinc.sh/files/stable/cinc/18.4.2/el/7/cinc-18.4.2-1.el7.aarch64.rpm"
+    CINC_SHA256_AMD64 = "556f9c7f20c943a3c77ce00d1ae0429d8cd15e7ad0800d65c8e3dee899730c61"
+    CINC_URL_ARM64 = "http://downloads.cinc.sh/files/stable/cinc/18.4.2/el/7/cinc-18.4.2-1.el7.x86_64.rpm"
+    CINC_SHA256_ARM64 = "2b7200969af3197eba3975105e0e56f8d06795dd6fc99158d9c259eba95c2057"
   }
   dockerfile = "Containerfile"
   tags = [
