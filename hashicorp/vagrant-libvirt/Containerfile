@@ -1,0 +1,69 @@
+# syntax=docker/dockerfile:1
+ARG CONTAINER_REGISTRY=docker.io
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20240125 as base
+
+FROM base as download
+
+ARG VAGRANT_URL_AMD64
+ARG VAGRANT_SHA256_AMD64
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN <<EOF
+  apt-get update
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl
+  dpkgArch="$(dpkg --print-architecture)"
+  case "${dpkgArch##*-}" in \
+    amd64) \
+      VAGRANT_URL="$VAGRANT_URL_AMD64" \
+      VAGRANT_SHA256="$VAGRANT_SHA256_AMD64" \
+      ;; \
+    *) echo "unsupported architecture"; exit 1 ;; \
+  esac
+  curl -fsSL -o /tmp/vagrant.deb ${VAGRANT_URL}
+  echo "${VAGRANT_SHA256} /tmp/vagrant.deb" | sha256sum -c -
+  dpkg -i /tmp/vagrant.deb
+EOF
+
+RUN <<EOF
+  apt-get update
+  apt-get install -y --no-install-recommends \
+    bash \
+    ca-certificates \
+    curl \
+    git \
+    gosu \
+    iproute2 \
+    kmod \
+    libvirt-clients \
+    openssh-client \
+    qemu-utils \
+    rsync
+  rm -rf /var/lib/apt/lists
+EOF
+
+FROM download as build
+
+RUN <<EOF
+  apt-get update
+  apt-get install -y \
+    build-essential \
+    libvirt-dev
+  rm -rf /var/lib/apt/lists
+EOF
+
+RUN vagrant plugin install vagrant-libvirt
+
+# ENV VAGRANT_HOME /.vagrant.d
+
+FROM download
+
+ENV VAGRANT_HOME /.vagrant.d
+
+COPY --from=build /root/.vagrant.d/gems/3.1.4/ /opt/vagrant/embedded/gems
+COPY --from=build /root/.vagrant.d/plugins.json /opt/vagrant/embedded/plugins.json
+
+COPY entrypoint.sh /usr/local/bin/
+
+ENTRYPOINT ["entrypoint.sh"]
