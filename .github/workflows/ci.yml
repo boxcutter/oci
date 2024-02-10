@@ -58,6 +58,7 @@ jobs:
             pgweb: 'pgweb/**'
             postgres/15/jammy: 'postgres/15/jammy/**'
             postgres/16/jammy: 'postgres/16/jammy/**'
+            prometheus/alertmanager: 'prometheus/alertmanager/**'
             prometheus/blackbox_exporter: 'prometheus/blackbox_exporter/**'
             prometheus/node_exporter: 'prometheus/node_exporter/**'
             prometheus/prometheus: 'prometheus/prometheus/**'
