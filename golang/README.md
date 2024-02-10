@@ -15,7 +15,7 @@ Note: `/go` is world-writable to allow flexibility in the user which runs the co
 The most straightforward way to use this image is to use a Go container as both the build and runtime environment. In your `Dockerfile`, writing something along the lines of the following will compile and run your project (assuming it uses `go.mod` for dependency management):
 
 ```
-FROM golang:1.19-jammy
+FROM golang:1.22-jammy
 
 WORKDIR /usr/src/app
 
