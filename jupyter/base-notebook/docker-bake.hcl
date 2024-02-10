@@ -27,7 +27,7 @@ target "_common" {
     "org.opencontainers.image.licenses" = "Apache-2.0"
     "org.opencontainers.image.description" = "Base Jupyter server applications like Notebook, Jupyter Lab and Jupyter Hub."
     "org.opencontainers.image.title" = "${IMAGE_NAME}"
-    "io.boxcutter.image.readme-filepath" = "jupyter/README.md"
+    "dev.boxcutter.image.readme-filepath" = "jupyter/README.md"
   }
 }
 
