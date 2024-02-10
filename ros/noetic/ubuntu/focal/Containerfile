@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 ARG CONTAINER_REGISTRY=docker.io
 
-FROM $CONTAINER_REGISTRY/ubuntu:focal-20231211 AS base
+FROM $CONTAINER_REGISTRY/ubuntu:focal-20240123 AS base
 
 FROM base AS ros-core
 # setup timezone
