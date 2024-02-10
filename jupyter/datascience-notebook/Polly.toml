@@ -1,5 +1,0 @@
-[container_image]
-name = "jupyter-datascience-notebook"
-tags = [ "lab-3.6.1", "ubuntu-22.04", "python-3.10.9","python-3.10", "hub-3.1.1", "notebook-6.5.2", "julia-1.8.5", "r-4.2.2", "latest" ]
-platforms = ["linux/arm64", "linux/amd64"]
-readme = "jupyter/README.md"

@@ -15,11 +15,11 @@ target "_common" {
   dockerfile = "Containerfile"
   tags = [
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:ubuntu-22.04",
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:notebook-7.0.6",
+    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:notebook-7.0.7",
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:hub-4.0.2",
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:python-3.11",
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:python-3.11.6",
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:lab-4.0.9",
+    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:python-3.11.7",
+    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:lab-4.1.0",
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:tensorflow-2.15.0",
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:latest"
   ]
@@ -28,7 +28,7 @@ target "_common" {
     "org.opencontainers.image.licenses" = "Apache-2.0"
     "org.opencontainers.image.description" = "Jupyter Notebook Deep Learning Stack."
     "org.opencontainers.image.title" = "${IMAGE_NAME}"
-    "io.boxcutter.image.readme-filepath" = "jupyter/README.md"
+    "dev.boxcutter.image.readme-filepath" = "jupyter/README.md"
   }
 }
 
