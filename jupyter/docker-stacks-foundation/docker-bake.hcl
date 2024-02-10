@@ -14,7 +14,7 @@ variable "LOCAL_PLATFORM" {
 target "_common" {
   dockerfile = "Containerfile"
   tags = [
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:python-3.11.6",
+    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:python-3.11.7",
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:python-3.11",
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:ubuntu-22.04",
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:latest"
