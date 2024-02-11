@@ -7,8 +7,7 @@ runtime environment that is part of the upstream vagrant installation and
 the dependencies required for libvirt, as pointed out in
 https://vagrant-libvirt.github.io/vagrant-libvirt/installation#requirements
 
-Unfortunately the image on Dockerhub hasn't been updated in awhile, so this
-image includes more recent versions of Vagrant.
+This image includes recent versions of Vagrant.
 
 This image packages releases from https://github.com/vagrant-libvirt/vagrant-libvirt
 
