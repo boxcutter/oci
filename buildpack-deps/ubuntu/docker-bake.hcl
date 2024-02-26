@@ -21,8 +21,8 @@ variable "VARIANT" {
 
 variable "BUILDTAGS" {
   default = [
-    { name = "jammy", base = "jammy-20240125", version = "22.04" },
-    { name = "noble", base = "noble-20240127.1", version = "24.04" },
+    { name = "jammy", base = "jammy-20240212", version = "22.04" },
+    { name = "noble", base = "noble-20240212", version = "24.04" },
   ]
 }
 
