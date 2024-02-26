@@ -10,7 +10,7 @@ RUN set -eux; \
 		echo 'update: --no-document'; \
 	} >> /usr/local/etc/gemrc
 
-ENV LANG C.UTF-82
+ENV LANG C.UTF-8
 ARG RUBY_VERSION
 ENV RUBY_VERSION=$RUBY_VERSION
 ARG RUBY_DOWNLOAD_URL
