@@ -55,6 +55,8 @@ jobs:
             jupyter/datascience-notebook: 'jupyter/datascience-notebook/**'
             jupyter/tensorflow-notebook: 'jupyter/tensorflow-notebook/**'
             meshcmd: 'meshcmd/**'
+            node/18/jammy: 'node/18/jammy/**'
+            node/20/jammy: 'node/20/jammy/**'
             opam: 'opam/**'
             pgweb: 'pgweb/**'
             postgres/15/jammy: 'postgres/15/jammy/**'

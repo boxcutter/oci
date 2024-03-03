@@ -1,5 +1,0 @@
-[container_image]
-name = "node"
-tags = ["18.17.1-jammy", "18.17-jammy", "18-jammy", "hydrogen-jammy", "lts-jammy"]
-platforms=["linux/arm64","linux/amd64"]
-readme = 'node/README.md'
