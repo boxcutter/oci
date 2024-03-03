@@ -18,12 +18,12 @@ variable "LOCAL_PLATFORM" {
 target "_common" {
   dockerfile = "Containerfile"
   args = {
-    PROMETHEUS_URL_AMD64 = "https://github.com/prometheus/prometheus/releases/download/v2.48.1/prometheus-2.48.1.linux-amd64.tar.gz"
-    PROMETHEUS_SHA256_AMD64 = "5d58b52ccfeff25700bc8d14ecc1235cbf112a05041e3b2f6900d16b44856f6f"
-    PROMETHEUS_URL_ARM64 = "https://github.com/prometheus/prometheus/releases/download/v2.48.1/prometheus-2.48.1.linux-arm64.tar.gz"
-    PROMETHEUS_SHA256_ARM64 = "2348d1e5a5bb94868eb3293ad4be5967619acc111edb3896272ccdf5853cd20b"
-    PROMETHEUS_URL_ARMHF = "https://github.com/prometheus/prometheus/releases/download/v2.48.1/prometheus-2.48.1.linux-armv7.tar.gz"
-    PROMETHEUS_SHA256_ARMHF = "edbe3cb1fc27b048fad28d53d59ca7505f3ea957a4d11b2365e5748d3671b55f"
+    PROMETHEUS_URL_AMD64 = "https://github.com/prometheus/prometheus/releases/download/v2.50.1/prometheus-2.50.1.linux-amd64.tar.gz"
+    PROMETHEUS_SHA256_AMD64 = "936f3777f8c3a4a90d3c58a6f410350d5932c79367b99771d002bd36e48bd05b"
+    PROMETHEUS_URL_ARM64 = "https://github.com/prometheus/prometheus/releases/download/v2.50.1/prometheus-2.50.1.linux-arm64.tar.gz"
+    PROMETHEUS_SHA256_ARM64 = "9f1a65cf08cef3dcd5f0d38d8673ecfaf1054aa9e1e5c18c94efd8546c1fdd96"
+    PROMETHEUS_URL_ARMHF = "https://github.com/prometheus/prometheus/releases/download/v2.50.1/prometheus-2.50.1.linux-armv7.tar.gz"
+    PROMETHEUS_SHA256_ARMHF = "3ec3073dec3dfd874ebe74620b6ed1dc9a030379cdff46ad816a6e95b85316d8"
   }
   tags = [
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${VERSION}",
