@@ -89,6 +89,7 @@ jobs:
             ruby/3.2/slim-jammy: 'ruby/3.2/slim-jammy/**'
             ruby/3.3/jammy: 'ruby/3.3/jammy/**'
             ruby/3.3/slim-jammy: 'ruby/3.3/slim-jammy/**'
+            rust/jammy: 'rust/jammy/**'
             shellcheck: 'shellcheck/**'
             
   # Job to build and test each of the modified images
