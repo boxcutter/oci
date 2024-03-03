@@ -24,7 +24,7 @@ target "_common" {
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${VERSION}-jammy",
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${join(".", slice(split(".", "${VERSION}"), 0, 2))}-jammy",
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${join(".", slice(split(".", "${VERSION}"), 0, 1))}-jammy",
-    "hydrogen-jammy"
+    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:hydrogen-jammy"
   ]
 
   labels = {
