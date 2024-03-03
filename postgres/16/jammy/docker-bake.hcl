@@ -3,7 +3,7 @@ variable "IMAGE_NAME" {
 }
 
 variable "VERSION" {
-  default = "16.1"
+  default = "16.2"
 }
 
 variable "CONTAINER_REGISTRY" {
