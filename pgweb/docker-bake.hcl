@@ -3,7 +3,7 @@ variable "IMAGE_NAME" {
 }
 
 variable "VERSION" {
-  default = "0.14.2"
+  default = "0.14.3"
 }
 
 variable "CONTAINER_REGISTRY" {
@@ -18,12 +18,12 @@ variable "LOCAL_PLATFORM" {
 target "_common" {
   dockerfile = "Containerfile"
   args = {
-    PGWEB_URL_AMD64 = "https://github.com/sosedoff/pgweb/releases/download/v0.14.2/pgweb_linux_amd64.zip"
-    PGWEB_SHA256_AMD64 = "0a35e450f1a7bdf5aa23fe56f5203e5400f47e7fa62d83f6433f7e8a8121de6a"
-    PGWEB_URL_ARM64 = "https://github.com/sosedoff/pgweb/releases/download/v0.14.2/pgweb_linux_arm64.zip"
-    PGWEB_SHA256_ARM64 = "588608795c70d6f75ccacbb0899cc792366deb47d5608545be4bba3c6deba6e3"
-    PGWEB_URL_ARMHF = "https://github.com/sosedoff/pgweb/releases/download/v0.14.2/pgweb_linux_arm_v5.zip"
-    PGWEB_SHA256_ARMHF = "2fdd5e94e78d9ff8bd498aeaf135cfd513cceaab08101b84c9e5ab61b8fb61e1"
+    PGWEB_URL_AMD64 = "https://github.com/sosedoff/pgweb/releases/download/v0.14.3/pgweb_linux_amd64.zip"
+    PGWEB_SHA256_AMD64 = "cb4e8135b1e9da27a8c2f7ab868c6f2df4ff4a4a13f63ffce206e2b9918a2763"
+    PGWEB_URL_ARM64 = "https://github.com/sosedoff/pgweb/releases/download/v0.14.3/pgweb_linux_arm64.zip"
+    PGWEB_SHA256_ARM64 = "749078cb0b164725d3a2cbe5368aa5bedd023b35700a460ed7987dc1dd147973"
+    PGWEB_URL_ARMHF = "https://github.com/sosedoff/pgweb/releases/download/v0.14.3/pgweb_linux_arm_v5.zip"
+    PGWEB_SHA256_ARMHF = "e8aaa56862b5205485da55ffe69a347dbb26bdebef604ff7e5b4c9abc7701667"
   }
   tags = [
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${VERSION}",
