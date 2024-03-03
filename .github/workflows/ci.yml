@@ -57,6 +57,7 @@ jobs:
             meshcmd: 'meshcmd/**'
             node/18/jammy: 'node/18/jammy/**'
             node/20/jammy: 'node/20/jammy/**'
+            node/21/jammy: 'node/21/jammy/**'
             opam: 'opam/**'
             pgweb: 'pgweb/**'
             postgres/15/jammy: 'postgres/15/jammy/**'
