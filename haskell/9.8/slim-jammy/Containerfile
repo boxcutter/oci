@@ -1,53 +1,79 @@
 # syntax=docker/dockerfile:1
 ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/ubuntu:jammy-20240125 AS base
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20240212 AS base
 FROM base AS download-stack
 
-RUN <<EOF
-  apt-get update
-  apt-get install -y --no-install-recommends \
-    ca-certificates \
-    curl
-  dpkgArch="$(dpkg --print-architecture)"
-  case "${dpkgArch##*-}" in \
-    amd64) \
-      STACK_URL='https://github.com/commercialhaskell/stack/releases/download/v2.13.1/stack-2.13.1-linux-x86_64.tar.gz' \
-      STACK_SHA256='45281bb2385e928916ec8bcbc7ab790ce8721bbf805f3d0752544ada22ad5ea3' \
-      ;; \
-    arm64) \
-      STACK_URL='https://github.com/commercialhaskell/stack/releases/download/v2.13.1/stack-2.13.1-linux-aarch64.tar.gz' \
-      STACK_SHA256='37b1dbf39131eea629a6e3685fd1153fdfd2f0cd2179db92bb33784987b4ddb8' \
-      ;; \
-    *) echo "unsupported architecture"; exit 1 ;; \
-  esac
-  curl -fsSL -o /tmp/stack.tar.gz ${STACK_URL}
-  echo "${STACK_SHA256} /tmp/stack.tar.gz" | sha256sum --strict --check -
-  mkdir -p /tmp/stack
-  tar xzvf /tmp/stack.tar.gz -C /tmp/stack --strip-components=1
-EOF
-
-FROM base AS download-cabal
+ARG STACK_URL_AMD64
+ARG STACK_SHA256_AMD64
+ARG STACK_URL_ARM64
+ARG STACK_SHA256_ARM64
+ARG STACK_RELEASE_KEY
 
 RUN <<EOF
   apt-get update
   apt-get install -y --no-install-recommends \
     ca-certificates \
     curl \
+    gnupg
+  dpkgArch="$(dpkg --print-architecture)"
+  case "${dpkgArch##*-}" in \
+    amd64) \
+      STACK_URL="$STACK_URL_AMD64" \
+      STACK_SHA256="$STACK_SHA256_AMD64" \
+      ;; \
+    arm64) \
+      STACK_URL="$STACK_URL_ARM64" \
+      STACK_SHA256="$STACK_SHA256_ARM64" \
+      ;; \
+    *) echo "unsupported architecture"; exit 1 ;; \
+  esac
+  curl -fsSL -o /tmp/stack.tar.gz ${STACK_URL}
+  echo "${STACK_SHA256} /tmp/stack.tar.gz" | sha256sum --strict --check -
+  curl -fsSL -o /tmp/stack.tar.gz.asc "${STACK_URL}.asc";
+  GNUPGHOME="$(mktemp -d)"; export GNUPGHOME
+  gpg --batch --keyserver keyserver.ubuntu.com --receive-keys "$STACK_RELEASE_KEY"
+  gpg --batch --verify /tmp/stack.tar.gz.asc /tmp/stack.tar.gz
+  gpgconf --kill all
+  mkdir -p /tmp/stack
+  tar xzvf /tmp/stack.tar.gz -C /tmp/stack --strip-components=1
+EOF
+
+FROM base AS download-cabal
+
+ARG CABAL_INSTALL_URL_AMD64
+ARG CABAL_INSTALL_SHA256_AMD64
+ARG CABAL_INSTALL_URL_ARM64
+ARG CABAL_INSTALL_SHA256_ARM64
+ARG CABAL_INSTALL_RELEASE_KEY
+
+RUN <<EOF
+  apt-get update
+  apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    gnupg \
     xz-utils
   dpkgArch="$(dpkg --print-architecture)"
   case "${dpkgArch##*-}" in \
     amd64) \
-      CABAL_INSTALL_URL='https://downloads.haskell.org/~cabal/cabal-install-3.10.2.0/cabal-install-3.10.2.0-x86_64-linux-ubuntu20_04.tar.xz' \
-      CABAL_INSTALL_SHA256='c2a8048caa3dbfe021d0212804f7f2faad4df1154f1ff52bd2f3c68c1d445fe1' \
+      CABAL_INSTALL_URL="$CABAL_INSTALL_URL_AMD64" \
+      CABAL_INSTALL_SHA256="$CABAL_INSTALL_SHA256_AMD64" \
       ;; \
     arm64) \
-      CABAL_INSTALL_URL='https://downloads.haskell.org/~cabal/cabal-install-3.10.2.0/cabal-install-3.10.2.0-aarch64-linux-deb11.tar.xz' \
-      CABAL_INSTALL_SHA256='daa767a1b844fbc2bfa0cc14b7ba67f29543e72dd630f144c6db5a34c0d22eb1' \
+      CABAL_INSTALL_URL="$CABAL_INSTALL_URL_ARM64" \
+      CABAL_INSTALL_SHA256="$CABAL_INSTALL_SHA256_ARM64" \
       ;; \
     *) echo "unsupported architecture"; exit 1 ;; \
   esac
   curl -fsSL -o /tmp/cabal-install.tar.gz ${CABAL_INSTALL_URL}
   echo "${CABAL_INSTALL_SHA256} /tmp/cabal-install.tar.gz" | sha256sum --strict --check -
+  curl -fsSL -o /tmp/SHA256SUMS "${CABAL_INSTALL_SHA256SUMS_URL}"
+  curl -fsSL -o /tmp/SHA256SUMS.sig "${CABAL_INSTALL_SHA256SUMS_URL}.sig"
+  GNUPGHOME="$(mktemp -d)"; export GNUPGHOME
+  gpg --batch --keyserver keyserver.ubuntu.com --receive-keys "$CABAL_INSTALL_RELEASE_KEY"
+  gpg --batch --verify /tmp/SHA256SUMS.sig /tmp/SHA256SUMS
+  grep "$CABAL_INSTALL_SHA256" /tmp/SHA256SUMS
+  gpgconf --kill all;
   mkdir -p /tmp/cabal-install
   tar xvf /tmp/cabal-install.tar.gz -C /tmp/cabal-install
 EOF
@@ -55,6 +81,11 @@ EOF
 FROM base AS download-ghc
 
 ARG GHC_VERSION
+ARG GHC_URL_AMD64
+ARG GHC_SHA256_AMD64
+ARG GHC_URL_ARM64
+ARG GHC_SHA256_ARM64
+ARG GHC_RELEASE_KEY
 
 RUN <<EOF
   apt-get update
@@ -63,22 +94,28 @@ RUN <<EOF
     curl \
     gcc \
     g++ \
+    gnupg \
     make \
     xz-utils
   dpkgArch="$(dpkg --print-architecture)"
   case "${dpkgArch##*-}" in \
     amd64) \
-      GHC_URL='https://downloads.haskell.org/~ghc/9.8.1/ghc-9.8.1-x86_64-ubuntu20_04-linux.tar.xz' \
-      GHC_SHA256='436a34dffafdd0fe2019e973805d479b6a0494f7bd1200502efa95a3c73053b1' \
+      GHC_URL="$GHC_URL_AMD64" \
+      GHC_SHA256="$GHC_SHA256_AMD64" \
       ;; \
     arm64) \
-      GHC_URL='https://downloads.haskell.org/~ghc/9.8.1/ghc-9.8.1-aarch64-deb10-linux.tar.xz' \
-      GHC_SHA256='aab7af72614f8bf9ca624407aa4dbc69bc009c2b4cc1a0f3c062008db81bdb95' \
+      GHC_URL="$GHC_URL_ARM64" \
+      GHC_SHA256="$GHC_SHA256_ARM64" \
       ;; \
     *) echo "unsupported architecture"; exit 1 ;; \
   esac
   curl -fsSL -o /tmp/ghc.tar.xz ${GHC_URL}
   echo "${GHC_SHA256} /tmp/ghc.tar.xz" | sha256sum --strict --check -
+  GNUPGHOME="$(mktemp -d)"; export GNUPGHOME
+  curl -fsSL -o /tmp/ghc.tar.xz.sig "${GHC_URL}.sig"
+  gpg --batch --keyserver keyserver.ubuntu.com --receive-keys "$GHC_RELEASE_KEY"
+  gpg --batch --verify /tmp/ghc.tar.xz.sig /tmp/ghc.tar.xz
+  gpgconf --kill all
   mkdir -p /tmp/ghc
   tar xvf /tmp/ghc.tar.xz -C /tmp/ghc --strip-components=1
 EOF
