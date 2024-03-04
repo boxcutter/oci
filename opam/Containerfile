@@ -1,6 +1,6 @@
 #syntax=docker/dockerfile:1
 ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/ubuntu:jammy-20240111
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20240212
 
 RUN <<EOF
   groupadd --gid 1000 opam
