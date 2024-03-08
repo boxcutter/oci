@@ -27,6 +27,10 @@ control 'scm' do
   only_if('scm or buildpack-deps') do
     !input('test_container_image').include?('curl')
   end
+
+  describe command('bzr') do
+    it { should exist }
+  end
   
   describe command('git') do
     it { should exist }
