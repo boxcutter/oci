@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/ubuntu:jammy-20240212
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20240227
 
 RUN set -eux; \
 	apt-get update; \
@@ -51,7 +51,6 @@ RUN set -eux; \
 		libgdbm-compat-dev \
 		libglib2.0-dev \
 		libncurses-dev \
-		libreadline-dev \
 		libxml2-dev \
 		libxslt-dev \
 		make \
@@ -108,6 +107,8 @@ RUN set -eux; \
 	echo '86bc65415fd62cb2272a4df249f39fb79db15617ad05c540e05a22f02eae73b3 *arm64-fix.patch' | sha256sum --check --strict; \
 	patch -p1 -i arm64-fix.patch; \
 	rm arm64-fix.patch; \
+	\
+	autoconf; \
 	gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)"; \
 	./configure \
 		--build="$gnuArch" \
