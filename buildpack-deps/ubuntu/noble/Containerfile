@@ -10,7 +10,7 @@ RUN set -eux; \
 		curl \
 		gnupg \
 		netbase \
-                sq \
+		sq \
 		wget \
 #  https://bugs.debian.org/929417
 		tzdata \
