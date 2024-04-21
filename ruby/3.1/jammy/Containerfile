@@ -61,10 +61,9 @@ RUN set -eux; \
 	apt-mark auto '.*' > /dev/null; \
 	apt-mark manual $savedAptMark > /dev/null; \
 	find /usr/local -type f -executable -not \( -name '*tkinter*' \) -exec ldd '{}' ';' \
-		| awk '/=>/ { print $(NF-1) }' \
-		| sort -u \
-		| grep -vE '^/usr/local/lib/' \
-		| xargs -r sh -c "dpkg-query --search || true" \
+		| awk '/=>/ { so = $(NF-1); if (index(so, "/usr/local/") == 1 || so == "/usr/local/src/ruby/libruby.so.3.1") { next }; gsub("^/(usr/)?", "", so); if (so != "src/ruby/libruby.so.3.1") printf "*%s\n", so }' \
+                | sort -u \
+		| xargs -r dpkg-query --search \
 		| cut -d: -f1 \
 		| sort -u \
 		| xargs -r apt-mark manual \

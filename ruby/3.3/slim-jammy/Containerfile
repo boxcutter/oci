@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/ubuntu:jammy-20240227
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20240405
 
 RUN set -eux; \
 	apt-get update; \
@@ -123,7 +123,7 @@ RUN set -eux; \
 	apt-mark auto '.*' > /dev/null; \
 	apt-mark manual $savedAptMark > /dev/null; \
 	find /usr/local -type f -executable -not \( -name '*tkinter*' \) -exec ldd '{}' ';' \
-		| awk '/=>/ { so = $(NF-1); if (index(so, "/usr/local/") == 1 || so == "/usr/local/src/ruby/libruby.so.3.3") { next }; gsub("^/(usr/)?", "", so); if (so != "src/ruby/libruby.so.3.3") print so }' \
+		| awk '/=>/ { so = $(NF-1); if (index(so, "/usr/local/") == 1 || so == "/usr/local/src/ruby/libruby.so.3.3") { next }; gsub("^/(usr/)?", "", so); if (so != "src/ruby/libruby.so.3.3") printf "*%s\n", so }' \
 		| sort -u \
 		| xargs -r dpkg-query --search \
 		| cut -d: -f1 \
