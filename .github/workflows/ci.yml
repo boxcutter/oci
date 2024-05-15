@@ -45,6 +45,7 @@ jobs:
             erlang/26: 'erlang/26/**'
             flake8: 'flake8/**'
             fpm: 'fpm/**'
+            glab: 'glab/**'
             go2chef: 'go2chef/**'
             golang/1.21/jammy: 'golang/1.21/jammy/**'
             golang/1.22/jammy: 'golang/1.22/jammy/**'

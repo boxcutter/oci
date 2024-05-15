@@ -1,0 +1,100 @@
+# syntax=docker/dockerfile:1
+# Currently there are only amd64 packages, so we install via python for now
+ARG CONTAINER_REGISTRY=docker.io
+FROM $CONTAINER_REGISTRY/ubuntu:noble-20240429 as base
+
+ARG GLAB_URL_AMD64
+ARG GLAB_SHA256_AMD64
+ARG GLAB_URL_ARM64
+ARG GLAB_SHA256_ARM64
+ARG GLAB_URL_ARMHF
+ARG GLAB_SHA256_ARMHF
+ARG DOCKER_URL_AMD64
+ARG DOCKER_URL_ARM64
+ARG DOCKER_URL_ARMHF
+
+FROM base as download
+
+WORKDIR /tmp
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN <<EOF
+  apt-get update
+  apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl
+  dpkgArch="$(dpkg --print-architecture)"
+  case "${dpkgArch##*-}" in \
+    amd64) \
+      GLAB_URL="${GLAB_URL_AMD64}" \
+      GLAB_SHA256="${GLAB_SHA256_AMD64}" \
+      ;; \
+    arm64) \
+      GLAB_URL="${GLAB_URL_ARM64}" \
+      GLAB_SHA256="${GLAB_SHA256_ARM64}" \
+      ;; \
+    armhf) \
+      GLAB_URL="${GLAB_URL_ARMHF}" \
+      GLAB_SHA256="${GLAB_SHA256_ARMHF}" \
+      ;;
+    *) echo "unsupported architecture"; exit 1 ;; \
+  esac 
+  curl -fsSL -o glab.deb ${GLAB_URL}
+  echo "${GLAB_SHA256} glab.deb" | sha256sum -c -
+EOF
+
+RUN <<EOF
+  dpkgArch="$(dpkg --print-architecture)"
+  case "${dpkgArch##*-}" in \
+    amd64) \
+      DOCKER_URL="$DOCKER_URL_AMD64" \
+      ;; \
+    arm64) \
+      DOCKER_URL="$DOCKER_URL_ARM64" \
+      ;;
+    armhf) \
+      DOCKER_URL="$DOCKER_URL_ARMHF" \
+      ;;
+    *) echo "unsupported architecture"; exit 1 ;; \
+  esac
+  curl -fsSL -o docker.tgz  ${DOCKER_URL}
+  tar --extract \
+		--file docker.tgz \
+		--strip-components 1 \
+		--directory /usr/local/bin/ \
+		--no-same-owner \
+		'docker/docker'
+  docker --version 
+EOF
+
+ARG USERNAME=glab
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+ENV HOME /home/$USERNAME
+
+FROM base
+
+COPY --from=download /tmp/glab.deb /tmp/glab.deb
+COPY --from=download /usr/local/bin/docker /usr/local/bin/docker
+COPY entrypoint.sh /entrypoint.sh
+
+RUN <<EOF
+  groupadd --gid "$USER_GID" "$USERNAME"
+  useradd --uid "$USER_UID" --gid "$USER_GID" -m "$USERNAME"
+  mkdir -p "/home/$USERNAME/.config"
+  apt-get update
+  apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    git \
+    jq \
+    openssh-client
+  dpkg -i /tmp/glab.deb
+  rm -rf /var/lib/apt/lists/*
+EOF
+
+ENTRYPOINT ["/entrypoint.sh"]
+USER $USERNAME
+WORKDIR $HOME
+CMD [ "-h" ]
+
