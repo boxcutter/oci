@@ -15,7 +15,7 @@ target "default" {
   tags = [
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${item.version}"
   ]
-  dockerfile = "Containerfile"
+  dockerfile = item.dockerfile
   platforms = ["linux/arm64/v8"]
   labels = {
     "org.opencontainers.image.created" = timestamp()
@@ -25,8 +25,9 @@ target "default" {
   }
   matrix = {
     item = [
-      { version = "35.3.1", release = "r35.3" },
-      { version = "35.4.1", release = "r35.4" },
+      { version = "35.3.1", release = "r35.3", dockerfile = "Containerfile.r35" },
+      { version = "35.4.1", release = "r35.4", dockerfile = "Containerfile.r35" },
+      { version = "36.2.0", release = "r36.2", dockerfile = "Containerfile.r36" },
     ]
   }
 }
