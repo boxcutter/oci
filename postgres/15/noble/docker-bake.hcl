@@ -3,7 +3,7 @@ variable "IMAGE_NAME" {
 }
 
 variable "VERSION" {
-  default = "15.6"
+  default = "15.7"
 }
 
 variable "CONTAINER_REGISTRY" {
@@ -18,8 +18,8 @@ variable "LOCAL_PLATFORM" {
 target "_common" {
   dockerfile = "Containerfile"
   tags = [
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${VERSION}-jammy",
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${join(".", slice(split(".", "${VERSION}"), 0, 1))}-jammy"
+    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${VERSION}-noble",
+    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${join(".", slice(split(".", "${VERSION}"), 0, 1))}-noble"
   ]
   labels = {
     "org.opencontainers.image.source" = "https://github.com/boxcutter/oci"
