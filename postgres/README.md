@@ -26,7 +26,7 @@ This image packages releases from https://github.com/docker-library/postgres
 
 Image source: https://github.com/boxcutter/oci/tree/main/postgres
 
-## How to use this image
+## Basic operation through port forwarding to host
 
 Start an instance
 
@@ -44,7 +44,7 @@ Create an example database
 
 ```
 docker container run \
-  -it \
+  --interactive --tty \
   --env PGPASSWORD=superseekret \
   docker.io/boxcutter/postgres:15-noble psql -h host.docker.internal -p 5432 -U postgres
 psql (15.7 (Ubuntu 15.7-1.pgdg24.04+1))
@@ -72,6 +72,69 @@ postgres=# select * from employees;
     3 | Alice      | Johnson   | alice.johnson@example.com | 2023-03-10
     4 | Bob        | Brown     | bob.brown@example.com     | 2023-04-05
 (4 rows)
+
+postgres=# \q
+```
+
+Stopping container
+
+```
+$ docker container stop db
+# This will remove data
+$ docker container rm db
+```
+
+## Basic operation through user defined bridge networking
+
+Create a user defined bridge network
+
+```
+$ docker network create database-network
+$ docker network ls
+NETWORK ID     NAME               DRIVER    SCOPE
+52101a1b9849   bridge             bridge    local
+05d8de6c671c   database-network   bridge    local
+6a3c6e764f31   host               host      local
+b343fc5c797c   none               null      local
+```
+
+Start an instance on the database network
+
+```
+docker container run \
+    --detach \
+    --name db \
+    --network database-network \
+    --publish 5432:5432 \
+    --env POSTGRES_USER=postgres \
+    --env POSTGRES_PASSWORD=superseekret \
+    docker.io/boxcutter/postgres:15-noble
+```
+
+You'll see the container added to the network in
+`docker network inspect database-network`.
+
+```
+"Containers": {
+    "3ac279eeed5eac25df31113171d6944d67c81a6e871bdc3e7aa0cba1069f70ba": {
+        "Name": "db",
+        ....
+    }
+},
+ ``
+
+Create an example database
+
+You can refer to the main container by name:
+
+```
+docker container run \
+    --interactive --tty \
+    --network database-network \
+    --env PGPASSWORD=superseekret \
+    docker.io/boxcutter/postgres:15-noble psql -h db -p 5432 -U postgres
+psql (15.7 (Ubuntu 15.7-1.pgdg24.04+1))
+Type "help" for help.
 
 postgres=# \q
 ```
