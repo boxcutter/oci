@@ -3,6 +3,7 @@ ARG CONTAINER_REGISTRY=docker.io
 ARG UBUNTU_BASE
 FROM $CONTAINER_REGISTRY/ubuntu:${UBUNTU_BASE} AS curl
 
+# hadolint ignore=DL3009
 RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
@@ -12,27 +13,31 @@ RUN set -eux; \
 		netbase \
 		sq \
 		wget \
-#  https://bugs.debian.org/929417
+# https://bugs.debian.org/929417
 		tzdata \
 	; \
-	rm -rf /var/lib/apt/lists/*
+	apt-get dist-clean
 
 FROM curl AS scm
 
-# procps is very common in build systems, and is a reasonably small package
-RUN apt-get update && apt-get install -y --no-install-recommends \
+# hadolint ignore=DL3009
+RUN set -eux; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
 		git \
 		mercurial \
 		openssh-client \
 		subversion \
 		\
+# procps is very common in build systems, and is a reasonably small package
 		procps \
-	&& rm -rf /var/lib/apt/lists/*
+	; \
+	apt-get dist-clean
 
 FROM scm AS buildpack-deps
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-# hadolint ignore=SC2046
+# hadolint ignore=SC2046,DL3009
 RUN set -ex; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
@@ -78,4 +83,4 @@ RUN set -ex; \
 		xz-utils \
 		zlib1g-dev \
 	; \
-	rm -rf /var/lib/apt/lists/*
+	apt-get dist-clean

@@ -21,7 +21,7 @@ variable "VARIANT" {
 
 variable "BUILDTAGS" {
   default = [
-    { name = "focal", base = "focal-20240416", version = "20.04" },
+    { name = "focal", base = "focal-20240530", version = "20.04" },
   ]
 }
 
