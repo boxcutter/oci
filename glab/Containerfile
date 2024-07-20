@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 # Currently there are only amd64 packages, so we install via python for now
 ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/ubuntu:noble-20240429 as base
+FROM $CONTAINER_REGISTRY/ubuntu:noble-20240605 as base
 
 ARG GLAB_URL_AMD64
 ARG GLAB_SHA256_AMD64
@@ -67,21 +67,13 @@ RUN <<EOF
   docker --version 
 EOF
 
-ARG USERNAME=glab
-ARG USER_UID=1001
-ARG USER_GID=$USER_UID
-ENV HOME /home/$USERNAME
-
 FROM base
 
 COPY --from=download /tmp/glab.deb /tmp/glab.deb
 COPY --from=download /usr/local/bin/docker /usr/local/bin/docker
-COPY entrypoint.sh /entrypoint.sh
+COPY --chmod=744 entrypoint.sh /entrypoint.sh
 
 RUN <<EOF
-  groupadd --gid "$USER_GID" "$USERNAME"
-  useradd --uid "$USER_UID" --gid "$USER_GID" -m "$USERNAME"
-  mkdir -p "/home/$USERNAME/.config"
   apt-get update
   apt-get install -y --no-install-recommends \
     ca-certificates \
@@ -94,7 +86,5 @@ RUN <<EOF
 EOF
 
 ENTRYPOINT ["/entrypoint.sh"]
-USER $USERNAME
-WORKDIR $HOME
 CMD [ "-h" ]
 
