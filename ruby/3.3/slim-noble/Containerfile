@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/ubuntu:jammy-20240627.1
+FROM $CONTAINER_REGISTRY/ubuntu:noble-20240605
 
 RUN set -eux; \
 	apt-get update; \

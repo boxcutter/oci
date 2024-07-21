@@ -91,7 +91,9 @@ jobs:
             ruby/3.2/jammy: 'ruby/3.2/jammy/**'
             ruby/3.2/slim-jammy: 'ruby/3.2/slim-jammy/**'
             ruby/3.3/jammy: 'ruby/3.3/jammy/**'
+            ruby/3.3/noble: 'ruby/3.3/noble/**'
             ruby/3.3/slim-jammy: 'ruby/3.3/slim-jammy/**'
+            ruby/3.3/slim-noble: 'ruby/3.3/slim-noble/**'
             rust/jammy: 'rust/jammy/**'
             shellcheck: 'shellcheck/**'
             
