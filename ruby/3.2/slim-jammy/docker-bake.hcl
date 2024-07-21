@@ -3,7 +3,7 @@ variable "IMAGE_NAME" {
 }
 
 variable "VERSION" {
-  default = "3.2.3"
+  default = "3.2.4"
 }
 
 variable "CONTAINER_REGISTRY" {
@@ -18,15 +18,15 @@ variable "LOCAL_PLATFORM" {
 target "_common" {
   args = {
     RUBY_VERSION = "${VERSION}"
-    RUBY_DOWNLOAD_URL = "https://cache.ruby-lang.org/pub/ruby/3.2/ruby-3.2.3.tar.xz"
-    RUBY_DOWNLOAD_SHA256 = "cfb231954b8c241043a538a4c682a1cca0b2016d835fee0b9e4a0be3ceba476b"
+    RUBY_DOWNLOAD_URL = "https://cache.ruby-lang.org/pub/ruby/3.2/ruby-3.2.4.tar.xz"
+    RUBY_DOWNLOAD_SHA256 = "e7f1653d653232ec433472489a91afbc7433c9f760cc822defe7437c9d95791b"
   }
   dockerfile = "Containerfile"
   tags = [
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:slim-jammy",
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:3-slim-jammy",
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${VERSION}-slim-jammy",
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${join(".", slice(split(".", "${VERSION}"), 0, 2))}-slim-jammy",
+    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:slim-noble",
+    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:3-slim-noble",
+    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${VERSION}-slim-noble",
+    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${join(".", slice(split(".", "${VERSION}"), 0, 2))}-slim-noble",
   ]
   labels = {
     "org.opencontainers.image.source" = "https://github.com/boxcutter/oci"
