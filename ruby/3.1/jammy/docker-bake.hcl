@@ -3,7 +3,7 @@ variable "IMAGE_NAME" {
 }
 
 variable "VERSION" {
-  default = "3.1.4"
+  default = "3.1.6"
 }
 
 variable "CONTAINER_REGISTRY" {
@@ -18,7 +18,8 @@ variable "LOCAL_PLATFORM" {
 target "_common" {
   args = {
     RUBY_VERSION = "${VERSION}"
-    RUBY_DOWNLOAD_SHA256 = "1b6d6010e76036c937b9671f4752f065aeca800a6c664f71f6c9a699453af94f"
+    RUBY_DOWNLOAD_URL = "https://cache.ruby-lang.org/pub/ruby/3.1/ruby-3.1.6.tar.xz"
+    RUBY_DOWNLOAD_SHA256 = "597bd1849f252d8a6863cb5d38014ac54152b508c36dca156f6356a9e63c6102"
   }
   dockerfile = "Containerfile"
   tags = [
