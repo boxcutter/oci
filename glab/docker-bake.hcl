@@ -3,7 +3,7 @@ variable "IMAGE_NAME" {
 }
 
 variable "VERSION" {
-  default = "1.43.0"
+  default = "1.44.1"
 }
 
 variable "CONTAINER_REGISTRY" {
@@ -18,15 +18,15 @@ variable "LOCAL_PLATFORM" {
 target "_common" {
   args = {
     MDL_VERSION = "${VERSION}"
-    GLAB_URL_AMD64 = "https://gitlab.com/gitlab-org/cli/-/releases/v1.43.0/downloads/glab_1.43.0_Linux_x86_64.deb"
-    GLAB_SHA256_AMD64 = "a2e93b8afc029ca580c206911eb9edd9ec0ed1a70ad138e47380f0aebb0a67b4"
-    GLAB_URL_ARM64 = "https://gitlab.com/gitlab-org/cli/-/releases/v1.43.0/downloads/glab_1.43.0_Linux_arm64.deb"
-    GLAB_SHA256_ARM64 = "fb35cadf249f002b8eb62214413b9bc1e61a6b84ecde6b301979c9a44a68a421"
-    GLAB_URL_ARMHF = "https://gitlab.com/gitlab-org/cli/-/releases/v1.43.0/downloads/glab_1.43.0_Linux_arm.deb"
-    GLAB_SHA256_ARMHF = "a8d6e5f623196d43e844632521306a0d5eff4873276d9178b88a9cc92449f442"
-    DOCKER_URL_AMD64 = "https://download.docker.com/linux/static/stable/x86_64/docker-27.0.3.tgz"
-    DOCKER_URL_ARM64 = "https://download.docker.com/linux/static/stable/aarch64/docker-27.0.3.tgz"
-    DOCKER_URL_ARMHF = "https://download.docker.com/linux/static/stable/armhf/docker-27.0.3.tgz"
+    GLAB_URL_AMD64 = "https://gitlab.com/gitlab-org/cli/-/releases/v1.44.1/downloads/glab_1.44.1_Linux_x86_64.deb"
+    GLAB_SHA256_AMD64 = "b3615a936d0d971ee2591418ed916076e2e6582aeb20dcf17cbbffc8317f7e06"
+    GLAB_URL_ARM64 = "https://gitlab.com/gitlab-org/cli/-/releases/v1.44.1/downloads/glab_1.44.1_Linux_arm64.deb"
+    GLAB_SHA256_ARM64 = "2e915e3be48b0440f95b40731954bdd9c46f2718502e506bbd2d61b965dd9ef7"
+    GLAB_URL_ARMHF = "https://gitlab.com/gitlab-org/cli/-/releases/v1.44.1/downloads/glab_1.44.1_Linux_arm.deb"
+    GLAB_SHA256_ARMHF = "b5b3987335e663f5da7cd4b8c41a90f19a197a281660abc909262d18cb17942c"
+    DOCKER_URL_AMD64 = "https://download.docker.com/linux/static/stable/x86_64/docker-27.1.1.tgz"
+    DOCKER_URL_ARM64 = "https://download.docker.com/linux/static/stable/aarch64/docker-27.1.1.tgz"
+    DOCKER_URL_ARMHF = "https://download.docker.com/linux/static/stable/armhf/docker-27.1.1.tgz"
   }
   dockerfile = "Containerfile"
   tags = [
