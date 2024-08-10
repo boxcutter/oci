@@ -29,5 +29,6 @@ RUN <<EOF
   rm -f /tmp/cinc-client.rpm
 EOF
 
+WORKDIR /
 # VOLUME [ "/opt/cinc" ]
 VOLUME /opt/cinc
