@@ -29,4 +29,5 @@ RUN <<EOF
   rm -f /tmp/cinc-client.rpm
 EOF
 
-VOLUME [ "/opt/cinc" ]
+# VOLUME [ "/opt/cinc" ]
+VOLUME /opt/cinc
