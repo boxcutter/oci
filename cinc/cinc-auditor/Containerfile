@@ -1,8 +1,8 @@
 # syntax=docker/dockerfile:1
 ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/ubuntu:noble-20240605 as base
+FROM $CONTAINER_REGISTRY/ubuntu:noble-20240605 AS base
 
-FROM base as download
+FROM base AS download
 
 ARG CINC_AUDITOR_URL_AMD64
 ARG CINC_AUDITOR_SHA256_AMD64
