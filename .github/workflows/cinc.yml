@@ -7,11 +7,11 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'cinc/cinc/**'
+      - 'dokken/cinc/**'
   pull_request:
     branches: [ main ]
     paths:
-      - 'cinc/cinc/**'
+      - 'dokken/cinc/**'
   workflow_dispatch:
 jobs:
   build:
@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: boxcutter/container-build-publish-action@main
         with:
-          workdir: cinc/cinc
+          workdir: dokken/cinc
           dockerhub-username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
           dockerhub-password: ${{ secrets.CONTAINER_DESCRIPTION_PASSWORD }}
           test-image: "docker.io/boxcutter/cinc:current"
