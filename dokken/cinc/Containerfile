@@ -1,5 +1,9 @@
 # syntax=docker/dockerfile:1
 ARG CONTAINER_REGISTRY=docker.io
+# Because this is a data container and is never run, only mounted via
+# the --volumes-from parameter, the operating system type doesn't matter.
+# So we use busybox, a really small distro, with just enough support to
+# be able to download and install the binaries for cinc.
 FROM $CONTAINER_REGISTRY/busybox:1.36.1
 
 ARG CINC_URL_AMD64
@@ -36,6 +40,10 @@ RUN <<EOF
     echo "Failed to download the file after $max_attempts attempts."
   fi
   echo "${CINC_SHA256} /tmp/cinc-client.rpm" | sha256sum -c -
+  # Since busybox includes tools to extract rpm packages, we fetch the rpm
+  # package for cinc-client. However since this is a data volume and this
+  # container never actually runs, this will work with any OS distro, as it
+  # is just serving the binaries to run on other OS, like an NFS mount.
   rpm2cpio /tmp/cinc-client.rpm | cpio -idmv
   rm -f /tmp/cinc-client.rpm
 EOF
