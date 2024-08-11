@@ -36,6 +36,7 @@ jobs:
             dokken/centos-stream-9: 'dokken/centos-stream-9/**'
             dokken/debian-11: 'dokken/debian-11/**'
             dokken/debian-12: 'dokken/debian-12/**'
+            dokken/eurolinux-9: 'dokken/eurolinux-9/**'
             dokken/oraclelinux-7: 'dokken/oraclelinux-7/**'
             dokken/oraclelinux-8: 'dokken/oraclelinux-8/**'
             dokken/oraclelinux-9: 'dokken/oraclelinux-9/**'
