@@ -7,7 +7,7 @@ Open container images for robotics, neuromorphic engineering, systems and embedd
 | --- | --- | --- |
 | [aws-cli](https://hub.docker.com/r/boxcutter/aws-cli) | Amazon Web Services Command-Line Interface | [aws-cli](https://github.com/boxcutter/oci/tree/main/aws-cli) |
 | [black](https://hub.docker.com/r/boxcutter/black) | Black is the uncompromising Python code formatter | [black](https://github.com/boxcutter/oci/tree/main/black) |
-| [cinc-auditor](https://hub.docker.com/r/boxcutter/cinc-auditor) | Cinc Auditor is built from Chef InSpec, an open-source framework for testing and auditing applications and infrastructure | [cinc-audictor](https://github.com/boxcutter/oci/tree/main/cinc/cinc-auditor) |
+| [cinc-auditor](https://hub.docker.com/r/boxcutter/cinc-auditor) | Cinc Auditor is built from Chef InSpec, an open-source framework for testing and auditing applications and infrastructure | [cinc-auditor](https://github.com/boxcutter/oci/tree/main/cinc/cinc-auditor) |
 | [doctl](https://hub.docker.com/r/boxcutter/doctl) | Digital Ocean command-line interface | [doctl](https://github.com/boxcutter/oci/tree/main/doctl) |
 | [flake8](https://hub.docker.com/r/boxcutter/flake8) | Flake8: Your Tool For Style Guide Enforcement | [flake8](https://github.com/boxcutter/oci/tree/main/flake8) |
 | [fpm](https://hub.docker.com/r/boxcutter/fpm) | fpm Packaging made simple | [fpm](https://github.com/boxcutter/oci/tree/main/fpm) |
