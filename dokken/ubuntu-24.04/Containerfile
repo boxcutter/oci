@@ -23,7 +23,6 @@ RUN <<EOF
     lsb-release \
     lsof \
     net-tools \
-    netcat-openbsd \
     nmap \
     perl \
     procps \
