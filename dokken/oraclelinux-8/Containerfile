@@ -4,7 +4,7 @@ FROM $CONTAINER_REGISTRY/oraclelinux:8
 # hadolint ignore=DL3041
 RUN <<EOF
   dnf -y install \
-    binutils \
+	binutils \
 	ca-certificates \
 	cronie \
 	curl \
