@@ -26,6 +26,7 @@ Open container images for robotics, neuromorphic engineering, systems and embedd
 | [ros](https://hub.docker.com/r/boxcutter/ros) | The Robot Operating System (ROS) is an open source project for building robot applications. | [humble-jammy](https://github.com/boxcutter/oci/tree/main/ros/humble/ubuntu/jammy)<br>[iron-jammy](https://github.com/boxcutter/oci/tree/main/ros/iron/ubuntu/jammy)<br>[noetic-focal](https://github.com/boxcutter/oci/tree/main/ros/noetic/ubuntu/focal)<br>[rolling-jammy](https://github.com/boxcutter/oci/tree/main/ros/rolling/ubuntu/jammy) |
 | [ruby](https://hub.docker.com/r/boxcutter/ruby) | Ruby is a dynamic, reflective, object-oriented, general-purpose, open-source programming language. | [ruby](https://github.com/boxcutter/oci/tree/main/ruby) | 
 | [shellcheck](https://hub.docker.com/r/boxcutter/shellcheck) | Linter for bash/sh shell scripts | [shellcheck](https://github.com/boxcutter/oci/tree/main/shellcheck) |
+| [ubuntu-autoinstall](https://hub.docker.com/r/boxcutter/ubuntu-autoinstall) | Create Ubuntu autoinstall images/ISOs | [ubuntu-autoinstall](https://github.com/boxcutter/oci/tree/main/ubuntu-autoinstall) |
 
 # Why are you re-publishing some official images?
 

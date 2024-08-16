@@ -1,0 +1,17 @@
+# syntax=docker/dockerfile:1
+ARG CONTAINER_REGISTRY=docker.io
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20240801
+
+RUN <<EOF
+  apt-get update
+  apt-get install -y --no-install-recommends \
+    fdisk \
+    xorriso
+EOF
+
+COPY image-create.sh /app/
+
+VOLUME /data
+WORKDIR /data
+
+ENTRYPOINT [ "/app/image-create.sh" ]

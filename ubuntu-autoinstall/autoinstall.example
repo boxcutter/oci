@@ -1,0 +1,15 @@
+#cloud-config
+autoinstall:
+  version: 1
+  user-data: # cloud-init starts here
+    users:
+      - name: automat
+        uid: 63112
+        primary_group: users
+        groups: users
+        shell: /bin/bash
+        plain_text_passwd: superseekret
+        sudo: ALL=(ALL) NOPASSWD:ALL
+        lock_passwd: False
+    chpasswd: { expire: False }
+    ssh_pwauth: True

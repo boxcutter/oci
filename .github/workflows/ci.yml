@@ -105,6 +105,7 @@ jobs:
             ruby/3.3/slim-noble: 'ruby/3.3/slim-noble/**'
             rust/jammy: 'rust/jammy/**'
             shellcheck: 'shellcheck/**'
+            ubuntu-autoinstall: 'ubuntu-autoinstall/**'
             
   # Job to build and test each of the modified images
   build:
