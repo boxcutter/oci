@@ -17,9 +17,9 @@ variable "LOCAL_PLATFORM" {
 
 target "_common" {
   args = {
-    CINC_URL_AMD64 = "https://ftp.osuosl.org/pub/cinc/files/stable/cinc/18.5.0/el/8/cinc-18.5.0-1.el8.x86_64.rpm"
+    CINC_URL_AMD64 = "http://ftp.osuosl.org/pub/cinc/files/stable/cinc/18.5.0/el/8/cinc-18.5.0-1.el8.x86_64.rpm"
     CINC_SHA256_AMD64 = "decc830c6111a907aea81d62d21059e76695397e236cf6e4ea53e0d9e6df5af0"
-    CINC_URL_ARM64 = "https://ftp.osuosl.org/pub/cinc/files/stable/cinc/18.5.0/el/8/cinc-18.5.0-1.el8.aarch64.rpm"
+    CINC_URL_ARM64 = "http://ftp.osuosl.org/pub/cinc/files/stable/cinc/18.5.0/el/8/cinc-18.5.0-1.el8.aarch64.rpm"
     CINC_SHA256_ARM64 = "3b8d728af8c3b6b3bec7eee088e45143194deadbb3adbcc58d652e2a90f30e54"
   }
   dockerfile = "Containerfile"
