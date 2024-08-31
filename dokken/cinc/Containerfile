@@ -44,7 +44,7 @@ RUN <<EOF
   # package for cinc-client. However since this is a data volume and this
   # container never actually runs, this will work with any OS distro, as it
   # is just serving the binaries to run on other OS, like an NFS mount.
-  rpm2cpio /tmp/cinc-client.rpm | cpio -idmv
+  rpm2cpio /tmp/cinc-client.rpm | cpio -idm
   rm -f /tmp/cinc-client.rpm
 EOF
 
