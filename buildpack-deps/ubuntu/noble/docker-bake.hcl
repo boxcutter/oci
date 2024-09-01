@@ -1,9 +1,9 @@
 variable "IMAGE_NAME" {
-  default = "buildpack-deps"
+  default = "boxcutter/buildpack-deps"
 }
 
 variable "CONTAINER_REGISTRY" {
-  default = "docker.io/boxcutter"
+  default = "docker.io"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
@@ -21,11 +21,14 @@ variable "VARIANT" {
 
 variable "BUILDTAGS" {
   default = [
-    { name = "noble", base = "noble-20240605", version = "24.04" },
+    { name = "noble", base = "noble-20240801", version = "24.04" },
   ]
 }
 
 target "_common" {
+  args = {
+    CONTAINER_REGISTRY = "${CONTAINER_REGISTRY}"
+  }
   dockerfile = "Containerfile"
   labels = {
     "org.opencontainers.image.source" = "https://github.com/boxcutter/oci"
