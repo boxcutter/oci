@@ -21,6 +21,7 @@ target "_common" {
     CINC_AUDITOR_SHA256_AMD64 = "a374920fad620aa5c738592bac14e6c31b876615f8566943b5f049a16296a483"
     CINC_AUDITOR_URL_ARM64 = "http://ftp.osuosl.org/pub/cinc/files/stable/cinc-auditor/6.8.1/ubuntu/24.04/cinc-auditor_6.8.1-1_arm64.deb"
     CINC_AUDITOR_SHA256_ARM64 = "d32c1b8b6bd45ed44b434512b39f29b42819393960cfee2cb70fe50a17d04097"
+    CONTAINER_REGISTRY = "${CONTAINER_REGISTRY}"
   }
   dockerfile = "Containerfile"
   tags = [
