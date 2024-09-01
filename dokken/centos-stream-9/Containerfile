@@ -1,5 +1,5 @@
-ARG CONTAINER_REGISTRY=quay.io
-FROM $CONTAINER_REGISTRY/centos/centos:stream9
+ARG BASE_IMAGE="quay.io/centos/centos:stream9"
+FROM ${BASE_IMAGE}
 
 # NOTE: CentOS Stream 9 is still under heavy development
 # hadolint ignore=DL3041

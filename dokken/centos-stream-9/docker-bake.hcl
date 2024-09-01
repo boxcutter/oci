@@ -1,9 +1,9 @@
 variable "IMAGE_NAME" {
-  default =  "dokken-centos-stream-9"
+  default =  "boxcutter/dokken-centos-stream-9"
 }
 
 variable "CONTAINER_REGISTRY" {
-  default = "docker.io/boxcutter"
+  default = "docker.io"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
@@ -12,6 +12,10 @@ variable "LOCAL_PLATFORM" {
 }
 
 target "_common" {
+  args = {
+    CONTAINER_REGISTRY = "${CONTAINER_REGISTRY}"
+    BASE_IMAGE = "quay.io/centos/centos:stream9"
+  }
   dockerfile = "Containerfile"
   tags = [
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:latest"
