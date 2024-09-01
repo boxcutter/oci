@@ -1,7 +1,12 @@
 # syntax=docker/dockerfile:1
-ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/ubuntu:jammy-20240212 as base
+ARG CONTAINER_REGISTRY
+FROM $CONTAINER_REGISTRY/ubuntu:noble-20240801 as base
 FROM base as download
+
+ARG HADOLINT_URL_AMD64
+ARG HADOLINT_SHA256_AMD64
+ARG HADOLINT_URL_ARM64
+ARG HADOLINT_SHA256_ARM64
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN <<EOF
@@ -14,12 +19,12 @@ RUN <<EOF
   dpkgArch="$(dpkg --print-architecture)"
   case "${dpkgArch##*-}" in \
     amd64) \
-      HADOLINT_URL=https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64 \
-      HADOLINT_SHA256='56de6d5e5ec427e17b74fa48d51271c7fc0d61244bf5c90e828aab8362d55010' \
+      HADOLINT_URL="${HADOLINT_URL_AMD64}" \
+      HADOLINT_SHA256="${HADOLINT_SHA256_AMD64}" \
       ;; \
     arm64) \
-      HADOLINT_URL=https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-arm64 \
-      HADOLINT_SHA256='5798551bf19f33951881f15eb238f90aef023f11e7ec7e9f4c37961cb87c5df6' \
+      HADOLINT_URL="${HADOLINT_URL_ARM64}" \
+      HADOLINT_SHA256="${HADOLINT_SHA256_ARM64}" \
       ;; \
     *) echo "unsupported architecture"; exit 1 ;; \
   esac
