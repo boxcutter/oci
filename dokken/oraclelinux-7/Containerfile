@@ -1,5 +1,5 @@
-ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/oraclelinux:7
+ARG CONTAINER_REGISTRY${CONTAINER_REGISTRY:-docker.io}
+FROM ${CONTAINER_REGISTRY:-docker.io}/oraclelinux:7
 
 RUN <<EOF
   yum -y install \

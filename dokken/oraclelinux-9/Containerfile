@@ -1,5 +1,5 @@
-ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/oraclelinux:9
+ARG CONTAINER_REGISTRY${CONTAINER_REGISTRY:-docker.io}
+FROM ${CONTAINER_REGISTRY:-docker.io}/oraclelinux:9
 
 # hadolint ignore=DL3041
 RUN <<EOF

@@ -1,9 +1,9 @@
 variable "IMAGE_NAME" {
-  default = "dokken-debian-11"
+  default = "boxcutter/dokken-debian-11"
 }
 
 variable "CONTAINER_REGISTRY" {
-  default = "docker.io/boxcutter"
+  default = "docker.io"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
@@ -12,6 +12,9 @@ variable "LOCAL_PLATFORM" {
 }
 
 target "_common" {
+  args = {
+    CONTAINER_REGISTRY = "${CONTAINER_REGISTRY}"
+  }
   dockerfile = "Containerfile"
   tags = [
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:latest"
