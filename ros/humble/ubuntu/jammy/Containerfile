@@ -1,9 +1,24 @@
 # syntax=docker/dockerfile:1
-ARG CONTAINER_REGISTRY=docker.io
+ARG CONTAINER_REGISTRY
 
-FROM $CONTAINER_REGISTRY/ubuntu:jammy-20240125 AS base
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20240808 AS base
 
-FROM base AS ros-core
+FROM base AS download
+
+ARG ROS_PACKAGES_URI
+ARG RAW_GITHUBUSERCONTENT_BASE_URL
+
+# download gpg key
+RUN <<EOF
+  apt-get update
+  apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl
+  curl -sSL "${RAW_GITHUBUSERCONTENT_BASE_URL}/ros/rosdistro/master/ros.key" \
+    -o /usr/share/keyrings/ros2-latest-archive-keyring.gpg
+EOF
+
+FROM download AS ros-core
 
 # setup timezone
 RUN echo 'Etc/UTC' > /etc/timezone && \
@@ -19,10 +34,7 @@ RUN apt-get update && apt-get install -q -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # setup sources.list
-RUN echo "deb http://packages.ros.org/ros2/ubuntu jammy main" > /etc/apt/sources.list.d/ros2-latest.list
-
-# setup keys
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+RUN echo "deb [ signed-by=/usr/share/keyrings/ros2-latest-archive-keyring.gpg ] ${ROS_PACKAGES_URI} jammy main" > /etc/apt/sources.list.d/ros2-latest.list
 
 # setup environment
 ENV LANG C.UTF-8
@@ -59,10 +71,10 @@ RUN rosdep init && \
 
 # setup colcon mixin and metadata
 RUN colcon mixin add default \
-      https://raw.githubusercontent.com/colcon/colcon-mixin-repository/master/index.yaml && \
+      "${RAW_GITHUBUSERCONTENT_BASE_URL}/colcon/colcon-mixin-repository/master/index.yaml" && \
     colcon mixin update && \
     colcon metadata add default \
-      https://raw.githubusercontent.com/colcon/colcon-metadata-repository/master/index.yaml && \
+      "${RAW_GITHUBUSERCONTENT_BASE_URL}/colcon/colcon-metadata-repository/master/index.yaml" && \
     colcon metadata update
 
 # install ros2 packages

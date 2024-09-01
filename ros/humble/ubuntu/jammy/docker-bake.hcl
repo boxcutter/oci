@@ -1,9 +1,9 @@
 variable "IMAGE_NAME" {
-  default =  "ros"
+  default =  "boxcutter/ros"
 }
 
 variable "CONTAINER_REGISTRY" {
-  default = "docker.io/boxcutter"
+  default = "docker.io"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
@@ -16,6 +16,11 @@ variable "ROS_PACKAGE" {
 }
 
 target "_common" {
+  args = {
+    CONTAINER_REGISTRY = "${CONTAINER_REGISTRY}"
+    ROS_PACKAGES_URI = "http://packages.ros.org/ros2/ubuntu"
+    RAW_GITHUBUSERCONTENT_BASE_URL = "https://raw.githubusercontent.com"
+  }
   dockerfile = "Containerfile"
   labels = {
     "org.opencontainers.image.source" = "https://github.com/boxcutter/oci"
