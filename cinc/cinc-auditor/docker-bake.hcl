@@ -1,5 +1,5 @@
 variable "IMAGE_NAME" {
-  default = "cinc-auditor"
+  default = "boxcutter/cinc-auditor"
 }
 
 variable "VERSION" {
@@ -7,7 +7,7 @@ variable "VERSION" {
 }
 
 variable "CONTAINER_REGISTRY" {
-  default = "docker.io/boxcutter"
+  default = "docker.io"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
