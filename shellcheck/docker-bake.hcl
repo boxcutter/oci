@@ -1,13 +1,13 @@
 variable "IMAGE_NAME" {
-  default = "shellcheck"
+  default = "boxcutter/shellcheck"
 }
 
 variable "VERSION" {
-  default = "0.9.0"
+  default = "0.10.0"
 }
 
 variable "CONTAINER_REGISTRY" {
-  default = "docker.io/boxcutter"
+  default = "docker.io"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
@@ -17,9 +17,10 @@ variable "LOCAL_PLATFORM" {
 
 target "_common" {
   args = {
-    SHELLCHECK_URL_AMD64 = "https://github.com/koalaman/shellcheck/releases/download/v0.9.0/shellcheck-v0.9.0.linux.x86_64.tar.xz"
-    SHELLCHECK_URL_ARM64 = "https://github.com/koalaman/shellcheck/releases/download/v0.9.0/shellcheck-v0.9.0.linux.aarch64.tar.xz"
-    SHELLCHECK_URL_ARMHF = "https://github.com/koalaman/shellcheck/releases/download/v0.9.0/shellcheck-v0.9.0.linux.armv6hf.tar.xz"
+    CONTAINER_REGISTRY = "${CONTAINER_REGISTRY}"
+    SHELLCHECK_URL_AMD64 = "https://github.com/koalaman/shellcheck/releases/download/v0.10.0/shellcheck-v0.10.0.linux.x86_64.tar.xz"
+    SHELLCHECK_URL_ARM64 = "https://github.com/koalaman/shellcheck/releases/download/v0.10.0/shellcheck-v0.10.0.linux.aarch64.tar.xz"
+    SHELLCHECK_URL_ARMHF = "https://github.com/koalaman/shellcheck/releases/download/v0.10.0/shellcheck-v0.10.0.linux.armv6hf.tar.xz"
   }
   dockerfile = "Containerfile"
   tags = [
