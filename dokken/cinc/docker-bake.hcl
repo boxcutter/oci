@@ -21,6 +21,7 @@ target "_common" {
     CINC_SHA256_AMD64 = "697ac775c15aa80ca9908ae404e98fb93b4f71545d1b01ddcc7364c9070ba8b2"
     CINC_URL_ARM64 = "http://ftp.osuosl.org/pub/cinc/files/stable/cinc/18.4.12/el/7/cinc-18.4.12-1.el7.aarch64.rpm"
     CINC_SHA256_ARM64 = "dbce991933bc0fd0ddd70403fb103a86459db20de13dc3c4d001df83b86c5796"
+    CONTAINER_REGISTRY = "${CONTAINER_REGISTRY}"
   }
   dockerfile = "Containerfile"
   tags = [
