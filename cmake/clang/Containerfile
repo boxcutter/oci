@@ -1,0 +1,56 @@
+# syntax=docker/dockerfile:1
+ARG CONTAINER_REGISTRY
+FROM ${CONTAINER_REGISTRY:-docker.io}/ubuntu:noble-20240801 AS base
+
+ARG CMAKE_URL_AMD64
+ARG CMAKE_SHA256_AMD64
+ARG CMAKE_URL_ARM64
+ARG CMAKE_SHA256_ARM64
+
+
+FROM base AS download
+
+WORKDIR /tmp/cmake
+
+RUN <<EOF
+  apt-get update
+  apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl
+  dpkgArch="$(dpkg --print-architecture)"
+  case "${dpkgArch##*-}" in \
+    amd64) \
+      CMAKE_URL="${CMAKE_URL_AMD64}" \
+      CMAKE_SHA256="${CMAKE_SHA256_AMD64}" \
+      ;; \
+    arm64) \
+      CMAKE_URL="${CMAKE_URL_ARM64}" \
+      CMAKE_SHA256="${CMAKE_SHA256_ARM64}" \
+      ;; \
+    *) echo "unsupported architecture"; exit 1 ;; \
+  esac 
+  curl --fail --silent --show-error --location --output /tmp/cmake.tar.gz ${CMAKE_URL}
+  echo "${CMAKE_SHA256} /tmp/cmake.tar.gz" | sha256sum -c -
+  tar xvf /tmp/cmake.tar.gz -C /tmp/cmake --strip-components=1
+EOF
+
+FROM base
+
+WORKDIR /opt/cmake
+
+COPY --from=download /tmp/cmake /opt/cmake
+
+ENV PATH="/opt/cmake/bin:${PATH}"
+
+RUN <<EOF
+  apt-get update
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    ninja-build \
+    clang \
+    lld \
+    llvm \
+    clang-tools
+  rm -rf /var/lib/apt/lists/*
+EOF
+
+WORKDIR /src

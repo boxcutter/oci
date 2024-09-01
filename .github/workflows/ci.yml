@@ -30,6 +30,8 @@ jobs:
             buildpack-deps/ubuntu/jammy: 'buildpack-deps/ubuntu/jammy/**'
             buildpack-deps/ubuntu/focal: 'buildpack-deps/ubuntu/focal/**'
             buildpack-deps/ubuntu/noble: 'buildpack-deps/ubuntu/noble/**'
+            cmake/clang: 'cmake/clang/**'
+            cmake/gcc: 'cmake/gcc/**'
             dokken/almalinux-9: 'dokken/almalinux-9/**'
             dokken/amazonlinux-2: 'dokken/amazonlinux-2/**'
             dokken/amazonlinux-2023: 'dokken/amazonlinux-2023/**'
