@@ -1,9 +1,5 @@
-variable "IMAGE_NAME" {
-  default = "boxcutter/buildpack-deps"
-}
-
-variable "CONTAINER_REGISTRY" {
-  default = "docker.io"
+variable "TAG_PREFIX" {
+  default = "docker.io/boxcutter/buildpack-deps"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
@@ -21,20 +17,18 @@ variable "VARIANT" {
 
 variable "BUILDTAGS" {
   default = [
-    { name = "focal", base = "focal-20240530", version = "20.04" },
+    { name = "focal", base = "docker.io/ubuntu:focal-20240530", version = "20.04" },
   ]
 }
 
 target "_common" {
-  args = {
-    CONTAINER_REGISTRY = "${CONTAINER_REGISTRY}"
-  }
   dockerfile = "Containerfile"
   labels = {
     "org.opencontainers.image.source" = "https://github.com/boxcutter/oci"
     "org.opencontainers.image.licenses" = "Apache-2.0"
     "org.opencontainers.image.description" = "A collection of common build dependencies used for installing various modules."
-    "org.opencontainers.image.title" = "${IMAGE_NAME}"
+    "org.opencontainers.image.title" = "${TAG_PREFIX}"
+    "org.opencontainers.image.created" = "${timestamp()}"
     "dev.boxcutter.image.readme-filepath" = "buildpack-deps/README.md"
   }
 }
@@ -48,11 +42,11 @@ target "local" {
   }
   target = variant.name
   args = {
-    UBUNTU_BASE = buildtags.base
+    BASE_IMAGE = buildtags.base
   }
   tags = [
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${buildtags.name}${variant.tag}",
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${buildtags.version}${variant.tag}"
+    "${TAG_PREFIX}:${buildtags.name}${variant.tag}",
+    "${TAG_PREFIX}:${buildtags.version}${variant.tag}"
   ]
   platforms = ["${LOCAL_PLATFORM}"]
 }
@@ -66,11 +60,11 @@ target "default" {
   }
   target = variant.name
   args = {
-    UBUNTU_BASE = buildtags.base
+    BASE_IMAGE = buildtags.base
   }
   tags = [
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${buildtags.name}${variant.tag}",
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${buildtags.version}${variant.tag}"
+    "${TAG_PREFIX}:${buildtags.name}${variant.tag}",
+    "${TAG_PREFIX}:${buildtags.version}${variant.tag}"
   ]
   platforms = ["linux/amd64", "linux/arm64/v8"]  
 }

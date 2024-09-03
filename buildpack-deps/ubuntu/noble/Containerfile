@@ -1,7 +1,6 @@
 # syntax=docker/dockerfile:1
-ARG CONTAINER_REGISTRY
-ARG UBUNTU_BASE
-FROM ${CONTAINER_REGISTRY:-docker.io}/ubuntu:${UBUNTU_BASE:-noble} AS curl
+ARG BASE_IMAGE=docker.io/ubuntu:24.04
+FROM ${BASE_IMAGE} AS curl
 
 # hadolint ignore=DL3009
 RUN set -eux; \
