@@ -30,7 +30,7 @@ RUN apt-get update \
 
 FROM scratch
 
-COPY --from=build /shellcheck /usr/local/bin/shellcheck
+COPY --from=download /shellcheck /usr/local/bin/shellcheck
 
 WORKDIR /share
 ENTRYPOINT ["/usr/local/bin/shellcheck"]
