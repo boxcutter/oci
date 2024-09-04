@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/polymathrobotics/buildpack-deps:jammy
+ARG BASE_IMAGE=docker.io/boxcutter/buildpack-deps:jammy
 FROM $BASE_IMAGE
 
 # ensure local python is preferred over distribution python
