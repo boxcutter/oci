@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
-ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/ubuntu:jammy-20240627.1
+ARG BASE_IMAGE=docker.io/ubuntu:jammy-20240808
+FROM $BASE_IMAGE
 
 RUN set -eux; \
 	apt-get update; \
@@ -26,13 +26,10 @@ RUN set -eux; \
 
 ENV LANG C.UTF-8
 
-# https://www.ruby-lang.org/en/news/2024/07/09/ruby-3-3-4-released/
-ARG RUBY_VERSION
-ENV RUBY_VERSION=$RUBY_VERSION
-ARG RUBY_DOWNLOAD_URL
-ENV RUBY_DOWNLOAD_URL=$RUBY_DOWNLOAD_URL
-ARG RUBY_DOWNLOAD_SHA256
-ENV RUBY_DOWNLOAD_SHA256=$RUBY_DOWNLOAD_SHA256
+# https://www.ruby-lang.org/en/news/2024/09/03/3-3-5-released/
+ENV RUBY_VERSION 3.3.5
+ENV RUBY_DOWNLOAD_URL https://cache.ruby-lang.org/pub/ruby/3.3/ruby-3.3.5.tar.xz
+ENV RUBY_DOWNLOAD_SHA256 51aec7ea89b46125a2c9adc6f36766b65023d47952b916b1aed300ddcc042359
 
 # some of ruby's build scripts are written in ruby
 #   we purge system ruby later to make sure our final image uses what we just built
