@@ -1,4 +1,4 @@
-variable "IMAGE_NAME" {
+variable "TAG_PREFIX" {
   default = "docker.io/boxcutter/dokken-eurolinux-9"
 }
 
