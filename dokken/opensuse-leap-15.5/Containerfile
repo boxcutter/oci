@@ -1,5 +1,6 @@
-ARG CONTAINER_REGISTRY
-FROM ${CONTAINER_REGISTRY:-docker.io}/opensuse/leap:15.5
+# syntax=docker/dockerfile:1
+ARG BASE_IMAGE=docker.io/opensuse/leap:15.5
+FROM ${BASE_IMAGE}
 
 # hadolint ignore=DL3037
 RUN zypper update -y && \
