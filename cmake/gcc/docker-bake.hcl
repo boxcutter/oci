@@ -27,7 +27,7 @@ target "_common" {
     "org.opencontainers.image.source" = "https://github.com/boxcutter/oci"
     "org.opencontainers.image.licenses" = "Apache-2.0"
     "org.opencontainers.image.description" = "The CMake build tool with the GCC toolchain."
-    "org.opencontainers.image.title" = "${TAG_PREFIX}}"
+    "org.opencontainers.image.title" = "${TAG_PREFIX}"
     "org.opencontainers.image.created" = "${timestamp()}"
   }
 }
