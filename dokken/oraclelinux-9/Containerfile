@@ -1,5 +1,6 @@
-ARG CONTAINER_REGISTRY${CONTAINER_REGISTRY:-docker.io}
-FROM ${CONTAINER_REGISTRY:-docker.io}/oraclelinux:9
+# syntax=docker/dockerfile:1
+ARG BASE_IMAGE=docker.io/oraclelinux:9
+FROM ${BASE_IMAGE}
 
 # hadolint ignore=DL3041
 RUN <<EOF
