@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/almalinux:8
-FROM $BASE_IMAGE AS base
+ARG BASE_IMAGE=docker.io/almalinux:9
+FROM $BASE_IMAGE
 
 # hadolint ignore=DL3041
 RUN <<EOF
