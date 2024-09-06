@@ -1,13 +1,9 @@
-variable "IMAGE_NAME" {
-  default = "boxcutter/cinc"
+variable "TAG_PREVIX" {
+  default = "docker.io/boxcutter/cinc"
 }
 
 variable "VERSION" {
   default = "18.4.12"
-}
-
-variable "CONTAINER_REGISTRY" {
-  default = "docker.io"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
@@ -25,15 +21,16 @@ target "_common" {
   }
   dockerfile = "Containerfile"
   tags = [
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${VERSION}",
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:latest",
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:current"
+    "${TAG_PREFIX}:${VERSION}",
+    "${TAG_PREFIX}:latest",
+    "${TAG_PREFIX}:current"
   ]
   labels = {
     "org.opencontainers.image.source" = "https://github.com/boxcutter/oci"
     "org.opencontainers.image.licenses" = "Apache-2.0"
     "org.opencontainers.image.description" = "Cinc Client is an automation platform built from Chef Infra"
-    "org.opencontainers.image.title" = "${IMAGE_NAME}"
+    "org.opencontainers.image.title" = "${TAG_PREFIX}"
+    "org.opencontainers.image.created" = "${timestamp()}"
   }
 }
 

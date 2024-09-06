@@ -1,10 +1,11 @@
 # syntax=docker/dockerfile:1
-ARG CONTAINER_REGISTRY
+ARG BASE_IMAGE=docker.io/busybox:1.36.1
+FROM ${BASE_IMAGE}
+
 # Because this is a data container and is never run, only mounted via
 # the --volumes-from parameter, the operating system type doesn't matter.
 # So we use busybox, a really small distro, with just enough support to
 # be able to download and install the binaries for cinc.
-FROM ${CONTAINER_REGISTRY:-docker.io}/busybox:1.36.1
 
 ARG CINC_URL_AMD64
 ARG CINC_SHA256_AMD64
