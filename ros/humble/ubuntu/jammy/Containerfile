@@ -1,7 +1,6 @@
 # syntax=docker/dockerfile:1
-ARG CONTAINER_REGISTRY
-
-FROM $CONTAINER_REGISTRY/ubuntu:jammy-20240808 AS base
+ARG BASE_IMAGE=docker.io/ubuntu:jammy-20240808
+FROM ${BASE_IMAGE} AS base
 
 FROM base AS download
 
