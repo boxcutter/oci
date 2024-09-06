@@ -1,13 +1,10 @@
-variable "IMAGE_NAME" {
-  default = "aws-cli"
+variable "TAG_PREFIX" {
+  default = "docker.io/boxcutter/aws-cli"
 }
 
+# https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
 variable "VERSION" {
-  default = "2.17.14"
-}
-
-variable "CONTAINER_REGISTRY" {
-  default = "docker.io/boxcutter"
+  default = "2.17.45"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
@@ -21,14 +18,15 @@ target "_common" {
   }
   dockerfile = "Containerfile"
   tags = [
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${VERSION}",
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:latest"
+    "${TAG_PREFIX}:${VERSION}",
+    "${TAG_PREFIX}:latest"
   ]
   labels = {
     "org.opencontainers.image.source" = "https://github.com/boxcutter/oci"
     "org.opencontainers.image.licenses" = "Apache-2.0"
     "org.opencontainers.image.description" = "AWS command-line interface."
-    "org.opencontainers.image.title" = "${IMAGE_NAME}"
+    "org.opencontainers.image.title" = "${TAG_PREFIX}"
+    "org.opencontainers.image.created" = "${timestamp()}"
   }
 }
 
