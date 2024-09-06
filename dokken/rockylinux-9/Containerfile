@@ -1,5 +1,6 @@
-ARG CONTAINER_REGISTRY
-FROM ${CONTAINER_REGISTRY:-docker.io}/rockylinux:9
+# syntax=docker/dockerfile:1
+ARG BASE_IMAGE=docker.io/rockylinux:9
+FROM ${BASE_IMAGE}
 
 # hadolint ignore=DL3041
 RUN dnf --allowerasing -y install \
