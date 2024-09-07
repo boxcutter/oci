@@ -1,13 +1,9 @@
-variable "IMAGE_NAME" {
-  default =  "meshcmd"
+variable "TAG_PREFIX" {
+  default =  "docker.io/boxcutter/meshcmd"
 }
 
 variable "VERSION" {
   default = "1.1.9"
-}
-
-variable "CONTAINER_REGISTRY" {
-  default = "docker.io/boxcutter"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
@@ -18,8 +14,8 @@ variable "LOCAL_PLATFORM" {
 target "_common" {
   dockerfile = "Containerfile"
   tags = [
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${VERSION}",
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:latest"
+    "${TAG_PREFIX}:${VERSION}",
+    "${TAG_PREFIX}:latest"
   ]
 }
 
@@ -35,6 +31,7 @@ target "default" {
     "org.opencontainers.image.source" = "https://github.com/boxcutter/oci"
     "org.opencontainers.image.licenses" = "Apache-2.0"
     "org.opencontainers.image.description" = "Command line tool used to perform many tasks related to computer management of Intel Active Management Technology (AMT) devices."
-    "org.opencontainers.image.title" = "${IMAGE_NAME}"
+    "org.opencontainers.image.title" = "${TAG_PREFIX}"
+    "org.opencontainers.image.created" = "${timestamp()}"
   }
 }
