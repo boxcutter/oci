@@ -1,49 +1,51 @@
 # syntax=docker/dockerfile:1
-ARG CONTAINER_REGISTRY=docker.io/boxcutter
-FROM $CONTAINER_REGISTRY/buildpack-deps:jammy-scm AS base
+ARG BASE_IMAGE=docker.io/boxcutter/buildpack-deps:noble-scm
+FROM $BASE_IMAGE AS base
+
 FROM base AS build
 
 ENV PATH /usr/local/go/bin:$PATH
 
-ENV GOLANG_VERSION 1.21.7
+ENV GOLANG_VERSION 1.23.1
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # hadolint ignore=DL3003, SC2086
 RUN set -eux; \
+	now="$(date '+%s')"; \
 	arch="$(dpkg --print-architecture)"; arch="${arch##*-}"; \
 	url=; \
 	case "$arch" in \
 		'amd64') \
-			url='https://dl.google.com/go/go1.21.7.linux-amd64.tar.gz'; \
-			sha256='13b76a9b2a26823e53062fa841b07087d48ae2ef2936445dc34c4ae03293702c'; \
+			url='https://dl.google.com/go/go1.23.1.linux-amd64.tar.gz'; \
+			sha256='49bbb517cfa9eee677e1e7897f7cf9cfdbcf49e05f61984a2789136de359f9bd'; \
 			;; \
 		'armhf') \
-			url='https://dl.google.com/go/go1.21.7.linux-armv6l.tar.gz'; \
-			sha256='d86d2da4cad1c0ff5fc13677b0b77f26ca8adca48170c140f06b882e83b6e8df'; \
+			url='https://dl.google.com/go/go1.23.1.linux-armv6l.tar.gz'; \
+			sha256='6c7832c7dcd8fb6d4eb308f672a725393403c74ee7be1aeccd8a443015df99de'; \
 			;; \
 		'arm64') \
-			url='https://dl.google.com/go/go1.21.7.linux-arm64.tar.gz'; \
-			sha256='a9bc1ccedbfde059f25b3a2ad81ae4cdf21192ae207dfd3ccbbfe99c3749e233'; \
+			url='https://dl.google.com/go/go1.23.1.linux-arm64.tar.gz'; \
+			sha256='faec7f7f8ae53fda0f3d408f52182d942cc89ef5b7d3d9f23ff117437d4b2d2f'; \
 			;; \
 		'i386') \
-			url='https://dl.google.com/go/go1.21.7.linux-386.tar.gz'; \
-			sha256='ecd838b01c28b62d23e0fc806f980de676a6754be53e6bf2f1fe966c12dede15'; \
+			url='https://dl.google.com/go/go1.23.1.linux-386.tar.gz'; \
+			sha256='cdee2f4e2efa001f7ee75c90f2efc310b63346cfbba7b549987e9139527c6b17'; \
 			;; \
 		'mips64el') \
-			url='https://dl.google.com/go/go1.21.7.linux-mips64le.tar.gz'; \
-			sha256='adf55215880b6157a945a8f247a2cbea9e63766cd297baf68fd575c2cc32a82a'; \
+			url='https://dl.google.com/go/go1.23.1.linux-mips64le.tar.gz'; \
+			sha256='54e301f266e33431b0703136e0bbd4cf02461b1ecedd37b7cbd90cb862a98e5f'; \
 			;; \
 		'ppc64el') \
-			url='https://dl.google.com/go/go1.21.7.linux-ppc64le.tar.gz'; \
-			sha256='48a99ecce9b1e632870c29420088f61cf17a6f0c5bdb3cc821ff5c00e14b1a8a'; \
+			url='https://dl.google.com/go/go1.23.1.linux-ppc64le.tar.gz'; \
+			sha256='042888cae54b5fbfd9dd1e3b6bc4a5134879777fe6497fc4c62ec394b5ecf2da'; \
 			;; \
 		'riscv64') \
-			url='https://dl.google.com/go/go1.21.7.linux-riscv64.tar.gz'; \
-			sha256='dc1c3cb6eadc57130136b3c1dec5ca8af7783c36e0392ebf59073c61e60b24f2'; \
+			url='https://dl.google.com/go/go1.23.1.linux-riscv64.tar.gz'; \
+			sha256='1a4a609f0391bea202d9095453cbfaf7368fa88a04c206bf9dd715a738664dc3'; \
 			;; \
 		's390x') \
-			url='https://dl.google.com/go/go1.21.7.linux-s390x.tar.gz'; \
-			sha256='d655022bd82927fbfeb36eb49a3e2af0f3cc18d18882c0f671923da0ec257948'; \
+			url='https://dl.google.com/go/go1.23.1.linux-s390x.tar.gz'; \
+			sha256='47dc49ad45c45e192efa0df7dc7bc5403f5f2d15b5d0dc74ef3018154b616f4d'; \
 			;; \
 		*) echo >&2 "error: unsupported architecture '$arch' (likely packaging update needed)"; exit 1 ;; \
 	esac; \
@@ -68,8 +70,11 @@ RUN set -eux; \
 # save the timestamp from the tarball so we can restore it for reproducibility, if necessary (see below)
 	SOURCE_DATE_EPOCH="$(stat -c '%Y' /usr/local/go)"; \
 	export SOURCE_DATE_EPOCH; \
+	touchy="$(date -d "@$SOURCE_DATE_EPOCH" '+%Y%m%d%H%M.%S')"; \
 # for logging validation/edification
 	date --date "@$SOURCE_DATE_EPOCH" --rfc-2822; \
+# sanity check (detected value should be older than our wall clock)
+	[ "$SOURCE_DATE_EPOCH" -lt "$now" ]; \
 	\
 	if [ "$arch" = 'armhf' ]; then \
 		[ -s /usr/local/go/go.env ]; \
@@ -81,15 +86,21 @@ RUN set -eux; \
 		} >> /usr/local/go/go.env; \
 		after="$(go env GOARM)"; [ "$after" = '7' ]; \
 # (re-)clamp timestamp for reproducibility (allows "COPY --link" to be more clever/useful)
-		date="$(date -d "@$SOURCE_DATE_EPOCH" '+%Y%m%d%H%M.%S')"; \
-		touch -t "$date" /usr/local/go/go.env /usr/local/go; \
+		touch -t "$touchy" /usr/local/go/go.env /usr/local/go; \
 	fi; \
+	\
+# ideally at this point, we would just "COPY --link ... /usr/local/go/ /usr/local/go/" but BuildKit insists on creating the parent directories (perhaps related to https://github.com/opencontainers/image-spec/pull/970), and does so with unreproducible timestamps, so we instead create a whole new "directory tree" that we can "COPY --link" to accomplish what we want
+	mkdir /target /target/usr /target/usr/local; \
+	mv -vT /usr/local/go /target/usr/local/go; \
+	ln -svfT /target/usr/local/go /usr/local/go; \
+	touch -t "$touchy" /target/usr/local /target/usr /target; \
 	\
 # smoke test
 	go version; \
 # make sure our reproducibile timestamp is probably still correct (best-effort inline reproducibility test)
-	epoch="$(stat -c '%Y' /usr/local/go)"; \
-	[ "$SOURCE_DATE_EPOCH" = "$epoch" ]
+	epoch="$(stat -c '%Y' /target/usr/local/go)"; \
+	[ "$SOURCE_DATE_EPOCH" = "$epoch" ]; \
+	find /target -newer /target/usr/local/go -exec sh -c 'ls -ld "$@" && exit "$#"' -- '{}' +
 
 FROM base
 
@@ -105,7 +116,7 @@ RUN set -eux; \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
-ENV GOLANG_VERSION 1.21.7
+ENV GOLANG_VERSION 1.23.1
 
 # don't auto-upgrade the gotoolchain
 # https://github.com/docker-library/golang/issues/472
@@ -113,6 +124,7 @@ ENV GOTOOLCHAIN=local
 
 ENV GOPATH /go
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
-COPY --from=build --link /usr/local/go/ /usr/local/go/
+# (see notes above about "COPY --link")
+COPY --from=build --link /target/ /
 RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 1777 "$GOPATH"
 WORKDIR $GOPATH
