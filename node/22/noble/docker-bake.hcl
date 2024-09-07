@@ -1,13 +1,9 @@
-variable "IMAGE_NAME" {
-  default = "node"
+variable "TAG_PREFIX" {
+  default = "docker.io/boxcutter/node"
 }
 
 variable "VERSION" {
-  default = "21.7.1"
-}
-
-variable "CONTAINER_REGISTRY" {
-  default = "docker.io/boxcutter"
+  default = "22.8.0"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
@@ -21,18 +17,19 @@ target "_common" {
   }
   dockerfile = "Containerfile"
   tags = [
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${VERSION}-jammy",
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${join(".", slice(split(".", "${VERSION}"), 0, 2))}-jammy",
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${join(".", slice(split(".", "${VERSION}"), 0, 1))}-jammy",
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:current-jammy",
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:jammy",
+    "${TAG_PREFIX}:${VERSION}-noble",
+    "${TAG_PREFIX}:${join(".", slice(split(".", "${VERSION}"), 0, 2))}-noble",
+    "${TAG_PREFIX}:${join(".", slice(split(".", "${VERSION}"), 0, 1))}-noble",
+    "${TAG_PREFIX}:current-noble",
+    "${TAG_PREFIX}:noble",
   ]
 
   labels = {
     "org.opencontainers.image.source" = "https://github.com/boxcutter/oci"
     "org.opencontainers.image.licenses" = "Apache-2.0"
     "org.opencontainers.image.description" = "Node.js is a JavaScript-based platform for server-side and networking applications."
-    "org.opencontainers.image.title" = "${IMAGE_NAME}"
+    "org.opencontainers.image.title" = "${TAG_PREFIX}"
+    "org.opencontainers.image.created" = "${timestamp()}"
     "dev.boxcutter.image.readme-filepath" = "node/README.md"
   }
 }
