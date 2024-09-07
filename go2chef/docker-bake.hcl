@@ -1,9 +1,5 @@
-variable "IMAGE_NAME" {
-  default = "go2chef"
-}
-
-variable "CONTAINER_REGISTRY" {
-  default = "docker.io/boxcutter"
+variable "TAG_PREFIX" {
+  default = "docker.io/boxcutter/go2chef"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
@@ -14,13 +10,14 @@ variable "LOCAL_PLATFORM" {
 target "_common" {
   dockerfile = "Containerfile"
   tags = [
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:latest"
+    "${TAG_PREFIX}:latest"
   ]
   labels = {
     "org.opencontainers.image.source" = "https://github.com/boxcutter/oci"
     "org.opencontainers.image.licenses" = "Apache-2.0"
     "org.opencontainers.image.description" = "A Golang tool to bootstrap a system from zero so that it's able to run Chef to be managed."
-    "org.opencontainers.image.title" = "${IMAGE_NAME}"
+    "org.opencontainers.image.title" = "${TAG_PREFIX}"
+    "org.opencontainers.image.created" = "${timestamp()}"
   }
 }
 
