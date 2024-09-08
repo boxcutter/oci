@@ -15,7 +15,7 @@ Note: `/go` is world-writable to allow flexibility in the user which runs the co
 The most straightforward way to use this image is to use a Go container as both the build and runtime environment. In your `Dockerfile`, writing something along the lines of the following will compile and run your project (assuming it uses `go.mod` for dependency management):
 
 ```
-FROM golang:1.23-noble
+FROM docker.io/golang:1.23-noble
 
 WORKDIR /usr/src/app
 
@@ -44,13 +44,16 @@ There may be occasions where it is not appropriate to run your app inside a cont
 $ docker run --rm \
     --mount type=bind,source="$PWD",target=/code \
     --workdir /code \
-    golang:1.23-noble go build -v
+    docker.io/boxcutter/golang:1.23-noble go build -v
 ```
 
 This will add your current directory as a volume to the container, set the working directory to the volume, and run the command `go build` which will tell go to compile the project in the working directory and output the executable to `myapp`. Alternatively, if you have a `Makefile`, you can run the `make` command inside your container.
 
 ```
-$ docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp golang:1.23-noble make
+$ docker run --rm \
+    --mount type=bind,source="$PWD",target=/code \
+    --wordir /code \
+    docker.io/boxcutter/golang:1.23-noble make
 ```
 
 ### Cross-compile your app inside the Docker container
@@ -58,13 +61,21 @@ $ docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp golang:1.23-noble m
 If you need to compile your application for a platform other than `linux/amd64` (such as `windows/386):
 
 ```
-$ docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp -e GOOS=windows -e GOARCH=386 golang:1.23-noble go build -v
+$ docker run --rm \
+    --mount type=bind,source="$PWD",target=/code \
+    --wordir /code \
+    -e GOOS=windows \
+    -e GOARCH=386 \
+    docker.io/boxcutter/golang:1.23-noble go build -v
 ```
 
 Alternatively, you can build for multiple platforms at once:
 
 ```
-$ docker run --rm -it -v "$PWD":/usr/src/myapp -w /usr/src/myapp golang:1.23-noble bash
+$ docker run --rm -it \
+    --mount type=bind,source="$PWD",target=/code \
+    --wordir /code \
+    docker.io/boxcutter/golang:1.23-noble bash
 $ for GOOS in darwin linux; do
 >   for GOARCH in 386 amd64; do
 >     export GOOS GOARCH
