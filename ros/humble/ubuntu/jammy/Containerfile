@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1
 ARG BASE_IMAGE=docker.io/ubuntu:jammy-20240808
+# hadolint ignore=DL3006
 FROM ${BASE_IMAGE} AS base
 
 FROM base AS download
@@ -15,6 +16,7 @@ RUN <<EOF
     curl
   curl -sSL "${RAW_GITHUBUSERCONTENT_BASE_URL}/ros/rosdistro/master/ros.key" \
     -o /usr/share/keyrings/ros2-latest-archive-keyring.gpg
+  rm -rf /var/lib/apt/lists/*
 EOF
 
 FROM download AS ros-core
