@@ -11,11 +11,31 @@ on:
       - 'ros/humble/ubuntu/jammy/**'
   workflow_dispatch:
 jobs:
+  # Job to run change detection
+  changes:
+    runs-on: [self-hosted]
+    outputs:
+      images: ${{ steps.filter.outputs.changes }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          base: ${{ github.ref }}
+          filters: |
+            ros/humble/ubuntu/jammy: 'ros/humble/ubuntu/jammy/**'
+
   build:
+    needs: changes
+    strategy:
+      matrix:
+        image: ${{ fromJSON(needs.changes.outputs.images) }}
+    if: ${{ needs.changes.outputs.images != '[]' && needs.changes.outputs.images != '' }}
     runs-on: [self-hosted]
     defaults:
       run:
-        working-directory: ros/humble/ubuntu/jammy
+        working-directory: ${{ matrix.image }}
     steps:
       - uses: actions/checkout@v4
 
