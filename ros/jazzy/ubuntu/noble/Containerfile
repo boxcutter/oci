@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1
 ARG BASE_IMAGE=docker.io/ubuntu:noble-20240801
+# hadolint ignore=DL3006
 FROM ${BASE_IMAGE} AS base
 
 FROM base AS download
