@@ -38,10 +38,10 @@ RUN apt-get update && apt-get install -q -y --no-install-recommends \
 RUN echo "deb [ signed-by=/usr/share/keyrings/ros2-latest-archive-keyring.gpg ] ${ROS_PACKAGES_URI} jammy main" > /etc/apt/sources.list.d/ros2-latest.list
 
 # setup environment
-ENV LANG C.UTF-8
-ENV LC_ALL C.UTF-8
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
 
-ENV ROS_DISTRO humble
+ENV ROS_DISTRO=humble
 
 # install ros2 packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -54,7 +54,7 @@ COPY ./ros_entrypoint.sh /
 ENTRYPOINT ["/ros_entrypoint.sh"]
 CMD ["bash"]
 
-FROM ros-core as ros-base
+FROM ros-core AS ros-base
 
 # install bootstrap tools
 RUN apt-get update && apt-get install --no-install-recommends -y \
@@ -83,28 +83,28 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-humble-ros-base=0.10.0-1* \
     && rm -rf /var/lib/apt/lists/*
 
-FROM ros-base as perception
+FROM ros-base AS perception
 
 # install ros2 packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-humble-perception=0.10.0-1* \
     && rm -rf /var/lib/apt/lists/*
 
-FROM ros-base as simulation
+FROM ros-base AS simulation
 
 # install ros2 packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-humble-simulation=0.10.0-1* \
     && rm -rf /var/lib/apt/lists/*
 
-FROM ros-base as desktop
+FROM ros-base AS desktop
 
 # install ros2 packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-humble-desktop=0.10.0-1* \
     && rm -rf /var/lib/apt/lists/*
 
-FROM desktop as desktop-full
+FROM desktop AS desktop-full
 
 # install ros2 packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
