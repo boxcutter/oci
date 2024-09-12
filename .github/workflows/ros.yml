@@ -66,4 +66,49 @@ jobs:
           test_image=$(echo "$json_data" | jq -r '.target | to_entries[0].value | .tags[0]')
           $(git rev-parse --show-toplevel)/bin/test-matrix.sh $test_image
 
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        if: github.event_name != 'pull_request'
+        with:
+          username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
+          password: ${{ secrets.CONTAINER_REGISTRY_PASSWORD }}
 
+      - name: Build and push
+        uses: docker/bake-action@v4
+        with:
+          workdir: ${{ matrix.image }}
+          push: ${{ github.event_name != 'pull_request' }}
+
+      - name: Get the image name
+        if: ${{ github.event_name != 'pull_request' }}
+        id: image_name
+        shell: bash
+        working-directory: ${{ matrix.image }}
+        run: |
+          echo "image_name=$($(git rev-parse --show-toplevel)/bin/image-name.sh)" >> $GITHUB_ENV
+
+      - name: Get the image description
+        if: ${{ github.event_name != 'pull_request' }}
+        id: image_description
+        shell: bash
+        working-directory: ${{ matrix.image }}
+        run: |
+          echo "image_description=$($(git rev-parse --show-toplevel)/bin/image-description.sh)" >> $GITHUB_ENV
+
+      - name: Get the image readme filepath
+        if: ${{ github.event_name != 'pull_request' }}
+        id: image_readme_filepath
+        shell: bash
+        working-directory: ${{ matrix.image }}
+        run: |
+          echo "image_readme_filepath=$($(git rev-parse --show-toplevel)/bin/image-readme.sh)" >> $GITHUB_ENV
+
+      - name: Update Docker Hub Description
+        if: ${{ github.event_name != 'pull_request' }}
+        uses: peter-evans/dockerhub-description@v4
+        with:
+          username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
+          password: ${{ secrets.CONTAINER_DESCRIPTION_PASSWORD }}
+          repository: boxcutter/${{ env.image_name }}
+          short-description: ${{ env.image_description }}
+          readme-filepath: ${{ env.image_readme_filepath }}
