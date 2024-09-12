@@ -3,13 +3,8 @@ name: ros
 on:
   push:
     branches: [ main ]
-    paths:
-      - 'ros/humble/ubuntu/jammy/**'
   pull_request:
     branches: [ main ]
-    paths:
-      - 'ros/humble/ubuntu/jammy/**'
-  workflow_dispatch:
 jobs:
   # Job to run change detection
   changes:
@@ -25,6 +20,7 @@ jobs:
           base: ${{ github.ref }}
           filters: |
             ros/humble/ubuntu/jammy: 'ros/humble/ubuntu/jammy/**'
+            ros/jazzy/ubuntu/noble: 'ros/jazzy/ubuntu/noble/**'
 
   build:
     needs: changes
