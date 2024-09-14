@@ -1,4 +1,7 @@
-FROM docker.io/arm64v8/ubuntu:20.04 as nvidia-l4t-base
+# syntax=docker/dockerfile:1
+ARG BASE_IMAGE=docker.io/arm64v8/ubuntu:20.04
+# hadolint ignore=DL3006
+FROM ${BASE_IMAGE} AS nvidia-l4t-base
 
 ARG RELEASE=r35.4
 ARG DEBIAN_FRONTEND=noninteractive
