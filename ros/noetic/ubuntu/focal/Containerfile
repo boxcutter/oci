@@ -56,7 +56,7 @@ COPY ./ros_entrypoint.sh /
 ENTRYPOINT ["/ros_entrypoint.sh"]
 CMD ["bash"]
 
-FROM ros-core as ros-base
+FROM ros-core AS ros-base
 
 # install bootstrap tools
 RUN apt-get update && apt-get install --no-install-recommends -y \
@@ -76,28 +76,28 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 
-FROM ros-base as robot
+FROM ros-base AS robot
 
 # install ros packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-noetic-robot=1.5.0-1* \
     && rm -rf /var/lib/apt/lists/*
 
-FROM ros-base as perception
+FROM ros-base AS perception
 
 # install ros packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-noetic-perception=1.5.0-1* \
     && rm -rf /var/lib/apt/lists/*
 
-FROM robot as desktop
+FROM robot AS desktop
 
 # install ros packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-noetic-desktop=1.5.0-1* \
     && rm -rf /var/lib/apt/lists/*
 
-FROM desktop as desktop-full
+FROM desktop AS desktop-full
 
 # install ros packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
