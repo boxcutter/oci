@@ -51,6 +51,7 @@ jobs:
         with:
           append: |
             - endpoint: ssh://craft@10.63.34.15
+              platforms: linux/arm64
 
       - name: Build locally for testing
         uses: docker/bake-action@v4
