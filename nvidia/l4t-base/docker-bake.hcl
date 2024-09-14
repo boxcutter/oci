@@ -1,5 +1,5 @@
 variable "TAG_PREFIX" {
-  default = "docker.io/boxcutter/nvidia-l4t-base"
+  default =  "docker.io/boxcutter/nvidia-l4t-base"
 }
 
 variable "IMAGE_NAME" {
