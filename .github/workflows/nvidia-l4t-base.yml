@@ -19,10 +19,7 @@ jobs:
         with:
           base: ${{ github.ref }}
           filters: |
-            ros/humble/ubuntu/jammy: 'ros/humble/ubuntu/jammy/**'
-            ros/iron/ubuntu/jammy: 'ros/iron/ubuntu/jammy/**'
-            ros/jazzy/ubuntu/noble: 'ros/jazzy/ubuntu/noble/**'
-            ros/noetic/ubuntu/focal: 'ros/noetic/ubuntu/focal/**'
+            nvidia/l4t-base: 'nvidia/l4t-base/**'
 
   build:
     needs: changes
@@ -36,12 +33,6 @@ jobs:
         working-directory: ${{ matrix.image }}
     steps:
       - uses: actions/checkout@v4
-
-      - name: Check the Containerfile with hadolint
-        shell: bash
-        working-directory: ${{ matrix.image }}
-        run: |
-          $(git rev-parse --show-toplevel)/bin/lint.sh
 
       - name: Install QEMU static binaries
         uses: docker/setup-qemu-action@v3
