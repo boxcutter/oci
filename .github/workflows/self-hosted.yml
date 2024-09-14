@@ -19,6 +19,7 @@ jobs:
         with:
           base: ${{ github.ref }}
           filters: |
+            nvidia/l4t-base: 'nvidia/l4t-base/**'
             ros/humble/ubuntu/jammy: 'ros/humble/ubuntu/jammy/**'
             ros/iron/ubuntu/jammy: 'ros/iron/ubuntu/jammy/**'
             ros/jazzy/ubuntu/noble: 'ros/jazzy/ubuntu/noble/**'
