@@ -50,10 +50,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
         with:
           driver: docker-container
-          driver-opts: |
-            network=host
-          endpoint: unix:///var/run/docker.sock
-          builder-name: github-runner-x86-64-builder
+          endpoint: github-runner-x86-64-builder
           use: true
 
       - name: Build locally for testing
