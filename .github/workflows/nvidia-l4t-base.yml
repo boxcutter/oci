@@ -3,6 +3,8 @@ name: nvidia-l4t-base
 on:
   push:
     branches: [ main ]
+    paths:
+      - 'nvidia/l4t-base/**'
   pull_request:
     branches: [ main ]
     paths:
