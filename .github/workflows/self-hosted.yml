@@ -49,9 +49,9 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
         with:
-          endpoint: docker-container://github-runner-x86-64-builder
-          driver-opts: |
-            network=host
+          driver: docker-container
+          endpoint: github-runner-x86-64-builder
+          use: true
 
       - name: Build locally for testing
         uses: docker/bake-action@v4
