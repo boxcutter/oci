@@ -1,0 +1,111 @@
+name: self-hosted
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  # Job to run change detection
+  changes:
+    runs-on: [self-hosted]
+    outputs:
+      images: ${{ steps.filter.outputs.changes }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          base: ${{ github.ref }}
+          filters: |
+            ros/humble/ubuntu/jammy: 'ros/humble/ubuntu/jammy/**'
+            ros/iron/ubuntu/jammy: 'ros/iron/ubuntu/jammy/**'
+            ros/jazzy/ubuntu/noble: 'ros/jazzy/ubuntu/noble/**'
+
+  build:
+    needs: changes
+    strategy:
+      matrix:
+        image: ${{ fromJSON(needs.changes.outputs.images) }}
+    if: ${{ needs.changes.outputs.images != '[]' && needs.changes.outputs.images != '' }}
+    runs-on: [self-hosted]
+    defaults:
+      run:
+        working-directory: ${{ matrix.image }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check the Containerfile with hadolint
+        shell: bash
+        working-directory: ${{ matrix.image }}
+        run: |
+          $(git rev-parse --show-toplevel)/bin/lint.sh
+
+      - name: Install QEMU static binaries
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build locally for testing
+        uses: docker/bake-action@v4
+        with:
+          workdir: ${{ matrix.image }}
+          targets: local
+          load: true
+
+      - name: Run tests on the image with cinc-auditor
+        shell: bash
+        working-directory: ${{ matrix.image }}
+        run: |
+          json_data="$(docker buildx bake local --print 2>/dev/null)"
+          test_image=$(echo "$json_data" | jq -r '.target | to_entries[0].value | .tags[0]')
+          $(git rev-parse --show-toplevel)/bin/test-matrix.sh $test_image
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        if: github.event_name != 'pull_request'
+        with:
+          username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
+          password: ${{ secrets.CONTAINER_REGISTRY_PASSWORD }}
+
+      - name: Build and push
+        uses: docker/bake-action@v4
+        with:
+          workdir: ${{ matrix.image }}
+          push: ${{ github.event_name != 'pull_request' }}
+
+      - name: Get the image name
+        if: ${{ github.event_name != 'pull_request' }}
+        id: image_name
+        shell: bash
+        working-directory: ${{ matrix.image }}
+        run: |
+          echo "image_name=$($(git rev-parse --show-toplevel)/bin/image-name.sh)" >> $GITHUB_ENV
+
+      - name: Get the image description
+        if: ${{ github.event_name != 'pull_request' }}
+        id: image_description
+        shell: bash
+        working-directory: ${{ matrix.image }}
+        run: |
+          echo "image_description=$($(git rev-parse --show-toplevel)/bin/image-description.sh)" >> $GITHUB_ENV
+
+      - name: Get the image readme filepath
+        if: ${{ github.event_name != 'pull_request' }}
+        id: image_readme_filepath
+        shell: bash
+        working-directory: ${{ matrix.image }}
+        run: |
+          echo "image_readme_filepath=$($(git rev-parse --show-toplevel)/bin/image-readme.sh)" >> $GITHUB_ENV
+
+      - name: Update Docker Hub Description
+        if: ${{ github.event_name != 'pull_request' }}
+        uses: peter-evans/dockerhub-description@v4
+        with:
+          username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
+          password: ${{ secrets.CONTAINER_DESCRIPTION_PASSWORD }}
+          repository: boxcutter/${{ env.image_name }}
+          short-description: ${{ env.image_description }}
+          readme-filepath: ${{ env.image_readme_filepath }}
