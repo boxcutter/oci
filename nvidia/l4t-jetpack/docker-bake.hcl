@@ -1,5 +1,5 @@
-variable "CONTAINER_REGISTRY" {
-  default = "docker.io/boxcutter"
+variable "TAG_PREFIX" {
+  default = "docker.io/boxcutter/nvidia-l4t-jetpack"
 }
 
 variable "IMAGE_NAME" {
@@ -12,7 +12,7 @@ target "default" {
     TAG = tag
   }
   tags = [
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:r${tag}"
+    "${TAG_PREFIX}:r${tag}"
   ]
   dockerfile = "Containerfile"
   platforms = ["linux/arm64/v8"]
