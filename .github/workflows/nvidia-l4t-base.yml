@@ -50,7 +50,7 @@ jobs:
         shell: bash
         working-directory: ${{ matrix.image }}
         run: |
-          json_data="$(docker buildx bake local --print 2>/dev/null)"
+          json_data="$(docker buildx bake --print 2>/dev/null)"
           test_image=$(echo "$json_data" | jq -r '.target | to_entries[0].value | .tags[0]')
           $(git rev-parse --show-toplevel)/bin/test-matrix.sh $test_image
 
