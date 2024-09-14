@@ -49,8 +49,8 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
         with:
-          driver: remote
-          endpoint: github-runner-x86-64-builder
+          append: |
+            - endpoint: ssh://craft@10.63.34.15
 
       - name: Build locally for testing
         uses: docker/bake-action@v4
