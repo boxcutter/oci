@@ -2,8 +2,12 @@ variable "TAG_PREFIX" {
   default = "docker.io/boxcutter/nvidia-l4t-base"
 }
 
+variable "IMAGE_NAME" {
+  default = "nvidia-l4t-base"
+}
+
 target "default" {
-  name = "${TAG_PREFIX}-${replace(item.version, ".", "-")}"
+  name = "${IMAGE_NAME}-${replace(item.version, ".", "-")}"
   target = "nvidia-l4t-base"
   args = {
     RELEASE = item.release
