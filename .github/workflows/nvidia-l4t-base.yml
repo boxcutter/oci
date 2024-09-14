@@ -43,7 +43,7 @@ jobs:
         uses: docker/bake-action@v4
         with:
           workdir: ${{ matrix.image }}
-          targets: local
+          targets: default
           load: true
 
       - name: Run tests on the image with cinc-auditor
