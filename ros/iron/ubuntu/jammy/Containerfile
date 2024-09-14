@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1
 ARG BASE_IMAGE=docker.io/ubuntu:jammy-20240808
+# hadolint ignore=DL3006
 FROM ${BASE_IMAGE} AS base
 
 FROM base AS download
@@ -75,7 +76,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 
 # bootstrap rosdep
 RUN rosdep init && \
-  rosdep update --rosdistro $ROS_DISTRO
+  rosdep update --rosdistro "${ROS_DISTRO}"
 
 # setup colcon mixin and metadata
 RUN colcon mixin add default \
