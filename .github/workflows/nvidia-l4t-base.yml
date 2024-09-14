@@ -5,32 +5,15 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+    paths:
+      - 'nvidia/l4t-base/**'
+  workflow_dispatch:
 jobs:
-  # Job to run change detection
-  changes:
-    runs-on: [self-hosted]
-    outputs:
-      images: ${{ steps.filter.outputs.changes }}
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: dorny/paths-filter@v3
-        id: filter
-        with:
-          base: ${{ github.ref }}
-          filters: |
-            nvidia/l4t-base: 'nvidia/l4t-base/**'
-
   build:
-    needs: changes
-    strategy:
-      matrix:
-        image: ${{ fromJSON(needs.changes.outputs.images) }}
-    if: ${{ needs.changes.outputs.images != '[]' && needs.changes.outputs.images != '' }}
     runs-on: [self-hosted]
     defaults:
       run:
-        working-directory: ${{ matrix.image }}
+        working-directory: nvidia/l4t-base
     steps:
       - uses: actions/checkout@v4
 
@@ -49,14 +32,14 @@ jobs:
       - name: Build and push
         uses: docker/bake-action@v4
         with:
-          workdir: ${{ matrix.image }}
+          workdir: nvidia/l4t-base
           push: ${{ github.event_name != 'pull_request' }}
 
       - name: Get the image name
         if: ${{ github.event_name != 'pull_request' }}
         id: image_name
         shell: bash
-        working-directory: ${{ matrix.image }}
+        working-directory: nvidia/l4t-base
         run: |
           echo "image_name=$($(git rev-parse --show-toplevel)/bin/image-name.sh)" >> $GITHUB_ENV
 
@@ -64,7 +47,7 @@ jobs:
         if: ${{ github.event_name != 'pull_request' }}
         id: image_description
         shell: bash
-        working-directory: ${{ matrix.image }}
+        working-directory: nvidia/l4t-base
         run: |
           echo "image_description=$($(git rev-parse --show-toplevel)/bin/image-description.sh)" >> $GITHUB_ENV
 
@@ -72,7 +55,7 @@ jobs:
         if: ${{ github.event_name != 'pull_request' }}
         id: image_readme_filepath
         shell: bash
-        working-directory: ${{ matrix.image }}
+        working-directory: nvidia/l4t-base
         run: |
           echo "image_readme_filepath=$($(git rev-parse --show-toplevel)/bin/image-readme.sh)" >> $GITHUB_ENV
 
