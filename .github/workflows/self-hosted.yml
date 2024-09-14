@@ -49,10 +49,10 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
         with:
-          platforms: ["linux/amd64", "linux/386"]
+          platforms: linux/amd64,linux/386
           append: |
             - endpoint: ssh://craft@10.63.34.15
-              platforms: ["linux/arm64", "linux/arm/v7", "linux/arm/v6"]
+              platforms: linux/arm64,linux/arm/v7,linux/arm/v6
 
       - name: Build locally for testing
         uses: docker/bake-action@v4
