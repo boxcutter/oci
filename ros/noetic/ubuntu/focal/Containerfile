@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1
 ARG BASE_IMAGE=docker.io/ubuntu:focal-20240530
+# hadolint ignore=DL3006
 FROM ${BASE_IMAGE} AS base
 
 FROM base AS download
@@ -67,7 +68,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 
 # bootstrap rosdep
 RUN rosdep init && \
-  rosdep update --rosdistro $ROS_DISTRO
+  rosdep update --rosdistro "${ROS_DISTRO}"
 
 # install ros packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
