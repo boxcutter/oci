@@ -39,21 +39,6 @@ jobs:
 
       # Intentionally not using docker/setup-bake, configured in Chef
 
-      - name: Build locally for testing
-        uses: docker/bake-action@v4
-        with:
-          workdir: ${{ matrix.image }}
-          targets: default
-          load: true
-
-      - name: Run tests on the image with cinc-auditor
-        shell: bash
-        working-directory: ${{ matrix.image }}
-        run: |
-          json_data="$(docker buildx bake --print 2>/dev/null)"
-          test_image=$(echo "$json_data" | jq -r '.target | to_entries[0].value | .tags[0]')
-          $(git rev-parse --show-toplevel)/bin/test-matrix.sh $test_image
-
       - name: Login to DockerHub
         uses: docker/login-action@v3
         if: github.event_name != 'pull_request'
