@@ -1,4 +1,4 @@
-name: self-hosted
+name: nvidia-l4t-base
 
 on:
   push:
