@@ -8,7 +8,7 @@ on:
 jobs:
   # Job to run change detection
   changes:
-    runs-on: [self-hosted]
+    runs-on: [self-hosted,multi-arch]
     outputs:
       images: ${{ steps.filter.outputs.changes }}
     steps:
@@ -19,6 +19,16 @@ jobs:
         with:
           base: ${{ github.ref }}
           filters: |
+            python/3.8/jammy: 'python/3.8/jammy/**'
+            python/3.8/slim-jammy: 'python/3.8/slim-jammy/**'
+            python/3.9/jammy: 'python/3.9/jammy/**'
+            python/3.9/slim-jammy: 'python/3.9/slim-jammy/**'
+            python/3.10/jammy: 'python/3.10/jammy/**'
+            python/3.10/slim-jammy: 'python/3.10/slim-jammy/**'
+            python/3.11/jammy: 'python/3.11/jammy/**'
+            python/3.11/slim-jammy: 'python/3.11/slim-jammy/**'
+            python/3.12/jammy: 'python/3.12/jammy/**'
+            python/3.12/slim-jammy: 'python/3.12/slim-jammy/**'
             ros/humble/ubuntu/jammy: 'ros/humble/ubuntu/jammy/**'
             ros/iron/ubuntu/jammy: 'ros/iron/ubuntu/jammy/**'
             ros/jazzy/ubuntu/noble: 'ros/jazzy/ubuntu/noble/**'
@@ -30,7 +40,7 @@ jobs:
       matrix:
         image: ${{ fromJSON(needs.changes.outputs.images) }}
     if: ${{ needs.changes.outputs.images != '[]' && needs.changes.outputs.images != '' }}
-    runs-on: [self-hosted]
+    runs-on: [self-hosted,multi-arch]
     defaults:
       run:
         working-directory: ${{ matrix.image }}
