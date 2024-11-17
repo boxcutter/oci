@@ -1,5 +1,5 @@
 variable "IMAGE_NAME" {
-  default =  "node_exporter"
+  default =  "node-exporter"
 }
 
 variable "VERSION" {
