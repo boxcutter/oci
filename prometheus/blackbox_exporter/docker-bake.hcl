@@ -3,7 +3,7 @@ variable "IMAGE_NAME" {
 }
 
 variable "VERSION" {
-  default = "0.24.0"
+  default = "0.25.0"
 }
 
 variable "CONTAINER_REGISTRY" {
@@ -18,12 +18,12 @@ variable "LOCAL_PLATFORM" {
 target "_common" {
   dockerfile = "Containerfile"
   args = {
-    BLACKBOX_EXPORTER_URL_AMD64 = "https://github.com/prometheus/blackbox_exporter/releases/download/v0.24.0/blackbox_exporter-0.24.0.linux-amd64.tar.gz"
-    BLACKBOX_EXPORTER_SHA256_AMD64 = "81b36cece040491ac0d9995db2a0964c40e24838a03a151c3333a7dc3eef94ff"
-    BLACKBOX_EXPORTER_URL_ARM64 = "https://github.com/prometheus/blackbox_exporter/releases/download/v0.24.0/blackbox_exporter-0.24.0.linux-arm64.tar.gz"
-    BLACKBOX_EXPORTER_SHA256_ARM64 = "acbbedf03de862fa833bc4dd810e63f105cb44e47abf493192fce3451852dc58"
-    BLACKBOX_EXPORTER_URL_ARMHF = "https://github.com/prometheus/blackbox_exporter/releases/download/v0.24.0/blackbox_exporter-0.24.0.linux-armv7.tar.gz"
-    BLACKBOX_EXPORTER_SHA256_ARMHF = "13b6652f69b6ab3d0f84440a893446679662c6f8b4cca360363c41baa4028638"
+    BLACKBOX_EXPORTER_URL_AMD64 = "https://github.com/prometheus/blackbox_exporter/releases/download/v0.25.0/blackbox_exporter-0.25.0.linux-amd64.tar.gz"
+    BLACKBOX_EXPORTER_SHA256_AMD64 = "c651ced6405c5e0cd292a400f47ae9b34f431f16c7bb098afbcd38f710144640"
+    BLACKBOX_EXPORTER_URL_ARM64 = "https://github.com/prometheus/blackbox_exporter/releases/download/v0.25.0/blackbox_exporter-0.25.0.linux-arm64.tar.gz"
+    BLACKBOX_EXPORTER_SHA256_ARM64 = "46ec5a54a41dc1ea8a8cecee637e117de4807d3b0976482a16596e82e79ac484"
+    BLACKBOX_EXPORTER_URL_ARMHF = "https://github.com/prometheus/blackbox_exporter/releases/download/v0.25.0/blackbox_exporter-0.25.0.linux-armv7.tar.gz"
+    BLACKBOX_EXPORTER_SHA256_ARMHF = "4a275bf8c0b83fcac3db9afb7099b33fdc52ff267e2852a72b62f5611ab540f0"
   }
   tags = [
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${VERSION}",
