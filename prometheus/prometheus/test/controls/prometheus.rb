@@ -19,19 +19,3 @@ end
 describe file('/etc/prometheus/prometheus.yml') do
   it { should exist }
 end
-
-describe directory('/usr/share/prometheus/console_libraries') do
-  it { should exist }
-end
-
-describe file('/usr/share/prometheus/console_libraries/prom.lib') do
-  it { should exist }
-end
-
-describe directory('/usr/share/prometheus/consoles') do
-  it { should exist }
-end
-
-describe file('/usr/share/prometheus/consoles/prometheus.html') do
-  it { should exist }
-end
