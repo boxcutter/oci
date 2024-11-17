@@ -9,7 +9,7 @@ ARG PROMETHEUS_SHA256_ARM64
 ARG PROMETHEUS_URL_ARMHF
 ARG PROMETHEUS_SHA256_ARMHF
 
-FROM base as download
+FROM base AS download
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN <<EOF
   apt-get update
