@@ -117,8 +117,15 @@ jobs:
     if: ${{ needs.changes.outputs.images != '' && needs.changes.outputs.images != '[]' }}
     runs-on: ubuntu-latest
     steps:
+      - name: Get run-test-stage
+        shell: bash
+        working-directory: ${{ matrix.image }}
+        run: |
+          echo "image_name=$($(git rev-parse --show-toplevel)/bin/run-test-stage.sh)" >> $GITHUB_ENV
+
       - uses: boxcutter/container-build-publish-action@main
         with:
           workdir: ${{ matrix.image }}
+          run-test-stage: ${{ env.run-test-stage }}
           dockerhub-username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
           dockerhub-password: ${{ secrets.CONTAINER_DESCRIPTION_PASSWORD }}
