@@ -122,7 +122,7 @@ jobs:
         shell: bash
         working-directory: ${{ matrix.image }}
         run: |
-          echo "image_name=$($(git rev-parse --show-toplevel)/bin/run-test-stage.sh)" >> $GITHUB_ENV
+          echo "run-test-stage=$($(git rev-parse --show-toplevel)/bin/run-test-stage.sh)" >> $GITHUB_ENV
 
       - uses: boxcutter/container-build-publish-action@main
         with:
