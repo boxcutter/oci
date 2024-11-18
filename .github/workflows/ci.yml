@@ -30,6 +30,7 @@ jobs:
             buildpack-deps/ubuntu/jammy: 'buildpack-deps/ubuntu/jammy/**'
             buildpack-deps/ubuntu/focal: 'buildpack-deps/ubuntu/focal/**'
             buildpack-deps/ubuntu/noble: 'buildpack-deps/ubuntu/noble/**'
+            cinc/cinc-auditor: 'cinc/cinc-auditor/**'
             cmake/clang: 'cmake/clang/**'
             cmake/gcc: 'cmake/gcc/**'
             dokken/almalinux-9: 'dokken/almalinux-9/**'
