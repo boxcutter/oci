@@ -1,4 +1,4 @@
-# cinc-auditor
+#  cinc-auditor
 
 Cinc Auditor is a free distribution of Chef InSpec built from the same
 source. Cinc Auditor is 100% compatible with its upstream Chef Inspec
