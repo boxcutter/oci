@@ -1,6 +1,7 @@
 #syntax=docker/dockerfile:1
-ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/ubuntu:noble-20241015 AS base
+ARG BASE_IMAGE=docker.io/ubuntu:noble-20241015
+# hadolint ignore=DL3006
+FROM $BASE_IMAGE AS base
 
 ARG PROMETHEUS_URL_AMD64
 ARG PROMETHEUS_SHA256_AMD64
@@ -33,7 +34,7 @@ RUN <<EOF
       ;; \
     *) echo "unsupported architecture"; exit 1 ;; \
   esac
-  curl -fsSL -o /tmp/prometheus.tar.gz ${PROMETHEUS_URL}
+  curl -fsSL -o /tmp/prometheus.tar.gz "${PROMETHEUS_URL}"
   echo "${PROMETHEUS_SHA256} /tmp/prometheus.tar.gz" | sha256sum -c -
   tar xvf /tmp/prometheus.tar.gz -C /tmp/prometheus --strip-components 1
 EOF
@@ -45,6 +46,8 @@ WORKDIR /prometheus
 COPY --chmod=755 --from=download /tmp/prometheus/prometheus /usr/local/bin/prometheus
 COPY --chmod=755 --from=download /tmp/prometheus/promtool /usr/local/bin/promtool
 COPY --from=download /tmp/prometheus/prometheus.yml /etc/prometheus/prometheus.yml
+COPY --from=download /tmp/prometheus/console_libraries/ /usr/share/prometheus/console_libraries/
+COPY --from=download /tmp/prometheus/consoles/ /usr/share/prometheus/consoles/
 COPY --from=download /tmp/prometheus/LICENSE /LICENSE
 COPY --from=download /tmp/prometheus/NOTICE /NOTICE
 
@@ -63,4 +66,6 @@ VOLUME ["/prometheus"]
 ENTRYPOINT ["/usr/local/bin/prometheus"]
 CMD        [ "--config.file=/etc/prometheus/prometheus.yml", \
              "--storage.tsdb.path=/prometheus", \
-             "--storage.tsdb.retention.time=15d" ]
+             "--storage.tsdb.retention.time=15d", \
+             "--web.console.libraries=/usr/share/prometheus/console_libraries", \
+             "--web.console.templates=/usr/share/prometheus/consoles" ]

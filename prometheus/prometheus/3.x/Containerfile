@@ -1,0 +1,67 @@
+#syntax=docker/dockerfile:1
+ARG BASE_IMAGE=docker.io/ubuntu:noble-20241015
+# hadolint ignore=DL3006
+FROM $BASE_IMAGE AS base
+
+ARG PROMETHEUS_URL_AMD64
+ARG PROMETHEUS_SHA256_AMD64
+ARG PROMETHEUS_URL_ARM64
+ARG PROMETHEUS_SHA256_ARM64
+ARG PROMETHEUS_URL_ARMHF
+ARG PROMETHEUS_SHA256_ARMHF
+
+FROM base AS download
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN <<EOF
+  apt-get update
+  apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl
+  mkdir -p /tmp/prometheus
+  dpkgArch="$(dpkg --print-architecture)"
+  case "${dpkgArch##*-}" in \
+    amd64) \
+      PROMETHEUS_URL="${PROMETHEUS_URL_AMD64}" \
+      PROMETHEUS_SHA256="${PROMETHEUS_SHA256_AMD64}" \
+      ;; \
+    arm64) \
+      PROMETHEUS_URL="${PROMETHEUS_URL_ARM64}" \
+      PROMETHEUS_SHA256="${PROMETHEUS_SHA256_ARM64}" \
+      ;; \
+    armhf) \
+      PROMETHEUS_URL="${PROMETHEUS_URL_ARMHF}" \
+      PROMETHEUS_SHA256="${PROMETHEUS_SHA256_ARMHF}" \
+      ;; \
+    *) echo "unsupported architecture"; exit 1 ;; \
+  esac
+  curl -fsSL -o /tmp/prometheus.tar.gz "${PROMETHEUS_URL}"
+  echo "${PROMETHEUS_SHA256} /tmp/prometheus.tar.gz" | sha256sum -c -
+  tar xvf /tmp/prometheus.tar.gz -C /tmp/prometheus --strip-components 1
+EOF
+
+FROM base
+
+WORKDIR /prometheus
+
+COPY --chmod=755 --from=download /tmp/prometheus/prometheus /usr/local/bin/prometheus
+COPY --chmod=755 --from=download /tmp/prometheus/promtool /usr/local/bin/promtool
+COPY --from=download /tmp/prometheus/prometheus.yml /etc/prometheus/prometheus.yml
+COPY --from=download /tmp/prometheus/LICENSE /LICENSE
+COPY --from=download /tmp/prometheus/NOTICE /NOTICE
+
+RUN <<EOF
+  apt-get update
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    ca-certificates
+  rm -rf /var/lib/apt/lists/*
+  ln -s /usr/share/prometheus/console_libraries /usr/share/prometheus/consoles/ /etc/prometheus/
+  chown -R nobody:nogroup /etc/prometheus /prometheus
+EOF
+
+USER nobody
+EXPOSE 9090
+VOLUME ["/prometheus"]
+ENTRYPOINT ["/usr/local/bin/prometheus"]
+CMD        [ "--config.file=/etc/prometheus/prometheus.yml", \
+             "--storage.tsdb.path=/prometheus", \
+             "--storage.tsdb.retention.time=15d" ]

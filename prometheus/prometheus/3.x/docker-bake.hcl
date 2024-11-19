@@ -1,13 +1,9 @@
-variable "IMAGE_NAME" {
-  default =  "prometheus"
+variable "TAG_PREFIX" {
+  default = "docker.io/boxcutter/prometheus"
 }
 
 variable "VERSION" {
   default = "3.0.0"
-}
-
-variable "CONTAINER_REGISTRY" {
-  default = "docker.io/boxcutter"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
@@ -26,14 +22,15 @@ target "_common" {
     PROMETHEUS_SHA256_ARMHF = "e97e9c9bbc86e2972de9f5db0ac1036e950784316cc0ba70a6fc0b3852cccef5"
   }
   tags = [
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${VERSION}",
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:latest"
+    "${TAG_PREFIX}:${VERSION}",
+    "${TAG_PREFIX}:latest"
   ]
   labels = {
     "org.opencontainers.image.source" = "https://github.com/boxcutter/oci"
     "org.opencontainers.image.licenses" = "Apache-2.0"
     "org.opencontainers.image.description" = "Prometheus monitoring system and time series database."
-    "org.opencontainers.image.title" = "${IMAGE_NAME}"
+    "org.opencontainers.image.title" = "${TAG_PREFIX}"
+    "org.opencontainers.image.created" = "${timestamp()}"
     "dev.boxcutter.image.readme-filepath" = "prometheus/prometheus/README.md"
   }
 }
