@@ -29,8 +29,8 @@ target "_common" {
     "org.opencontainers.image.description" = "Dockerfile linter, validate inline bash, written in Haskell." 
     "org.opencontainers.image.title" = "${TAG_PREFIX}"
     "org.opencontainers.image.created" = "${timestamp()}"
-    "dev.boxcutter.test.container-build-publish-action.run-test-stage" = "false"
-    "dev.boxcutter.test.container-build-publish-action.run-lint-stage" = "false"
+    "dev.boxcutter.container-build-publish-action.run-test-stage" = "false"
+    "dev.boxcutter.container-build-publish-action.run-lint-stage" = "false"
   }
 }
 

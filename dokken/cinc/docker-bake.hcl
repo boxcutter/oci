@@ -30,6 +30,7 @@ target "_common" {
     "org.opencontainers.image.description" = "Cinc Client is an automation platform built from Chef Infra"
     "org.opencontainers.image.title" = "${TAG_PREFIX}"
     "org.opencontainers.image.created" = "${timestamp()}"
+    "dev.boxcutter.container-build-publish-action.test-entrypoint" = "/bin/sh"
   }
 }
 
