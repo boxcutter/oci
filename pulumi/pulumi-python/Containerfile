@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/ubuntu:noble-20240605 as base
-FROM base as build
+FROM $CONTAINER_REGISTRY/ubuntu:noble-20240605 AS base
+FROM base AS build
 
 ARG PULUMI_VERSION
 RUN <<EOF
@@ -34,5 +34,5 @@ EOF
 COPY --from=build /root/.pulumi/bin/pulumi /pulumi/bin/pulumi
 COPY --from=build /root/.pulumi/bin/*-python* /pulumi/bin/
 
-ENV PATH "/pulumi/bin:${PATH}"
+ENV PATH="/pulumi/bin:${PATH}"
 CMD ["pulumi"]
