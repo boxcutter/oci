@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1
 ARG BASE_IMAGE=docker.io/busybox:1.36.1
+# hadolint ignore=DL3006
 FROM ${BASE_IMAGE}
 
 # Because this is a data container and is never run, only mounted via
@@ -28,7 +29,7 @@ RUN <<EOF
       ;; \
      *) echo "unsupported architecture"; exit 1 ;; \
   esac
-  echo "wget --no-check-certificate -O /tmp/cinc-client.rpm ${CINC_URL}"
+  echo "wget --progress=dot:giga --no-check-certificate -O /tmp/cinc-client.rpm ${CINC_URL}"
   max_attempts=5
   attempt=0
   while [ $attempt -lt $max_attempts ]; do
