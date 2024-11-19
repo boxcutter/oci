@@ -33,7 +33,7 @@ RUN <<EOF
   max_attempts=5
   attempt=0
   while [ $attempt -lt $max_attempts ]; do
-    wget --no-check-certificate -O /tmp/cinc-client.rpm ${CINC_URL} && break
+    wget --progress=dot:giga --no-check-certificate -O /tmp/cinc-client.rpm ${CINC_URL} && break
     attempt=$((attempt + 1))
     echo "Attempt $attempt failed. Retrying..."
     sleep 5
