@@ -1,5 +1,7 @@
-ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/ubuntu:noble-20241015 AS base
+# syntax=docker/dockerfile:1
+ARG BASE_IMAGE=docker.io/ubuntu:noble-20241015
+# hadolint ignore=DL3006
+FROM $BASE_IMAGE AS base
 
 ARG ALERTMANAGER_URL_AMD64
 ARG ALERTMANAGER_SHA256_AMD64
