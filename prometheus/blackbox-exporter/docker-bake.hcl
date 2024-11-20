@@ -1,5 +1,5 @@
 variable "TAG_PREFIX" {
-  default = 'docker.io/boxcutter/blackbox-exporter"
+  default = "docker.io/boxcutter/blackbox-exporter"
 }
 
 variable "VERSION" {
