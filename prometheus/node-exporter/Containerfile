@@ -33,7 +33,7 @@ RUN <<EOF
       ;; \
     *) echo "unsupported architecture"; exit 1 ;; \
   esac
-  curl -fsSL -o /tmp/node_exporter.tar.gz ${NODE_EXPORTER_URL}
+  curl -fsSL -o /tmp/node_exporter.tar.gz "${NODE_EXPORTER_URL}"
   echo "${NODE_EXPORTER_SHA256} /tmp/node_exporter.tar.gz" | sha256sum -c -
   tar xvf /tmp/node_exporter.tar.gz -C /tmp/node_exporter --strip-components 1
 EOF
