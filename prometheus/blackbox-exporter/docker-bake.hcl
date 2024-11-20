@@ -1,13 +1,9 @@
-variable "IMAGE_NAME" {
-  default =  "blackbox-exporter"
+variable "TAG_PREFIX" {
+  default = 'docker.io/boxcutter/blackbox-exporter"
 }
 
 variable "VERSION" {
   default = "0.25.0"
-}
-
-variable "CONTAINER_REGISTRY" {
-  default = "docker.io/boxcutter"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
@@ -26,14 +22,15 @@ target "_common" {
     BLACKBOX_EXPORTER_SHA256_ARMHF = "4a275bf8c0b83fcac3db9afb7099b33fdc52ff267e2852a72b62f5611ab540f0"
   }
   tags = [
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${VERSION}",
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:latest"
+    "${TAG_PREFIX}:${VERSION}",
+    "${TAG_PREFIX}:latest"
   ]
   labels = {
     "org.opencontainers.image.source" = "https://github.com/boxcutter/oci"
     "org.opencontainers.image.licenses" = "Apache-2.0"
     "org.opencontainers.image.description" = "Blackbox exporter for probing remote machine metrics."
-    "org.opencontainers.image.title" = "${IMAGE_NAME}"
+    "org.opencontainers.image.title" = "${TAG_PREFIX}"
+    "org.opencontainers.image.created" = "${timestamp()}"
     "dev.boxcutter.image.readme-filepath" = "prometheus/blackbox-exporter/README.md"
   }
 }

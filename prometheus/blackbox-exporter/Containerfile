@@ -1,6 +1,7 @@
-#syntax=docker/dockerfile:1
-ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/ubuntu:noble-20241015 AS base
+# syntax=docker/dockerfile:1
+ARG BASE_IMAGE=docker.io/ubuntu:noble-20241015
+# hadolint ignore=DL3006
+FROM $BASE_IMAGE AS base
 
 ARG BLACKBOX_EXPORTER_URL_AMD64
 ARG BLACKBOX_EXPORTER_SHA256_AMD64
@@ -33,7 +34,7 @@ RUN <<EOF
       ;; \
     *) echo "unsupported architecture"; exit 1 ;; \
   esac
-  curl -fsSL -o /tmp/blackbox_exporter.tar.gz ${BLACKBOX_EXPORTER_URL}
+  curl -fsSL -o /tmp/blackbox_exporter.tar.gz "${BLACKBOX_EXPORTER_URL}"
   echo "${BLACKBOX_EXPORTER_SHA256} /tmp/blackbox_exporter.tar.gz" | sha256sum -c -
   tar xvf /tmp/blackbox_exporter.tar.gz -C /tmp/blackbox_exporter --strip-components 1
 EOF
