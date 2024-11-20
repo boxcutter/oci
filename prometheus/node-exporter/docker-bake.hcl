@@ -1,13 +1,9 @@
-variable "IMAGE_NAME" {
-  default =  "node-exporter"
+variable "TAG_PREFIX" {
+  default = "docker.io/boxcutter/node-exporter"
 }
 
 variable "VERSION" {
   default = "1.7.0"
-}
-
-variable "CONTAINER_REGISTRY" {
-  default = "docker.io/boxcutter"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
@@ -26,15 +22,15 @@ target "_common" {
     NODE_EXPORTER_SHA256_ARMHF = "0fb88e682d055a70a8597504874b0a76d1df6a8a511f3d7cb1d48c7db84a2d2a"
   }
   tags = [
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${VERSION}",
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:latest"
+    "${TAG_PREFIX}:${VERSION}",
+    "${TAG_PREFIX}:latest"
   ]
   labels = {
     "org.opencontainers.image.source" = "https://github.com/boxcutter/oci"
     "org.opencontainers.image.licenses" = "Apache-2.0"
     "org.opencontainers.image.description" = "Prometheus node exporter for machine metrics."
-    "org.opencontainers.image.title" = "${IMAGE_NAME}"
-    "dev.boxcutter.image.readme-filepath" = "prometheus/node_exporter/README.md"
+    "org.opencontainers.image.title" = "${TAG_PREFIX}"
+    "dev.boxcutter.image.readme-filepath" = "prometheus/node-exporter/README.md"
   }
 }
 
