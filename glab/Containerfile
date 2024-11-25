@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/ubuntu:noble-20240605
+ARG BASE_IMAGE=docker.io/ubuntu:noble-20241015
+# hadolint ignore=DL3006
 FROM ${BASE_IMAGE} AS base
 
 ARG GLAB_URL_AMD64
@@ -31,7 +32,7 @@ RUN <<EOF
       ;; \
     *) echo "unsupported architecture"; exit 1 ;; \
   esac 
-  curl -fsSL -o glab.deb ${GLAB_URL}
+  curl -fsSL -o glab.deb "${GLAB_URL}"
   echo "${GLAB_SHA256} glab.deb" | sha256sum -c -
 EOF
 
@@ -46,7 +47,7 @@ RUN <<EOF
       ;;
     *) echo "unsupported architecture"; exit 1 ;; \
   esac
-  curl -fsSL -o docker.tgz  ${DOCKER_URL}
+  curl -fsSL -o docker.tgz "${DOCKER_URL}"
   tar --extract \
 		--file docker.tgz \
 		--strip-components 1 \

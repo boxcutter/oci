@@ -3,7 +3,7 @@ variable "TAG_PREFIX" {
 }
 
 variable "VERSION" {
-  default = "1.46.0"
+  default = "1.49.0"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
@@ -13,13 +13,12 @@ variable "LOCAL_PLATFORM" {
 
 target "_common" {
   args = {
-    MDL_VERSION = "${VERSION}"
-    GLAB_URL_AMD64 = "https://gitlab.com/gitlab-org/cli/-/releases/v1.46.0/downloads/glab_1.46.0_Linux_x86_64.deb"
-    GLAB_SHA256_AMD64 = "1957b02381e638ca8ca2b9cd353c546b46f77e7c5ae03a0827031ca3aa34078a"
-    GLAB_URL_ARM64 = "https://gitlab.com/gitlab-org/cli/-/releases/v1.46.0/downloads/glab_1.46.0_Linux_arm64.deb"
-    GLAB_SHA256_ARM64 = "097980c6a9f2ce718cadca6d5ae7e612f2606ad329f23174afda5facc4c12703"
-    DOCKER_URL_AMD64 = "https://download.docker.com/linux/static/stable/x86_64/docker-27.2.0.tgz"
-    DOCKER_URL_ARM64 = "https://download.docker.com/linux/static/stable/aarch64/docker-27.2.0.tgz"
+    GLAB_URL_AMD64 = "https://gitlab.com/gitlab-org/cli/-/releases/v1.49.0/downloads/glab_1.49.0_linux_amd64.deb"
+    GLAB_SHA256_AMD64 = "f42cc13a1ba6913bde8acd6b03bcd9a081199d9cbfff5fe152147e92ef433c6b"
+    GLAB_URL_ARM64 = "https://gitlab.com/gitlab-org/cli/-/releases/v1.49.0/downloads/glab_1.49.0_linux_arm64.deb"
+    GLAB_SHA256_ARM64 = "136d7f0d65e402247f0f1aca420e60497fcd020c80f7e475235bf95ff3b467a0"
+    DOCKER_URL_AMD64 = "https://download.docker.com/linux/static/stable/x86_64/docker-27.3.1.tgz"
+    DOCKER_URL_ARM64 = "https://download.docker.com/linux/static/stable/aarch64/docker-27.3.1.tgz"
   }
   dockerfile = "Containerfile"
   tags = [
