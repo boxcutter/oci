@@ -5,9 +5,16 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      list:
+        description: 'Comma-separated list of directories in the form: ["dir1", "dir2"]'
+        required: true
+        default: ''    
 jobs:
   # Job to run change detection
   changes:
+    if: ${{ github.event_name != 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     outputs:
       # Expose matched filters as job 'images' output variable
@@ -24,7 +31,7 @@ jobs:
           # you can specify it directly.
           # If it's not configured, the repository default branch is used.
           base: ${{ github.ref }}
-          filters: | 
+          filters: |
             aws-cli: 'aws-cli/**'
             black: 'black/**'
             buildpack-deps/ubuntu/jammy: 'buildpack-deps/ubuntu/jammy/**'
@@ -121,8 +128,54 @@ jobs:
     if: ${{ needs.changes.outputs.images != '' && needs.changes.outputs.images != '[]' }}
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Get build parameters
+        shell: bash
+        working-directory: ${{ matrix.image }}
+        run: |
+          echo "run-lint-stage=$($(git rev-parse --show-toplevel)/bin/run-lint-stage.sh)" >> $GITHUB_ENV
+          echo "run-test-stage=$($(git rev-parse --show-toplevel)/bin/run-test-stage.sh)" >> $GITHUB_ENV
+          echo "test-entrypoint=$($(git rev-parse --show-toplevel)/bin/test-entrypoint.sh)" >> $GITHUB_ENV
+          cat $GITHUB_ENV
+
       - uses: boxcutter/container-build-publish-action@main
         with:
           workdir: ${{ matrix.image }}
+          build-type: 'hosted'
+          run-lint-stage: ${{ env.run-lint-stage }}
+          run-test-stage: ${{ env.run-test-stage }}
+          test-entrypoint: ${{ env.test-entrypoint }}
+          dockerhub-username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
+          dockerhub-password: ${{ secrets.CONTAINER_DESCRIPTION_PASSWORD }}
+
+  # Job to build and test each of the modified images
+  manual-build:
+    strategy:
+      matrix:
+        directory: ${{ fromJSON(github.event.inputs.list) }}
+    if: ${{ github.event.inputs.list != '' && github.event.inputs.list != '[]' && github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Get build parameters
+        shell: bash
+        working-directory: ${{ matrix.directory }}
+        run: |
+          echo "run-lint-stage=$($(git rev-parse --show-toplevel)/bin/run-lint-stage.sh)" >> $GITHUB_ENV
+          echo "run-test-stage=$($(git rev-parse --show-toplevel)/bin/run-test-stage.sh)" >> $GITHUB_ENV
+          echo "test-entrypoint=$($(git rev-parse --show-toplevel)/bin/test-entrypoint.sh)" >> $GITHUB_ENV
+          cat $GITHUB_ENV
+
+      - uses: boxcutter/container-build-publish-action@main
+        with:
+          workdir: ${{ matrix.directory }}
+          build-type: 'hosted'
+          run-lint-stage: ${{ env.run-lint-stage }}
+          run-test-stage: ${{ env.run-test-stage }}
+          test-entrypoint: ${{ env.test-entrypoint }}
           dockerhub-username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
           dockerhub-password: ${{ secrets.CONTAINER_DESCRIPTION_PASSWORD }}
