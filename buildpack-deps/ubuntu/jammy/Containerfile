@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1
 ARG BASE_IMAGE=docker.io/ubuntu:22.04
+# hadolint ignore=DL3006
 FROM ${BASE_IMAGE} AS curl
 
 RUN set -eux; \
