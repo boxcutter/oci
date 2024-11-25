@@ -4,7 +4,7 @@ end
 
 describe command('prometheus --version') do
   its('exit_status') { should eq 0 }
-  its('stdout') { should match(/prometheus, version/) }
+  its('stdout') { should match(/prometheus, version 2/) }
 end
 
 describe command('promtool') do
@@ -13,11 +13,7 @@ end
 
 describe command('promtool --version') do
   its('exit_status') { should eq 0 }
-  its('stdout') { should match(/promtool, version/) }
-end
-
-describe file('/etc/prometheus/prometheus.yml') do
-  it { should exist }
+  its('stdout') { should match(/promtool, version 2/) }
 end
 
 describe file('/etc/prometheus/prometheus.yml') do
