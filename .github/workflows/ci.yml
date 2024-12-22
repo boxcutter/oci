@@ -156,7 +156,7 @@ jobs:
       matrix:
         directory: ${{ fromJSON(github.event.inputs.list) }}
     if: ${{ github.event.inputs.list != '' && github.event.inputs.list != '[]' && github.event_name == 'workflow_dispatch' }}
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, multi-arch]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -174,6 +174,66 @@ jobs:
         with:
           workdir: ${{ matrix.directory }}
           build-type: 'hosted'
+          run-lint-stage: ${{ env.run-lint-stage }}
+          run-test-stage: ${{ env.run-test-stage }}
+          test-entrypoint: ${{ env.test-entrypoint }}
+          dockerhub-username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
+          dockerhub-password: ${{ secrets.CONTAINER_DESCRIPTION_PASSWORD }}
+
+  # Job to run change detection
+  self-hosted-changes:
+    if: ${{ github.event_name != 'workflow_dispatch' }}
+    runs-on: [self-hosted, multi-arch]
+    outputs:
+      images: ${{ steps.self-hosted-filter.outputs.changes }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dorny/paths-filter@v3
+        id: self-hosted-filter
+        with:
+          base: ${{ github.ref }}
+          filters: |
+            python/3.9/focal: 'python/3.9/focal/**'
+            python/3.9/slim-focal: 'python/3.9/slim-focal/**'
+            python/3.9/jammy: 'python/3.9/jammy/**'
+            python/3.9/slim-jammy: 'python/3.9/slim-jammy/**'
+            python/3.10/focal: 'python/3.10/focal/**'
+            python/3.10/slim-focal: 'python/3.10/slim-focal/**'
+            python/3.10/jammy: 'python/3.10/jammy/**'
+            python/3.10/slim-jammy: 'python/3.10/slim-jammy/**'
+            ros/humble/ubuntu/jammy: 'ros/humble/ubuntu/jammy/**'
+            ros/iron/ubuntu/jammy: 'ros/iron/ubuntu/jammy/**'
+            ros/jazzy/ubuntu/noble: 'ros/jazzy/ubuntu/noble/**'
+            ros/noetic/ubuntu/focal: 'ros/noetic/ubuntu/focal/**'
+
+  # Job to build and test each of the modified images
+  self-hosted-build:
+    needs: self-hosted-changes
+    strategy:
+      matrix:
+        # Parse JSON array containing names of all filters matching any of changed files
+        # e.g. ['image1', 'image2'] if both image folders contains changes
+        image: ${{ fromJSON(needs.self-hosted-changes.outputs.images) }}
+    if: ${{ needs.self-hosted-changes.outputs.images != '[]' && needs.self-hosted-changes.outputs.images != '' && github.event_name != 'workflow_dispatch'}}
+    runs-on: [self-hosted, multi-arch]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Get build parameters
+        shell: bash
+        working-directory: ${{ matrix.image }}
+        run: |
+          echo "run-lint-stage=$($(git rev-parse --show-toplevel)/bin/run-lint-stage.sh)" >> $GITHUB_ENV
+          echo "run-test-stage=$($(git rev-parse --show-toplevel)/bin/run-test-stage.sh)" >> $GITHUB_ENV
+          echo "test-entrypoint=$($(git rev-parse --show-toplevel)/bin/test-entrypoint.sh)" >> $GITHUB_ENV
+          cat $GITHUB_ENV
+
+      - uses: polymathrobotics/container-build-publish-action@main
+        with:
+          workdir: ${{ matrix.image }}
+          build-type: 'local'
           run-lint-stage: ${{ env.run-lint-stage }}
           run-test-stage: ${{ env.run-test-stage }}
           test-entrypoint: ${{ env.test-entrypoint }}
