@@ -230,7 +230,7 @@ jobs:
           echo "test-entrypoint=$($(git rev-parse --show-toplevel)/bin/test-entrypoint.sh)" >> $GITHUB_ENV
           cat $GITHUB_ENV
 
-      - uses: polymathrobotics/container-build-publish-action@main
+      - uses: boxcutter/container-build-publish-action@main
         with:
           workdir: ${{ matrix.image }}
           build-type: 'local'
