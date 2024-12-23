@@ -173,7 +173,7 @@ jobs:
       - uses: boxcutter/container-build-publish-action@main
         with:
           workdir: ${{ matrix.directory }}
-          build-type: 'hosted'
+          build-type: 'local'
           run-lint-stage: ${{ env.run-lint-stage }}
           run-test-stage: ${{ env.run-test-stage }}
           test-entrypoint: ${{ env.test-entrypoint }}
@@ -233,7 +233,7 @@ jobs:
       - uses: boxcutter/container-build-publish-action@main
         with:
           workdir: ${{ matrix.image }}
-          build-type: 'hosted'
+          build-type: 'local'
           run-lint-stage: ${{ env.run-lint-stage }}
           run-test-stage: ${{ env.run-test-stage }}
           test-entrypoint: ${{ env.test-entrypoint }}
