@@ -19,7 +19,7 @@ variable "BUILDTAGS" {
   default = [
     { name = "focal", base = "docker.io/ubuntu:focal-20241011", version = "20.04" },
   ]
-}⁠
+}
 
 target "_common" {
   dockerfile = "Containerfile"
