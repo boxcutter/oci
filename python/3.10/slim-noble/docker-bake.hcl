@@ -1,13 +1,9 @@
-variable "IMAGE_NAME" {
-  default = "python"
+variable "TAG_PREFIX" {
+  default = "docker.io/boxcutter/python"
 }
 
 variable "VERSION" {
   default = "3.10.16"
-}
-
-variable "CONTAINER_REGISTRY" {
-  default = "docker.io/boxcutter"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
@@ -18,8 +14,8 @@ variable "LOCAL_PLATFORM" {
 target "_common" {
   dockerfile = "Containerfile"
   tags = [
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${VERSION}-slim-noble",
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${join(".", slice(split(".", "${VERSION}"), 0, 2))}-slim-noble",
+    "${TAG_PREFIX}:${VERSION}-slim-noble",
+    "${TAG_PREFIX}:${join(".", slice(split(".", "${VERSION}"), 0, 2))}-slim-noble",
   ]
   labels = {
     "org.opencontainers.image.source" = "https://github.com/boxcutter/oci"
