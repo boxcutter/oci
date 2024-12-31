@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/ubuntu:noble-20240605
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20240911.1
 
 RUN set -eux; \
 	apt-get update; \
@@ -16,21 +16,17 @@ RUN set -eux; \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
-# skip installing gem documentation
+# skip installing gem documentation with `gem install`/`gem update`
 RUN set -eux; \
 	mkdir -p /usr/local/etc; \
-	{ \
-		echo 'install: --no-document'; \
-		echo 'update: --no-document'; \
-	} >> /usr/local/etc/gemrc
+	echo 'gem: --no-document' >> /usr/local/etc/gemrc
 
-ENV LANG C.UTF-8
-ARG RUBY_VERSION
-ENV RUBY_VERSION=$RUBY_VERSION
-ARG RUBY_DOWNLOAD_URL
-ENV RUBY_DOWNLOAD_URL=$RUBY_DOWNLOAD_URL
-ARG RUBY_DOWNLOAD_SHA256
-ENV RUBY_DOWNLOAD_SHA256=$RUBY_DOWNLOAD_SHA256
+ENV LANG=C.UTF-8
+
+# https://www.ruby-lang.org/en/news/2024/10/30/ruby-3-2-6-released/
+ENV RUBY_VERSION=3.2.6
+ENV RUBY_DOWNLOAD_URL=https://cache.ruby-lang.org/pub/ruby/3.2/ruby-3.2.6.tar.xz
+ENV RUBY_DOWNLOAD_SHA256=671134022238c2c4a9d79dc7d1e58c909634197617901d25863642f735a27ecb
 
 # some of ruby's build scripts are written in ruby
 #   we purge system ruby later to make sure our final image uses what we just built
@@ -134,10 +130,10 @@ RUN set -eux; \
 	bundle --version
 
 # don't create ".bundle" in all our apps
-ENV GEM_HOME /usr/local/bundle
+ENV GEM_HOME=/usr/local/bundle
 ENV BUNDLE_SILENCE_ROOT_WARNING=1 \
 	BUNDLE_APP_CONFIG="$GEM_HOME"
-ENV PATH $GEM_HOME/bin:$PATH
+ENV PATH=$GEM_HOME/bin:$PATH
 RUN set -eux; \
 	mkdir "$GEM_HOME"; \
 # adjust permissions of GEM_HOME for running "gem install" as an arbitrary user
