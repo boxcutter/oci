@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 ARG CONTAINER_REGISTRY=docker.io/boxcutter
-FROM $CONTAINER_REGISTRY/buildpack-deps:jammy
+FROM $CONTAINER_REGISTRY/buildpack-deps:noble
 
 # skip installing gem documentation with `gem install`/`gem update`
 RUN set -eux; \
@@ -63,6 +63,7 @@ RUN set -eux; \
 		| awk '/=>/ { so = $(NF-1); if (index(so, "/usr/local/") == 1 || so == "/usr/local/src/ruby/libruby.so.3.1") { next }; gsub("^/(usr/)?", "", so); if (so != "src/ruby/libruby.so.3.1") printf "*%s\n", so }' \
                 | sort -u \
 		| xargs -r dpkg-query --search \
+		| grep -v "diversion by" \
 		| cut -d: -f1 \
 		| sort -u \
 		| xargs -r apt-mark manual \

@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/ubuntu:jammy-20240627.1
+FROM $CONTAINER_REGISTRY/ubuntu:jammy-20240911.1
 
 RUN set -eux; \
 	apt-get update; \
@@ -16,21 +16,18 @@ RUN set -eux; \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
-# skip installing gem documentation
+# skip installing gem documentation with `gem install`/`gem update`
 RUN set -eux; \
 	mkdir -p /usr/local/etc; \
-	{ \
-		echo 'install: --no-document'; \
-		echo 'update: --no-document'; \
-	} >> /usr/local/etc/gemrc
+	echo 'gem: --no-document' >> /usr/local/etc/gemrc
 
-ENV LANG C.UTF-8
-ARG RUBY_VERSION
-ENV RUBY_VERSION=$RUBY_VERSION
-ARG RUBY_DOWNLOAD_URL
-ENV RUBY_DOWNLOAD_URL=$RUBY_DOWNLOAD_URL
-ARG RUBY_DOWNLOAD_SHA256
-ENV RUBY_DOWNLOAD_SHA256=$RUBY_DOWNLOAD_SHA256
+
+ENV LANG=C.UTF-8
+
+# https://www.ruby-lang.org/en/news/2024/05/29/ruby-3-1-6-released/
+ENV RUBY_VERSION=3.1.6
+ENV RUBY_DOWNLOAD_URL=https://cache.ruby-lang.org/pub/ruby/3.1/ruby-3.1.6.tar.xz
+ENV RUBY_DOWNLOAD_SHA256=597bd1849f252d8a6863cb5d38014ac54152b508c36dca156f6356a9e63c6102
 
 # some of ruby's build scripts are written in ruby
 #   we purge system ruby later to make sure our final image uses what we just built
@@ -60,7 +57,7 @@ RUN set -eux; \
 	; \
 	rm -rf /var/lib/apt/lists/*; \
 	\
-	wget -O ruby.tar.xz --progress=dot:giga "https://cache.ruby-lang.org/pub/ruby/${RUBY_MAJOR%-rc}/ruby-$RUBY_VERSION.tar.xz"; \
+	wget -O ruby.tar.xz "$RUBY_DOWNLOAD_URL"; \
 	echo "$RUBY_DOWNLOAD_SHA256 *ruby.tar.xz" | sha256sum --check --strict; \
 	\
 	mkdir -p /usr/src/ruby; \
