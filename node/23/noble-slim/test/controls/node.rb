@@ -1,6 +1,6 @@
 describe command('node --version') do
     its('exit_status') { should eq 0 }
-    its('stdout') { should match(/v22/) }
+    its('stdout') { should match(/v23/) }
 end
 
 describe file('/usr/local/bin/docker-entrypoint.sh') do
