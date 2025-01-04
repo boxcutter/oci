@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/ubuntu:noble-20240801
+ARG BASE_IMAGE=docker.io/ubuntu:noble-20241118.1
 FROM $BASE_IMAGE
 
 RUN <<EOF
