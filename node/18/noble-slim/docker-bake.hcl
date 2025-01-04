@@ -17,10 +17,10 @@ target "_common" {
   }
   dockerfile = "Containerfile"
   tags = [
-    "${TAG_PREFIX}:${VERSION}-noble",
-    "${TAG_PREFIX}:${join(".", slice(split(".", "${VERSION}"), 0, 2))}-noble",
-    "${TAG_PREFIX}:${join(".", slice(split(".", "${VERSION}"), 0, 1))}-noble",
-    "${TAG_PREFIX}:hydrogen-noble"
+    "${TAG_PREFIX}:${VERSION}-noble-slim",
+    "${TAG_PREFIX}:${join(".", slice(split(".", "${VERSION}"), 0, 2))}-noble-slim",
+    "${TAG_PREFIX}:${join(".", slice(split(".", "${VERSION}"), 0, 1))}-noble-slim",
+    "${TAG_PREFIX}:hydrogen-noble-slim"
   ]
 
   labels = {
