@@ -20,7 +20,6 @@ target "_common" {
     "${TAG_PREFIX}:${VERSION}-noble-slim",
     "${TAG_PREFIX}:${join(".", slice(split(".", "${VERSION}"), 0, 2))}-noble-slim",
     "${TAG_PREFIX}:${join(".", slice(split(".", "${VERSION}"), 0, 1))}-noble-slim",
-    "${TAG_PREFIX}:noble-slim",
     "${TAG_PREFIX}:lts-noble-slim",
   ]
 
