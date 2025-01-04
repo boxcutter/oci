@@ -80,7 +80,7 @@ jobs:
             jupyter/tensorflow-notebook: 'jupyter/tensorflow-notebook/**'
             meshcmd: 'meshcmd/**'
             node/18/noble-slim: 'node/18/noble-slim/**'
-            node/20/noble: 'node/20/noble/**'
+            node/20/noble-slim: 'node/20/noble-slim/**'
             node/22/noble: 'node/22/noble/**'
             opam: 'opam/**'
             pgweb: 'pgweb/**'
