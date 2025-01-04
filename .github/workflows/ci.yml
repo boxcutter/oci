@@ -82,6 +82,7 @@ jobs:
             node/18/noble-slim: 'node/18/noble-slim/**'
             node/20/noble-slim: 'node/20/noble-slim/**'
             node/22/noble-slim: 'node/22/noble-slim/**'
+            node/23/noble-slim: 'node/23/noble-slim/**'
             opam: 'opam/**'
             pgweb: 'pgweb/**'
             postgres/15/noble: 'postgres/15/noble/**'
