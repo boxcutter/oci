@@ -15,7 +15,7 @@ project. And it's all open source.
 | ROS 2 Iron | 23 May 2023 | 4 December 2024 | |
 | ROS 2 Humble (LTS) | 23 May 2022 | May 2027 | Previous LTS ROS 2 Distro  - Active |
 | ROS 2 Foxy (LTS) | 5 June 2020 | 20 June 2023 | |
-| ROS 1 Noetic (LTS) | 23 May 2020 | May 2025 | | LTS ROS 1 Distro  - Active |
+| ROS 1 Noetic (LTS) | 23 May 2020 | May 2025 | LTS ROS 1 Distro  - Active |
 
 
 ## List of Gazebo Releases
