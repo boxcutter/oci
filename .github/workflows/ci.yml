@@ -111,7 +111,7 @@ jobs:
             ruby/3.4/noble: 'ruby/3.4/noble/**'
             ruby/3.4/slim-jammy: 'ruby/3.4/slim-jammy/**'
             ruby/3.4/slim-noble: 'ruby/3.4/slim-noble/**'
-            rust/jammy: 'rust/jammy/**'
+            rust/noble: 'rust/noble/slim/**'
             shellcheck: 'shellcheck/**'
             ubuntu-autoinstall: 'ubuntu-autoinstall/**'
             
