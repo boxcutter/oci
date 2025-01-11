@@ -13,6 +13,9 @@ variable "ROS_PACKAGE" {
 
 target "_common" {
   args = {
+    UBUNTU_ARCHIVE_APT_PROXY = "http://archive.ubuntu.com/ubuntu/"
+    UBUNTU_SECURITY_APT_PROXY = "http://security.ubuntu.com/ubuntu/"
+    UBUNTU_PORTS_APT_PROXY = "http://ports.ubuntu.com/ubuntu-ports/"
     ROS_PACKAGES_URI = "http://packages.ros.org/ros2/ubuntu"
     RAW_GITHUBUSERCONTENT_BASE_URL = "https://raw.githubusercontent.com"
   }

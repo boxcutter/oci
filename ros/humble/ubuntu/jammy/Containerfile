@@ -3,7 +3,28 @@ ARG BASE_IMAGE=docker.io/ubuntu:jammy-20240911.1
 # hadolint ignore=DL3006
 FROM ${BASE_IMAGE} AS base
 
-FROM base AS download
+FROM base AS sources
+
+ARG UBUNTU_ARCHIVE_APT_PROXY
+ARG UBUNTU_SECURITY_APT_PROXY
+ARG UBUNTU_PORTS_APT_PROXY
+
+# Allow replacing APT sources with local mirror
+RUN <<EOF
+  dpkgArch="$(dpkg --print-architecture)"
+  case "${dpkgArch##*-}" in \
+    amd64) \
+      sed -i "s|http://archive.ubuntu.com/ubuntu/|${UBUNTU_ARCHIVE_APT_PROXY}|g" /etc/apt/sources.list ; \
+      sed -i "s|http://security.ubuntu.com/ubuntu/|${UBUNTU_SECURITY_APT_PROXY}|g" /etc/apt/sources.list \
+      ;; \
+    arm64) \
+      sed -i "s|http://ports.ubuntu.com/ubuntu-ports/|${UBUNTU_PORTS_APT_PROXY}|g" /etc/apt/sources.list \
+      ;; \
+    *) echo "unsupported architecture"; exit 1 ;; \
+  esac
+EOF
+
+FROM sources AS download
 
 ARG ROS_PACKAGES_URI
 ARG RAW_GITHUBUSERCONTENT_BASE_URL
