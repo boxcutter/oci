@@ -20,6 +20,13 @@ COPY --chown=ubuntu:ubuntu /src /app
 
 FROM $BASE_IMAGE
 
+RUN <<EOF
+  apt-get update
+  apt-get install --no-install-recommends -y \
+    zip
+  rm -rf /var/lib/apt/lists/*
+EOF
+
 WORKDIR /app
 
 USER ubuntu
