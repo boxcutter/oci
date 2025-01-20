@@ -1,5 +1,5 @@
 describe command('zip') do
-  its(exit_status') { should eq 0 }
+  its('exit_status') { should eq 0 }
   its('stdout') { should match(/Zip/) }
 end
 
