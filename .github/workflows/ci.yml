@@ -114,6 +114,7 @@ jobs:
             ruby/3.4/slim-noble: 'ruby/3.4/slim-noble/**'
             rust/noble/slim: 'rust/noble/slim/**'
             shellcheck: 'shellcheck/**'
+            slidev: 'slidev/**'
             ubuntu-autoinstall: 'ubuntu-autoinstall/**'
             
   # Job to build and test each of the modified images

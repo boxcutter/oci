@@ -1,0 +1,22 @@
+# syntax=docker/dockerfile:1
+ARG BASE_IMAGE=docker.io/boxcutter/node:22-noble-slim
+# hadolint ignore=DL3006
+FROM $BASE_IMAGE
+
+COPY --chmod=0755 entrypoint.sh /
+
+USER root
+
+RUN npx playwright install-deps
+
+USER ubuntu
+
+WORKDIR /slidev
+
+ENV CHOKIDAR_USEPOLLING=true
+
+# Define the main process
+ENTRYPOINT ["/entrypoint.sh"]
+
+# Provide the default arguments
+CMD ["--help"]
