@@ -1,3 +1,8 @@
+describe command('zip') do
+  its(exit_status') { should eq 0 }
+  its('stdout') { should match(/Zip/) }
+end
+
 describe file('/app/markmaker.py') do
   it { should exist }
   its('mode') { should cmp '0755' }
