@@ -78,6 +78,7 @@ jobs:
             jupyter/scipy-notebook: 'jupyter/scipy-notebook/**'
             jupyter/datascience-notebook: 'jupyter/datascience-notebook/**'
             jupyter/tensorflow-notebook: 'jupyter/tensorflow-notebook/**'
+            markmaker: 'markmaker/**'
             meshcmd: 'meshcmd/**'
             node/18/noble-slim: 'node/18/noble-slim/**'
             node/20/noble-slim: 'node/20/noble-slim/**'

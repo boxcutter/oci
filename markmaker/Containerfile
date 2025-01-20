@@ -1,0 +1,33 @@
+# syntax=docker/dockerfile:1
+ARG BASE_IMAGE=docker.io/boxcutter/python:3.9-slim-noble
+# hadolint ignore=DL3006
+FROM $BASE_IMAGE AS build
+
+# Create a virtualenv to make it easier to copy all the package dependencies
+# from this build stage. There's no performance overhead in using a virtualenv.
+RUN python3 -m venv /venv
+
+WORKDIR /app
+
+COPY requirements.txt .
+
+ENV PATH=/venv/bin:$PATH
+ENV VIRTUAL_ENV=/venv
+
+RUN pip install --no-cache-dir --requirement requirements.txt
+
+COPY --chown=ubuntu:ubuntu /src /app
+
+FROM $BASE_IMAGE
+
+WORKDIR /app
+
+USER ubuntu
+
+COPY --from=build --chown=ubuntu:ubuntu /venv /venv
+
+ENV PATH=/venv/bin:$PATH
+ENV VIRTUAL_ENV=/venv
+ENV PYTHONFAULTHANDLER=true
+
+COPY --from=build --chown=ubuntu:ubuntu /app/ /app
