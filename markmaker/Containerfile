@@ -24,6 +24,7 @@ RUN <<EOF
   apt-get update
   apt-get install --no-install-recommends -y \
     git \
+    unzip \
     zip
   rm -rf /var/lib/apt/lists/*
 EOF
