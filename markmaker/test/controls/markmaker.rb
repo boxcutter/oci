@@ -1,6 +1,9 @@
-describe command('zip') do
+describe command('git -h') do
   its('exit_status') { should eq 0 }
-  its('stdout') { should match(/Zip/) }
+end
+
+describe command('zip -h') do
+  its('exit_status') { should eq 0 }
 end
 
 describe file('/app/markmaker.py') do
