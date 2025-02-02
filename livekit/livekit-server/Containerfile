@@ -1,0 +1,40 @@
+#syntax=docker/dockerfile:1
+ARG CONTAINER_REGISTRY=docker.io
+FROM $CONTAINER_REGISTRY/ubuntu:noble-20241118.1 AS base
+
+ARG LIVEKIT_URL_AMD64
+ARG LIVEKIT_SHA256_AMD64
+ARG LIVEKIT_URL_ARM64
+ARG LIVEKIT_SHA256_ARM64
+
+FROM base AS download
+RUN <<EOF
+  apt-get update
+  apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl
+  dpkgArch="$(dpkg --print-architecture)"
+  case "${dpkgArch##*-}" in \
+    amd64) \
+      LIVEKIT_URL="${LIVEKIT_URL_AMD64}" \
+      LIVEKIT_SHA256="${LIVEKIT_SHA256_AMD64}" \
+      ;; \
+    arm64) \
+      LIVEKIT_URL="${LIVEKIT_URL_ARM64}" \
+      LIVEKIT_SHA256="${LIVEKIT_SHA256_ARM64}" \
+      ;; \
+    *) echo "unsupported architecture"; exit 1 ;; \
+  esac
+  curl -fsSL -o /tmp/livekit.tar.gz ${LIVEKIT_URL}
+  echo "${LIVEKIT_SHA256} /tmp/livekit.tar.gz" | sha256sum -c -
+  mkdir -p /tmp/livekit
+  tar xzvf /tmp/livekit.tar.gz -C /tmp/livekit
+  rm -rf /var/lib/apt/lists/*
+EOF
+
+FROM base
+
+WORKDIR /app
+COPY --from=download /tmp/livekit/livekit-server /usr/local/bin/livekit-server
+
+ENTRYPOINT ["/usr/local/bin/livekit-server"]
