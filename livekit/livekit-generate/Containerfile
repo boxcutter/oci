@@ -2,11 +2,17 @@
 ARG CONTAINER_REGISTRY=docker.io
 FROM $CONTAINER_REGISTRY/ubuntu:noble-20241118.1 AS base
 
-FROM $CONTAINER_REGISTRY/livekit/generate:latest AS download
+FROM --platform=$TARGETPLATFORM $CONTAINER_REGISTRY/livekit/generate:latest AS download
 
 FROM base
 
 WORKDIR /app
-COPY --from=download /bin/generate /usr/local/bin/generate
+COPY --from=download --chmod=755 /bin/generate /usr/local/bin/generate
+
+RUN <<EOF
+  apt-get update
+  apt-get install -y --no-install-recommends musl
+  rm -rf /var/lib/apt/lists/*
+EOF
 
 ENTRYPOINT ["/usr/local/bin/generate"]
