@@ -79,6 +79,7 @@ jobs:
             jupyter/datascience-notebook: 'jupyter/datascience-notebook/**'
             jupyter/tensorflow-notebook: 'jupyter/tensorflow-notebook/**'
             livekit/livekit-cli: 'livekit/livekit-cli/**'
+            livekit/livekit-generate: 'livekit/livekit-generate/**'
             livekit/livekit-server: 'livekit/livekit-server/**'
             markmaker: 'markmaker/**'
             meshcmd: 'meshcmd/**'

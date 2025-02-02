@@ -1,0 +1,12 @@
+#syntax=docker/dockerfile:1
+ARG CONTAINER_REGISTRY=docker.io
+FROM $CONTAINER_REGISTRY/ubuntu:noble-20241118.1 AS base
+
+FROM $CONTAINER_REGISTRY/livekit/generate:latest AS download
+
+FROM base
+
+WORKDIR /app
+COPY --from=download /bin/generate /usr/local/bin/generate
+
+ENTRYPOINT ["/usr/local/bin/generate"]
