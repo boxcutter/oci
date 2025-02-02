@@ -11,7 +11,10 @@ COPY --from=download --chmod=755 /bin/generate /usr/local/bin/generate
 
 RUN <<EOF
   apt-get update
-  apt-get install -y --no-install-recommends musl
+  apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    musl
   rm -rf /var/lib/apt/lists/*
 EOF
 
