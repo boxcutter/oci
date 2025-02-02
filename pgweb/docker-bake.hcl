@@ -34,7 +34,6 @@ target "_common" {
     "org.opencontainers.image.licenses" = "Apache-2.0"
     "org.opencontainers.image.description" = "Blackbox exporter for probing remote machine metrics."
     "org.opencontainers.image.title" = "${IMAGE_NAME}"
-    "dev.boxcutter.image.readme-filepath" = "prometheus/blackbox_exporter/README.md"
   }
 }
 
