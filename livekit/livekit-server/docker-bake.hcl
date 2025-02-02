@@ -1,5 +1,5 @@
 variable "IMAGE_NAME" {
-    default =  "livekit"
+    default =  "livekit-server"
   }
 
   variable "VERSION" {
