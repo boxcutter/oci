@@ -3,7 +3,7 @@ variable "TAG_PREFIX" {
 }
 
 variable "VERSION" {
-  default = "18.4.12"
+  default = "18.6.2"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
@@ -13,16 +13,16 @@ variable "LOCAL_PLATFORM" {
 
 target "_common" {
   args = {
-    CINC_URL_AMD64 = "http://ftp.osuosl.org/pub/cinc/files/stable/cinc/18.4.12/el/7/cinc-18.4.12-1.el7.x86_64.rpm"
-    CINC_SHA256_AMD64 = "697ac775c15aa80ca9908ae404e98fb93b4f71545d1b01ddcc7364c9070ba8b2"
-    CINC_URL_ARM64 = "http://ftp.osuosl.org/pub/cinc/files/stable/cinc/18.4.12/el/7/cinc-18.4.12-1.el7.aarch64.rpm"
-    CINC_SHA256_ARM64 = "dbce991933bc0fd0ddd70403fb103a86459db20de13dc3c4d001df83b86c5796"
+    CINC_URL_AMD64 = "https://ftp.osuosl.org/pub/cinc/files/stable/cinc/18.6.2/el/8/cinc-18.6.2-1.el8.x86_64.rpm"
+    CINC_SHA256_AMD64 = "5892541677390a46f9133e231321a9d4e1569e9b004bfe959eafa0390cefc2c4"
+    CINC_URL_ARM64 = "https://ftp.osuosl.org/pub/cinc/files/stable/cinc/18.6.2/el/8/cinc-18.6.2-1.el8.aarch64.rpm"
+    CINC_SHA256_ARM64 = "5fe081880cc7aa59705a6fc5e092efe995c0b5f2dc364aaaecd6ee553d02ea73"
   }
   dockerfile = "Containerfile"
   tags = [
     "${TAG_PREFIX}:${VERSION}",
-    "${TAG_PREFIX}:latest",
-    "${TAG_PREFIX}:current"
+    # "${TAG_PREFIX}:latest",
+    # "${TAG_PREFIX}:current"
   ]
   labels = {
     "org.opencontainers.image.source" = "https://github.com/boxcutter/oci"
