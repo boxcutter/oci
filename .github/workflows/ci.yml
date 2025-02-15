@@ -44,6 +44,7 @@ jobs:
             dokken/amazonlinux-2: 'dokken/amazonlinux-2/**'
             dokken/amazonlinux-2023: 'dokken/amazonlinux-2023/**'
             dokken/centos-stream-9: 'dokken/centos-stream-9/**'
+            dokken/centos-stream-10: 'dokken/centos-stream-10/**'
             dokken/cinc: 'dokken/cinc/**'
             dokken/debian-11: 'dokken/debian-11/**'
             dokken/debian-12: 'dokken/debian-12/**'

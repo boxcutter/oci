@@ -1,11 +1,11 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE="quay.io/centos/centos:stream9"
+ARG BASE_IMAGE="quay.io/centos/centos:stream10-development"
 FROM ${BASE_IMAGE}
 
-# NOTE: CentOS Stream 9 is still under heavy development
+# NOTE: CentOS Stream 10 is still under heavy development
 # hadolint ignore=DL3041
 RUN <<EOF
-  dnf --allowerasing  -y install \
+  dnf --allowerasing --nobest -y install \
 	binutils \
 	ca-certificates \
 	cronie \
