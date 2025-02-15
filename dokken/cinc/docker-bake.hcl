@@ -21,8 +21,8 @@ target "_common" {
   dockerfile = "Containerfile"
   tags = [
     "${TAG_PREFIX}:${VERSION}",
-    # "${TAG_PREFIX}:latest",
-    # "${TAG_PREFIX}:current"
+    "${TAG_PREFIX}:latest",
+    "${TAG_PREFIX}:current"
   ]
   labels = {
     "org.opencontainers.image.source" = "https://github.com/boxcutter/oci"
