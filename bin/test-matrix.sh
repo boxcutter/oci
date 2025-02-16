@@ -13,7 +13,7 @@ matrix_test() {
 
   while read -r tag; do
     echo "==> Testing ${tag}"
-    "${BIN_DIR}/test.sh" "${tag}" &
+    "${BIN_DIR}/test.sh" "${tag}" "$@" &
     pids+=($!)
   done <<< "${tags}"
 
