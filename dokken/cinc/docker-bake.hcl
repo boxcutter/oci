@@ -15,7 +15,8 @@ target "_common" {
   args = {
     CINC_URL_AMD64 = "https://ftp.osuosl.org/pub/cinc/files/stable/cinc/18.6.2/el/8/cinc-18.6.2-1.el8.x86_64.rpm"
     CINC_SHA256_AMD64 = "5892541677390a46f9133e231321a9d4e1569e9b004bfe959eafa0390cefc2c4"
-    CINC_URL_ARM64 = "https://ftp.osuosl.org/pub/cinc/files/stable/cinc/18.6.2/el/8/cinc-18.6.2-1.el8.aarch64.rpm"
+    # CINC_URL_ARM64 = "https://ftp.osuosl.org/pub/cinc/files/stable/cinc/18.6.2/el/8/cinc-18.6.2-1.el8.aarch64.rpm"
+    CINC_URL_ARM64 = "https://downloads.cinc.sh/files/stable/cinc/18.6.2/el/8/cinc-18.6.2-1.el8.aarch64.rpm"
     CINC_SHA256_ARM64 = "5fe081880cc7aa59705a6fc5e092efe995c0b5f2dc364aaaecd6ee553d02ea73"
   }
   dockerfile = "Containerfile"
