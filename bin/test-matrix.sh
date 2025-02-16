@@ -13,8 +13,8 @@ matrix_test() {
 
   while read -r tag; do
     echo "==> Testing ${tag} $@"
-    if [[ -n "$1" ]]; then
-      "${BIN_DIR}/test.sh" "${tag}" "$1" &
+    if [[ -n "$2" ]]; then
+      "${BIN_DIR}/test.sh" "${tag}" "$2" &
     else
       "${BIN_DIR}/test.sh" "${tag}" &
     fi
