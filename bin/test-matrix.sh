@@ -44,7 +44,7 @@ echo "args = $@"
 matrix_build=$(docker buildx bake --print 2>/dev/null | jq 'has("group")')
 if [[ "${matrix_build}" == "true" ]];  then
   echo "==> Matrix build detected"
-  matrix_test
+  matrix_test "$@"
 else
   echo "==> Non-matrix build detected"
   "${BIN_DIR}/test.sh" "$@"
