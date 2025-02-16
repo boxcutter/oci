@@ -1,4 +1,4 @@
-#  cinc
+# cinc
 
 This image packages [Cinc Client](https://cinc.sh/) binaries as a data
 container that can be used with [kitchen-dokken](https://github.com/test-kitchen/kitchen-dokken).
