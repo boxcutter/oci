@@ -29,11 +29,11 @@ RUN <<EOF
       ;; \
      *) echo "unsupported architecture"; exit 1 ;; \
   esac
-  echo "wget -q --no-check-certificate -O /tmp/cinc-client.rpm ${CINC_URL}"
+  # echo "wget -q --no-check-certificate -O /tmp/cinc-client.rpm ${CINC_URL}"
   max_attempts=5
   attempt=0
   while [ $attempt -lt $max_attempts ]; do
-    wget -q --no-check-certificate -O /tmp/cinc-client.rpm ${CINC_URL} && break
+    wget --no-check-certificate -O /tmp/cinc-client.rpm ${CINC_URL} && break
     attempt=$((attempt + 1))
     echo "Attempt $attempt failed. Retrying..."
     sleep 5
