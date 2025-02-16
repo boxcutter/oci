@@ -12,7 +12,7 @@ matrix_test() {
   exit_codes=()
 
   while read -r tag; do
-    echo "==> Testing ${tag}"
+    echo "==> Testing ${tag} $@"
     "${BIN_DIR}/test.sh" "${tag}" "$@" &
     pids+=($!)
   done <<< "${tags}"
