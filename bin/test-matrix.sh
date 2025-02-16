@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -eu -o pipefail
+set -x
 
 BIN_DIR="$(dirname -- "$(readlink -f "${BASH_SOURCE[0]}")")"
 
