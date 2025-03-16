@@ -28,6 +28,8 @@ jobs:
 
       - name: Enable Docker Build Cloud
         env:
+          DOCKER_BUILDKIT: 1
+          DOCKER_CLI_EXPERIMENTAL: enabled
           DOCKER_USERNAME: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.CONTAINER_REGISTRY_PASSWORD }}
         run: |
