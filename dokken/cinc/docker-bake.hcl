@@ -3,7 +3,7 @@ variable "TAG_PREFIX" {
 }
 
 variable "VERSION" {
-  default = "18.0.169"
+  default = "18.0.185"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
@@ -13,10 +13,10 @@ variable "LOCAL_PLATFORM" {
 
 target "_common" {
   args = {
-    CINC_URL_AMD64 = "https://downloads.cinc.sh/files/stable/cinc/18.0.169/el/8/cinc-18.0.169-1.el8.x86_64.rpm"
-    CINC_SHA256_AMD64 = "c0ecdb63f48963fe98378e2361a0350206a2f1e848846bebcfeab81c1e2a0328"
-    CINC_URL_ARM64 = "https://downloads.cinc.sh/files/stable/cinc/18.0.169/el/8/cinc-18.0.169-1.el8.aarch64.rpm"
-    CINC_SHA256_ARM64 = "1ba56c28a7cb13dda6ff5d061fad86f31a55b1ef4368fe04cf96a37d0ebc3f61"
+    CINC_URL_AMD64 = "https://downloads.cinc.sh/files/stable/cinc/18.0.185/el/8/cinc-18.0.185-1.el8.x86_64.rpm"
+    CINC_SHA256_AMD64 = "b5cf532168edda95d929963cf78541e802b97d4a694394207a9d7e17217d11f2"
+    CINC_URL_ARM64 = "https://downloads.cinc.sh/files/stable/cinc/18.0.185/el/8/cinc-18.0.185-1.el8.aarch64.rpm"
+    CINC_SHA256_ARM64 = "bed837fdeaa0d82ddcd7b99b9052ae1e3c4d4a75126ee6a3f06e8ccdee75dd81"
   }
   dockerfile = "Containerfile"
   tags = [
