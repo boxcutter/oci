@@ -26,9 +26,16 @@ jobs:
           username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
           password: ${{ secrets.CONTAINER_DESCRIPTION_PASSWORD }}
 
-      - name: Set up Docker Buildx with Docker Cloud
+      - name: Enable Docker Build Cloud
+        env:
+          DOCKER_BUILDKIT: 1
+          DOCKER_CLI_EXPERIMENTAL: enabled
         run: |
-          docker buildx create --driver cloud boxcutter/testy --use
+          docker buildx create --use --driver cloud boxcutter/testy
+
+      # - name: Set up Docker Buildx with Docker Cloud
+      #   run: |
+      #     docker buildx create --driver cloud boxcutter/testy --use
 
       # - name: Set up Docker Buildx
       #   uses: docker/setup-buildx-action@v3
