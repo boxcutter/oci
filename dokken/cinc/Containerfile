@@ -30,17 +30,7 @@ RUN <<EOF
      *) echo "unsupported architecture"; exit 1 ;; \
   esac
   echo "wget -q --no-check-certificate -O /tmp/cinc-client.rpm ${CINC_URL}"
-  max_attempts=5
-  attempt=0
-  while [ $attempt -lt $max_attempts ]; do
-    wget --no-check-certificate -O /tmp/cinc-client.rpm ${CINC_URL} && break
-    attempt=$((attempt + 1))
-    echo "Attempt $attempt failed. Retrying..."
-    sleep 5
-  done
-  if [ $attempt -eq $max_attempts ]; then
-    echo "Failed to download the file after $max_attempts attempts."
-  fi
+  wget --no-check-certificate -O /tmp/cinc-client.rpm ${CINC_URL}
   echo "${CINC_SHA256} /tmp/cinc-client.rpm" | sha256sum -c -
   # Since busybox includes tools to extract rpm packages, we fetch the rpm
   # package for cinc-client. However since this is a data volume and this
