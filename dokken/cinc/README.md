@@ -85,7 +85,7 @@ RedHat-based image - why the RedHat version of Chef client is used. It also
 has all the required dynamic library dependencies. The dynamic build of
 this image and spinning this up is what takes most of the time for the first
 `kitchen converge` to happen - why it takes as long as it does. Here's
-a abbreviated version of what that [Dockerfile looks like](https://github.com/test-kitchen/kitchen-dokken/blob/main/lib/kitchen/helpers.rb#L60C1-L89C8)
+an abbreviated version of what that [Dockerfile looks like](https://github.com/test-kitchen/kitchen-dokken/blob/main/lib/kitchen/helpers.rb#L60C1-L89C8)
 
 ```
 FROM docker.io/almalinux:9
