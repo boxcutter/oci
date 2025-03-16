@@ -48,6 +48,7 @@ RUN <<EOF
     vim-minimal \
     time \
     wget \
+    libxcrypt \
     libxcrypt-compat \
     which && \
     dnf upgrade -y && \
@@ -67,7 +68,6 @@ RUN <<EOF
     -exec rm -v \{} \; && \
     systemctl set-default multi-user.target && \
     systemctl mask dev-hugepages.mount sys-fs-fuse-connections.mount network.service systemd-journal-flush.service
-
 EOF
 
 CMD [ "/usr/lib/systemd/systemd" ]
