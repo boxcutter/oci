@@ -33,13 +33,43 @@ jobs:
           endpoint: "boxcutter/testy"
           install: true
 
-      # - name: Run `docker buildx bake` with Docker Cloud
-      #   run: |
-      #     docker buildx bake --builder cloud --push --progress=plain
-
       - name: Build and push
         uses: docker/bake-action@v6
         with:
           source: .
           workdir: dokken/cinc
           push: ${{ github.event_name != 'pull_request' }}
+
+      - name: Get the image name
+        if: ${{ github.event_name != 'pull_request' }}
+        id: image_name
+        shell: bash
+        working-directory: dokken/cinc
+        run: |
+          echo "image_name=$($(git rev-parse --show-toplevel)/bin/image-name.sh)" >> $GITHUB_ENV
+
+      - name: Get the image description
+        if: ${{ github.event_name != 'pull_request' }}
+        id: image_description
+        shell: bash
+        working-directory: dokken/cinc
+        run: |
+          echo "image_description=$($(git rev-parse --show-toplevel)/bin/image-description.sh)" >> $GITHUB_ENV
+
+      - name: Get the image readme filepath
+        if: ${{ github.event_name != 'pull_request' }}
+        id: image_readme_filepath
+        shell: bash
+        working-directory: dokken/cinc
+        run: |
+          echo "image_readme_filepath=$($(git rev-parse --show-toplevel)/bin/image-readme.sh)" >> $GITHUB_ENV
+
+      - name: Update Docker Hub Description
+        if: ${{ github.event_name != 'pull_request' }}
+        uses: peter-evans/dockerhub-description@v4
+        with:
+          username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
+          password: ${{ secrets.CONTAINER_DESCRIPTION_PASSWORD }}
+          repository: boxcutter/${{ env.image_name }}
+          short-description: ${{ env.image_description }}
+          readme-filepath: ${{ env.image_readme_filepath }}
