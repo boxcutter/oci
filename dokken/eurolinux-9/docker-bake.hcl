@@ -15,7 +15,7 @@ target "_common" {
   labels = {
     "org.opencontainers.image.source" = "https://github.com/boxcutter/oci"
     "org.opencontainers.image.licenses" = "Apache-2.0"
-    "org.opencontainers.image.description" = "EuroLinux 7 image for use with the kitchen-dokken Test Kitchen plugin"
+    "org.opencontainers.image.description" = "EuroLinux 9 image for use with the kitchen-dokken Test Kitchen plugin"
     "org.opencontainers.image.title" = "${TAG_PREFIX}"
     "org.opencontainers.image.created" = "${timestamp()}"
     "dev.boxcutter.image.readme-filepath" = "dokken/README.md"

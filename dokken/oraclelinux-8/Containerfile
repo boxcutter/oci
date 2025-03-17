@@ -54,4 +54,4 @@ RUN <<EOF
   systemctl mask dev-hugepages.mount sys-fs-fuse-connections.mount network.service systemd-journal-flush.service
 EOF
 
-# CMD [ "/usr/lib/systemd/systemd" ]
+CMD [ "/usr/lib/systemd/systemd" ]
