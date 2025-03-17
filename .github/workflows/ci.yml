@@ -48,6 +48,8 @@ jobs:
             dokken/centos-stream-10: 'dokken/centos-stream-10/**'
             dokken/debian-11: 'dokken/debian-11/**'
             dokken/debian-12: 'dokken/debian-12/**'
+            dokken/eurolinux-7: 'dokken/eurolinux-7/**'
+            dokken/eurolinux-8: 'dokken/eurolinux-8/**'
             dokken/eurolinux-9: 'dokken/eurolinux-9/**'
             dokken/opensuse-leap-15: 'dokken/opensuse-leap-15/**'
             dokken/opensuse-leap-15.5: 'dokken/opensuse-leap-15.5/**'
