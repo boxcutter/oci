@@ -1,18 +1,11 @@
 # syntax=docker/dockerfile:1
 ARG BASE_IMAGE=docker.io
-FROM $BASE_IMAGE/ubuntu:jammy-20240911.1
+FROM $BASE_IMAGE/ubuntu:jammy-20250126
 
 RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
-		bzip2 \
 		ca-certificates \
-		libffi-dev \
-		libgmp-dev \
-		libssl-dev \
-		libyaml-dev \
-		procps \
-		zlib1g-dev \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
@@ -42,20 +35,25 @@ RUN set -eux; \
 		libgdbm-dev \
 		ruby \
 		autoconf \
+		bzip2 \
 		g++ \
 		gcc \
 		libbz2-dev \
+		libffi-dev \
 		libgdbm-compat-dev \
 		libglib2.0-dev \
+		libgmp-dev \
 		libncurses-dev \
 		libreadline-dev \
+		libssl-dev \
 		libxml2-dev \
 		libxslt-dev \
+		libyaml-dev \
 		make \
 		wget \
 		xz-utils \
+		zlib1g-dev \
 	; \
-	rm -rf /var/lib/apt/lists/*; \
 	\
 	wget -O ruby.tar.xz "$RUBY_DOWNLOAD_URL"; \
 	echo "$RUBY_DOWNLOAD_SHA256 *ruby.tar.xz" | sha256sum --check --strict; \
@@ -65,15 +63,6 @@ RUN set -eux; \
 	rm ruby.tar.xz; \
 	\
 	cd /usr/src/ruby; \
-	\
-# hack in "ENABLE_PATH_CHECK" disabling to suppress:
-#   warning: Insecure world writable dir
-	{ \
-		echo '#define ENABLE_PATH_CHECK 0'; \
-		echo; \
-		cat file.c; \
-	} > file.c.new; \
-	mv file.c.new file.c; \
 	\
 	autoconf; \
 	gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)"; \
@@ -85,6 +74,19 @@ RUN set -eux; \
 	make -j "$(nproc)"; \
 	make install; \
 	\
+# temporary backwards compatibility shim (will go away in the next patch release; please update/adjust accordingly); see:
+# - https://github.com/docker-library/ruby/pull/493
+# - https://github.com/docker-library/ruby/pull/497
+	savedAptMark="$savedAptMark \
+		bzip2 \
+		libffi-dev \
+		libgmp-dev \
+		libssl-dev \
+		libyaml-dev \
+		procps \
+		zlib1g-dev \
+	"; \
+	\	
 	apt-mark auto '.*' > /dev/null; \
 	apt-mark manual $savedAptMark > /dev/null; \
 	find /usr/local -type f -executable -not \( -name '*tkinter*' \) -exec ldd '{}' ';' \
@@ -96,6 +98,7 @@ RUN set -eux; \
 		| xargs -r apt-mark manual \
 	; \
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
+	rm -rf /var/lib/apt/lists/*; \	
 	\
 	cd /; \
 	rm -r /usr/src/ruby; \
@@ -108,11 +111,13 @@ RUN set -eux; \
 	bundle --version
 
 # don't create ".bundle" in all our apps
-ENV GEM_HOME /usr/local/bundle
+ENV GEM_HOME=/usr/local/bundle
 ENV BUNDLE_SILENCE_ROOT_WARNING=1 \
 	BUNDLE_APP_CONFIG="$GEM_HOME"
-ENV PATH $GEM_HOME/bin:$PATH
-# adjust permissions of a few directories for running "gem install" as an arbitrary user
-RUN mkdir -p "$GEM_HOME" && chmod 1777 "$GEM_HOME"
+ENV PATH=$GEM_HOME/bin:$PATH
+RUN set -eux; \
+	mkdir "$GEM_HOME"; \
+# adjust permissions of GEM_HOME for running "gem install" as an arbitrary user
+	chmod 1777 "$GEM_HOME"
 
 CMD [ "irb" ]

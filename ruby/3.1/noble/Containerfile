@@ -27,7 +27,6 @@ RUN set -eux; \
 		libgdbm-dev \
 		ruby \
 	; \
-	rm -rf /var/lib/apt/lists/*; \
 	\
 	wget -O ruby.tar.xz "$RUBY_DOWNLOAD_URL"; \
 	echo "$RUBY_DOWNLOAD_SHA256 *ruby.tar.xz" | sha256sum --check --strict; \
@@ -37,15 +36,6 @@ RUN set -eux; \
 	rm ruby.tar.xz; \
 	\
 	cd /usr/src/ruby; \
-	\
-# hack in "ENABLE_PATH_CHECK" disabling to suppress:
-#   warning: Insecure world writable dir
-	{ \
-		echo '#define ENABLE_PATH_CHECK 0'; \
-		echo; \
-		cat file.c; \
-	} > file.c.new; \
-	mv file.c.new file.c; \
 	\
 	autoconf; \
 	gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)"; \
@@ -69,6 +59,7 @@ RUN set -eux; \
 		| xargs -r apt-mark manual \
 	; \
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
+	rm -rf /var/lib/apt/lists/*; \
 	\
 	cd /; \
 	rm -r /usr/src/ruby; \
@@ -85,7 +76,9 @@ ENV GEM_HOME=/usr/local/bundle
 ENV BUNDLE_SILENCE_ROOT_WARNING=1 \
 	BUNDLE_APP_CONFIG="$GEM_HOME"
 ENV PATH=$GEM_HOME/bin:$PATH
-# adjust permissions of a few directories for running "gem install" as an arbitrary user
-RUN mkdir -p "$GEM_HOME" && chmod 1777 "$GEM_HOME"
+RUN set -eux; \
+	mkdir "$GEM_HOME"; \
+# adjust permissions of GEM_HOME for running "gem install" as an arbitrary user
+	chmod 1777 "$GEM_HOME"
 
 CMD [ "irb" ]
