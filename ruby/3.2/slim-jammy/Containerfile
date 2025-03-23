@@ -3,7 +3,6 @@ ARG BASE_IMAGE=docker.io
 FROM $BASE_IMAGE/ubuntu:jammy-20250126
 
 RUN set -eux; \
-RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
 		ca-certificates \
