@@ -1,5 +1,5 @@
 variable "TAG_PREFIX" {
-  default =  "docker.io/boxcutter/dokken-almalinux-9"
+  default =  "docker.io/boxcutter/dokken-almalinux-8"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
@@ -15,7 +15,7 @@ target "_common" {
   labels = {
     "org.opencontainers.image.source" = "https://github.com/boxcutter/oci"
     "org.opencontainers.image.licenses" = "Apache-2.0"
-    "org.opencontainers.image.description" = "AlmaLinux OS 9 image for kitchen-dokken"
+    "org.opencontainers.image.description" = "AlmaLinux OS 8 image for kitchen-dokken"
     "org.opencontainers.image.title" = "${TAG_PREFIX}"
     "org.opencontainers.image.created" = "${timestamp()}"
     "dev.boxcutter.image.readme-filepath" = "dokken/README.md"
