@@ -6,7 +6,7 @@ FROM ${BASE_IMAGE}
 RUN <<EOF
   yum -y install \
     binutils \
-    ca -certificates \
+    ca-certificates \
     cronie \
     curl \
     dmidecode \
