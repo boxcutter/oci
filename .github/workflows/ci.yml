@@ -42,6 +42,7 @@ jobs:
             cmake/gcc: 'cmake/gcc/**'
             dokken/almalinux-8: 'dokken/almalinux-8/**'
             dokken/almalinux-9: 'dokken/almalinux-9/**'
+            dokken/almalinux-10: 'dokken/almalinux-10/**'
             dokken/amazonlinux-2: 'dokken/amazonlinux-2/**'
             dokken/amazonlinux-2023: 'dokken/amazonlinux-2023/**'
             dokken/centos-stream-9: 'dokken/centos-stream-9/**'
