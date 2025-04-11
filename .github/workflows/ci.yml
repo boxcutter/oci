@@ -205,6 +205,7 @@ jobs:
         with:
           base: ${{ github.ref }}
           filters: |
+            dokken/cinc: 'dokken/cinc/**'
             python/3.9/jammy: 'python/3.9/jammy/**'
             python/3.9/noble: 'python/3.9/noble/**'
             python/3.9/slim-jammy: 'python/3.9/slim-jammy/**'
