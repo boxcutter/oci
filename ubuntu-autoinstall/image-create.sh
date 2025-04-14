@@ -146,7 +146,7 @@ reassemble_iso() {
     -eltorito-alt-boot \
     -e '--interval:appended_partition_2:all::' \
     -no-emul-boot \
-    -o "ubuntu-autoinstall.iso" "${ISO_FILESYSTEM_DIR}"
+    -o "${DESTINATION_ISO}" "${ISO_FILESYSTEM_DIR}"
 }
 
 args "$@"
