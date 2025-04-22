@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       list:
-        description: 'Comma-separated  list of directories in the form: ["dir1", "dir2"]'
+        description: 'Comma-separated list of directories in the form: ["dir1", "dir2"]'
         required: true
         default: ''    
 jobs:
@@ -146,9 +146,11 @@ jobs:
         shell: bash
         working-directory: ${{ matrix.image }}
         run: |
-          echo "run-lint-stage=$($(git rev-parse --show-toplevel)/bin/run-lint-stage.sh)" >> $GITHUB_ENV
-          echo "run-test-stage=$($(git rev-parse --show-toplevel)/bin/run-test-stage.sh)" >> $GITHUB_ENV
-          echo "test-entrypoint=$($(git rev-parse --show-toplevel)/bin/test-entrypoint.sh)" >> $GITHUB_ENV
+          {
+            echo "run-lint-stage=$($(git rev-parse --show-toplevel)/bin/run-lint-stage.sh)"
+            echo "run-test-stage=$($(git rev-parse --show-toplevel)/bin/run-test-stage.sh)"
+            echo "test-entrypoint=$($(git rev-parse --show-toplevel)/bin/test-entrypoint.sh)"
+          } >> $GITHUB_ENV
           cat $GITHUB_ENV
 
       - uses: boxcutter/container-build-publish-action@main
@@ -176,9 +178,11 @@ jobs:
         shell: bash
         working-directory: ${{ matrix.directory }}
         run: |
-          echo "run-lint-stage=$($(git rev-parse --show-toplevel)/bin/run-lint-stage.sh)" >> $GITHUB_ENV
-          echo "run-test-stage=$($(git rev-parse --show-toplevel)/bin/run-test-stage.sh)" >> $GITHUB_ENV
-          echo "test-entrypoint=$($(git rev-parse --show-toplevel)/bin/test-entrypoint.sh)" >> $GITHUB_ENV
+          {
+            echo "run-lint-stage=$($(git rev-parse --show-toplevel)/bin/run-lint-stage.sh)"
+            echo "run-test-stage=$($(git rev-parse --show-toplevel)/bin/run-test-stage.sh)"
+            echo "test-entrypoint=$($(git rev-parse --show-toplevel)/bin/test-entrypoint.sh)"
+          } >> $GITHUB_ENV
           cat $GITHUB_ENV
 
       - uses: boxcutter/container-build-publish-action@main
@@ -249,9 +253,11 @@ jobs:
         shell: bash
         working-directory: ${{ matrix.image }}
         run: |
-          echo "run-lint-stage=$($(git rev-parse --show-toplevel)/bin/run-lint-stage.sh)" >> $GITHUB_ENV
-          echo "run-test-stage=$($(git rev-parse --show-toplevel)/bin/run-test-stage.sh)" >> $GITHUB_ENV
-          echo "test-entrypoint=$($(git rev-parse --show-toplevel)/bin/test-entrypoint.sh)" >> $GITHUB_ENV
+          {
+            echo "run-lint-stage=$($(git rev-parse --show-toplevel)/bin/run-lint-stage.sh)"
+            echo "run-test-stage=$($(git rev-parse --show-toplevel)/bin/run-test-stage.sh)"
+            echo "test-entrypoint=$($(git rev-parse --show-toplevel)/bin/test-entrypoint.sh)"
+          } >> $GITHUB_ENV
           cat $GITHUB_ENV
 
       - uses: boxcutter/container-build-publish-action@main
