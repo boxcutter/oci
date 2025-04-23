@@ -146,7 +146,7 @@ jobs:
         shell: bash
         working-directory: ${{ matrix.image }}
         run: |
-          TOPLEVEL=$(git rev-parse --show-toplevel)
+          TOPLEVEL=$("git rev-parse --show-toplevel")
           {
             echo "run-lint-stage=$("${TOPLEVEL}/bin/run-lint-stage.sh")"
             echo "run-test-stage=$("${TOPLEVEL}/bin/run-test-stage.sh")"
@@ -179,7 +179,7 @@ jobs:
         shell: bash
         working-directory: ${{ matrix.directory }}
         run: |
-          TOPLEVEL=$(git rev-parse --show-toplevel)
+          TOPLEVEL=$("git rev-parse --show-toplevel")
           {
             echo "run-lint-stage=$("${TOPLEVEL}/bin/run-lint-stage.sh")"
             echo "run-test-stage=$("${TOPLEVEL}/bin/run-test-stage.sh")"
@@ -255,7 +255,7 @@ jobs:
         shell: bash
         working-directory: ${{ matrix.image }}
         run: |
-          TOPLEVEL=$(git rev-parse --show-toplevel)
+          TOPLEVEL=$("git rev-parse --show-toplevel")
           {
             echo "run-lint-stage=$("${TOPLEVEL}/bin/run-lint-stage.sh")"
             echo "run-test-stage=$("${TOPLEVEL}/bin/run-test-stage.sh")"
