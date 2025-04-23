@@ -1,3 +1,4 @@
-runner:
+# Configuration related to self-hosted runner.
+self-hosted-runner:
   labels:
     - multi-arch
