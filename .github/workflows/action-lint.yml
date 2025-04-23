@@ -1,6 +1,10 @@
 name: Lint GitHub Actions Workflows
 
 on:
+  push:
+    branches: [ main ]
+    paths:
+      - '.github/**'
   pull_request:
     paths:
       - '.github/**'
