@@ -5,6 +5,7 @@ Open container images for robotics, neuromorphic engineering, systems and embedd
 
 | Image | Description | Location |
 | --- | --- | --- |
+| [actionlint](https://hub.docker.com/r/boxcutter/actionlint) | Static checker for GitHub Actions workflow files | [actionlint](https://github.com/boxcutter/oci/tree/main/actionlint) |
 | [aws-cli](https://hub.docker.com/r/boxcutter/aws-cli) | Amazon Web Services Command-Line Interface | [aws-cli](https://github.com/boxcutter/oci/tree/main/aws-cli) |
 | [black](https://hub.docker.com/r/boxcutter/black) | Black is the uncompromising Python code formatter | [black](https://github.com/boxcutter/oci/tree/main/black) |
 | [cinc-auditor](https://hub.docker.com/r/boxcutter/cinc-auditor) | Cinc Auditor is built from Chef InSpec, an open-source framework for testing and auditing applications and infrastructure | [cinc-auditor](https://github.com/boxcutter/oci/tree/main/cinc/cinc-auditor) |
