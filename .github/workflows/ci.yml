@@ -146,10 +146,13 @@ jobs:
         shell: bash
         working-directory: ${{ matrix.image }}
         run: |
-          echo "run-lint-stage=$($(git rev-parse --show-toplevel)/bin/run-lint-stage.sh)" >> $GITHUB_ENV
-          echo "run-test-stage=$($(git rev-parse --show-toplevel)/bin/run-test-stage.sh)" >> $GITHUB_ENV
-          echo "test-entrypoint=$($(git rev-parse --show-toplevel)/bin/test-entrypoint.sh)" >> $GITHUB_ENV
-          cat $GITHUB_ENV
+          TOPLEVEL=$(git rev-parse --show-toplevel)
+          {
+            echo "run-lint-stage=$("${TOPLEVEL}/bin/run-lint-stage.sh")"
+            echo "run-test-stage=$("${TOPLEVEL}/bin/run-test-stage.sh")"
+            echo "test-entrypoint=$("${TOPLEVEL}/bin/test-entrypoint.sh")"
+          } >> "${GITHUB_ENV}"
+          cat "${GITHUB_ENV}"
 
       - uses: boxcutter/container-build-publish-action@main
         with:
@@ -176,10 +179,13 @@ jobs:
         shell: bash
         working-directory: ${{ matrix.directory }}
         run: |
-          echo "run-lint-stage=$($(git rev-parse --show-toplevel)/bin/run-lint-stage.sh)" >> $GITHUB_ENV
-          echo "run-test-stage=$($(git rev-parse --show-toplevel)/bin/run-test-stage.sh)" >> $GITHUB_ENV
-          echo "test-entrypoint=$($(git rev-parse --show-toplevel)/bin/test-entrypoint.sh)" >> $GITHUB_ENV
-          cat $GITHUB_ENV
+          TOPLEVEL=$(git rev-parse --show-toplevel)
+          {
+            echo "run-lint-stage=$("${TOPLEVEL}/bin/run-lint-stage.sh")"
+            echo "run-test-stage=$("${TOPLEVEL}/bin/run-test-stage.sh")"
+            echo "test-entrypoint=$("${TOPLEVEL}/bin/test-entrypoint.sh")"
+          } >> "${GITHUB_ENV}"
+          cat "${GITHUB_ENV}"
 
       - uses: boxcutter/container-build-publish-action@main
         with:
@@ -249,10 +255,13 @@ jobs:
         shell: bash
         working-directory: ${{ matrix.image }}
         run: |
-          echo "run-lint-stage=$($(git rev-parse --show-toplevel)/bin/run-lint-stage.sh)" >> $GITHUB_ENV
-          echo "run-test-stage=$($(git rev-parse --show-toplevel)/bin/run-test-stage.sh)" >> $GITHUB_ENV
-          echo "test-entrypoint=$($(git rev-parse --show-toplevel)/bin/test-entrypoint.sh)" >> $GITHUB_ENV
-          cat $GITHUB_ENV
+          TOPLEVEL=$(git rev-parse --show-toplevel)
+          {
+            echo "run-lint-stage=$("${TOPLEVEL}/bin/run-lint-stage.sh")"
+            echo "run-test-stage=$("${TOPLEVEL}/bin/run-test-stage.sh")"
+            echo "test-entrypoint=$("${TOPLEVEL}/bin/test-entrypoint.sh")"
+          } >> "${GITHUB_ENV}"
+          cat "${GITHUB_ENV}"
 
       - uses: boxcutter/container-build-publish-action@main
         with:
