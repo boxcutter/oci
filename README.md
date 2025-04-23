@@ -8,13 +8,17 @@ Open container images for robotics, neuromorphic engineering, systems and embedd
 | [aws-cli](https://hub.docker.com/r/boxcutter/aws-cli) | Amazon Web Services Command-Line Interface | [aws-cli](https://github.com/boxcutter/oci/tree/main/aws-cli) |
 | [black](https://hub.docker.com/r/boxcutter/black) | Black is the uncompromising Python code formatter | [black](https://github.com/boxcutter/oci/tree/main/black) |
 | [cinc-auditor](https://hub.docker.com/r/boxcutter/cinc-auditor) | Cinc Auditor is built from Chef InSpec, an open-source framework for testing and auditing applications and infrastructure | [cinc-auditor](https://github.com/boxcutter/oci/tree/main/cinc/cinc-auditor) |
+| [cmake-clang](https://hub.docker.com/r/boxcutter/cmake-clang) | CMake build system with clang compiler toolchain. | [cmake/cmake-clang](https://github.com/boxcutter/oci/tree/main/cmake/clang) |
+| [cmake-gcc](https://hub.docker.com/r/boxcutter/cmake-gcc) | CMake build system with gcc compiler toolchain. | [cmake/cmake-gcc](https://github.com/boxcutter/oci/tree/main/cmake/gcc) |
 | [doctl](https://hub.docker.com/r/boxcutter/doctl) | Digital Ocean command-line interface | [doctl](https://github.com/boxcutter/oci/tree/main/doctl) |
 | [flake8](https://hub.docker.com/r/boxcutter/flake8) | Flake8: Your Tool For Style Guide Enforcement | [flake8](https://github.com/boxcutter/oci/tree/main/flake8) |
 | [fpm](https://hub.docker.com/r/boxcutter/fpm) | fpm Packaging made simple | [fpm](https://github.com/boxcutter/oci/tree/main/fpm) |
+| [glab](https://hub.docker.com/r/boxcutter/glab) | The GitLab CLI tool | [glab](https://github.com/boxcutter/oci/tree/main/glab) |
 | [go2chef](https://hub.docker.com/r/boxcutter/go2chef) | A Golang tool to bootstrap a system from zero so that it's able to run Chef to be managed | [go2chef](https://github.com/boxcutter/oci/tree/main/go2chef) |
 | [golang](https://hub.docker.com/r/boxcutter/golang) | Go (golang) is a general purpose, higher-level, imperative programming language | [golang](https://github.com/boxcutter/oci/tree/main/golang) |
 | [hadolint](https://hub.docker.com/r/boxcutter/hadolint) | Containerfile/Dockerfiles linter | [hadolint](https://github.com/boxcutter/oci/tree/main/hadolint) |
 | [markdownlint](https://hub.docker.com/r/boxcutter/markdownlint) | A tool to check markdown files and flag style issues. | [markdownlint](https://github.com/boxcutter/oci/tree/main/markdownlint) |
+| [markmaker](https://hub.docker.com/r/boxcutter/markmaker) | Jérôme Petazzoni's tool for creating slide decks with markdown. | [markmaker](https://github.com/boxcutter/oci/tree/main/markmaker) |
 | [meshcmd](https://hub.docker.com/r/boxcutter/meshcmd) | Command line tool used to perform many tasks related to computer management of Intel Active Management Technology (AMT) devices | [meshcmd](https://github.com/boxcutter/oci/tree/main/meshcmd) |
 | [node](https://hub.docker.com/r/boxcutter/node) | Node.js is a JavaScript-based platform for server-side and networking applications. | [node](https://github.com/boxcutter/oci/tree/main/node) |
 | [pgweb](https://hub.docker.com/r/boxcutter/pgweb) | Simple web-based and cross platform PostgreSQL database explorer. | [pgweb](https://github.com/boxcutter/oci/tree/main/pgweb) |
@@ -24,9 +28,12 @@ Open container images for robotics, neuromorphic engineering, systems and embedd
 | [python](https://hub.docker.com/r/boxcutter/python) | Python is an interpreted, interactive, object-oriented, open-source programming language. | [python](https://github.com/boxcutter/oci/tree/main/python) |
 | [redis](https://hub.docker.com/r/boxcutter/redis) | Redis is an open source key-value store that functions as a data structure server. | [redis](https://github.com/boxcutter/oci/tree/main/redis) |
 | [ros](https://hub.docker.com/r/boxcutter/ros) | The Robot Operating System (ROS) is an open source project for building robot applications. | [humble-jammy](https://github.com/boxcutter/oci/tree/main/ros/humble/ubuntu/jammy)<br>[iron-jammy](https://github.com/boxcutter/oci/tree/main/ros/iron/ubuntu/jammy)<br>[noetic-focal](https://github.com/boxcutter/oci/tree/main/ros/noetic/ubuntu/focal)<br>[rolling-jammy](https://github.com/boxcutter/oci/tree/main/ros/rolling/ubuntu/jammy) |
-| [ruby](https://hub.docker.com/r/boxcutter/ruby) | Ruby is a dynamic, reflective, object-oriented, general-purpose, open-source programming language. | [ruby](https://github.com/boxcutter/oci/tree/main/ruby) | 
+| [ruby](https://hub.docker.com/r/boxcutter/ruby) | Ruby is a dynamic, reflective, object-oriented, general-purpose, open-source programming language. | [ruby](https://github.com/boxcutter/oci/tree/main/ruby) |
+| [rust](https://hub.docker.com/r/boxcutter/rust) | Rust is a systems programming language. | [rust](https://github.com/boxcutter/oci/tree/main/rust) | 
 | [shellcheck](https://hub.docker.com/r/boxcutter/shellcheck) | Linter for bash/sh shell scripts | [shellcheck](https://github.com/boxcutter/oci/tree/main/shellcheck) |
+| [slidev](https://hub.docker.com/r/boxcutter/slidev) | Presentation slides for developers | [slidev](https://github.com/boxcutter/oci/tree/main/slidev) |
 | [ubuntu-autoinstall](https://hub.docker.com/r/boxcutter/ubuntu-autoinstall) | Create Ubuntu autoinstall images/ISOs | [ubuntu-autoinstall](https://github.com/boxcutter/oci/tree/main/ubuntu-autoinstall) |
+| [vagrant-libvirt](https://hub.docker.com/r/boxcutter/vagrant-libvirt) | Vagrant Libvirt Provider | [vagrant-libvirt](https://github.com/boxcutter/oci/tree/main/hashicorp/vagrant-libvirt) |
 
 # Why are you re-publishing some official images?
 
