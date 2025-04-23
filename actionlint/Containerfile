@@ -1,0 +1,42 @@
+# syntax=docker/dockerfile:1
+ARG BASE_IMAGE=docker.io/ubuntu:noble-20250404
+FROM $BASE_IMAGE AS base
+
+FROM base AS download
+
+ARG ACTIONLINT_URL_AMD64
+ARG ACTIONLINT_SHA256_AMD64
+ARG ACTIONLINT_URL_ARM64
+ARG ACTIONLINT_SHA256_ARM64
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN <<EOF
+  apt-get update
+  apt-get install --no-install-recommends -y \
+    ca-certificates \
+    curl
+  rm -rf /var/lib/apt/lists/*
+  dpkgArch="$(dpkg --print-architecture)"
+  case "${dpkgArch##*-}" in \
+    amd64) \
+      ACTIONLINT_URL="${ACTIONLINT_URL_AMD64}" \
+      ACTIONLINT_SHA256="${ACTIONLINT_SHA256_AMD64}" \
+      ;; \
+    arm64) \
+      ACTIONLINT_URL="${ACTIONLINT_URL_ARM64}" \
+      ACTIONLINT_SHA256="${ACTIONLINT_SHA256_ARM64}" \
+      ;; \
+    *) echo "unsupported architecture"; exit 1 ;; \
+  esac
+  curl -fsSL -o /tmp/actionlint.tar.gz ${ACTIONLINT_URL}
+  echo "${ACTIONLINT_SHA256} /tmp/actionlint.tar.gz" | sha256sum -c -
+  mkdir -p /tmp/actionlint
+  tar xvf /tmp/actionlint.tar.gz -C /tmp/actionlint
+EOF
+
+FROM base
+
+COPY --from=download /tmp/actionlint/actionlint /usr/local/bin/actionlint
+
+WORKDIR /repo
+ENTRYPOINT ["/usr/local/bin/actionlint"]

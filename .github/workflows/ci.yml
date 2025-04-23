@@ -32,6 +32,7 @@ jobs:
           # If it's not configured, the repository default branch is used.
           base: ${{ github.ref }}
           filters: |
+            actionlint: 'actionlint/**'
             aws-cli: 'aws-cli/**'
             black: 'black/**'
             buildpack-deps/ubuntu/jammy: 'buildpack-deps/ubuntu/jammy/**'
