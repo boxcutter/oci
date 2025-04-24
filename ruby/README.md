@@ -14,7 +14,7 @@ The Ruby REPL is called irb and is the default command running in this image:
 
 ```
 docker run -it --rm \
-  docker.io/boxcutter/ruby:3.1-slim-jammy
+  docker.io/boxcutter/ruby:3.1-slim-noble
 ```
 
 ## Run a single Ruby script
@@ -26,7 +26,7 @@ docker run -it --rm \
   --name my-running-script \
   --mount type=bind,source="$(pwd)",target=/usr/src/myapp \
   --workdir /usr/src/myapp \
-  docker.io/boxcutter/ruby:3.1-slim-jammy your-daemon-or-script.rb
+  docker.io/boxcutter/ruby:3.1-slim-noble your-daemon-or-script.rb
 ```
 
 ## Package your Ruby app into a container image
@@ -34,7 +34,7 @@ docker run -it --rm \
 ### Create a `Containerfile` in your Ruby app project
 
 ```
-FROM docker.io/boxcutter/ruby:3.1-slimy-jammy
+FROM docker.io/boxcutter/ruby:3.1-slim-noble
 
 # throw errors if Gemfile has been modified since Gemfile.lock
 RUN bundle config --global frozen 1
@@ -63,5 +63,5 @@ $ docker run -it --name my-running-script my-ruby-app
 The above example `Containerfile` expects a `Gemfile.lock` in your app directory. This `docker run` will help you generate one. Run it in the root of your app, next to the `Gemfile`:
 
 ```
-$ docker run --rm -v "$PWD":/usr/src/app -w /usr/src/app docker.io/boxcutter/ruby:3.1-slim-jammy bundle install
+$ docker run --rm -v "$PWD":/usr/src/app -w /usr/src/app docker.io/boxcutter/ruby:3.1-slim-noble bundle install
 ```
