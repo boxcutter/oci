@@ -3,7 +3,7 @@ variable "IMAGE_NAME" {
 }
 
 variable "VERSION" {
-  default = "7.2.4"
+  default = "6.2.18"
 }
 
 variable "CONTAINER_REGISTRY" {
@@ -19,8 +19,8 @@ target "_common" {
   dockerfile = "Containerfile"
   args = {
     REDIS_VERSION = "${VERSION}"
-    REDIS_DOWNLOAD_URL = "http://download.redis.io/releases/redis-7.2.4.tar.gz"
-    REDIS_DOWNLOAD_SHA = "8d104c26a154b29fd67d6568b4f375212212ad41e0c2caa3d66480e78dbd3b59"
+    REDIS_DOWNLOAD_URL = "http://download.redis.io/releases/redis-6.2.18.tar.gz"
+    REDIS_DOWNLOAD_SHA = "470c75bac73d7390be4dd66479c6f29e86371c5d380ce0c7efb4ba2bbda3612d"
   }
   tags = [
     "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${VERSION}-jammy",

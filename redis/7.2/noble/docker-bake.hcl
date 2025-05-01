@@ -3,7 +3,7 @@ variable "IMAGE_NAME" {
 }
 
 variable "VERSION" {
-  default = "6.2.14"
+  default = "7.2.8"
 }
 
 variable "CONTAINER_REGISTRY" {
@@ -19,12 +19,12 @@ target "_common" {
   dockerfile = "Containerfile"
   args = {
     REDIS_VERSION = "${VERSION}"
-    REDIS_DOWNLOAD_URL = "http://download.redis.io/releases/redis-6.2.14.tar.gz"
-    REDIS_DOWNLOAD_SHA = "34e74856cbd66fdb3a684fb349d93961d8c7aa668b06f81fd93ff267d09bc277"
+    REDIS_DOWNLOAD_URL = "http://download.redis.io/releases/redis-7.2.8.tar.gz"
+    REDIS_DOWNLOAD_SHA = "6be4fdfcdb2e5ac91454438246d00842d2671f792673390e742dfcaf1bf01574"
   }
   tags = [
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${VERSION}-jammy",
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${join(".", slice(split(".", "${VERSION}"), 0, 2))}-jammy"
+    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${VERSION}-noble",
+    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${join(".", slice(split(".", "${VERSION}"), 0, 2))}-noble"
   ]
   labels = {
     "org.opencontainers.image.source" = "https://github.com/boxcutter/oci"
