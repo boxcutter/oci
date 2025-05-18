@@ -9,7 +9,7 @@ ENV PATH /usr/local/bin:$PATH
 # cannot remove LANG even though https://bugs.python.org/issue19846 is fixed
 # last attempted removal of LANG broke many users:
 # https://github.com/docker-library/python/pull/570
-ENV LANG C.UTF-8
+ENV LANG=C.UTF-8
 
 # runtime dependencies
 RUN set -eux; \
@@ -21,9 +21,9 @@ RUN set -eux; \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
-ENV GPG_KEY A035C8C19219BA821ECEA86B64E628F8D684696D
-ENV PYTHON_VERSION 3.10.16
-ENV PYTHON_SHA256 bfb249609990220491a1b92850a07135ed0831e41738cf681d63cf01b2a8fbd1
+ENV GPG_KEY=A035C8C19219BA821ECEA86B64E628F8D684696D
+ENV PYTHON_VERSION=3.10.17
+ENV PYTHON_SHA256=4c68050f049d1b4ac5aadd0df5f27941c0350d2a9e7ab0907ee5eb5225d9d6b0
 
 # hadolint ignore=DL3003,DL3013,DL3047
 RUN set -eux; \
@@ -47,8 +47,8 @@ RUN set -eux; \
 		--enable-loadable-sqlite-extensions \
 		--enable-optimizations \
 		--enable-option-checking=fatal \
-		--enable-shared \
-		--with-lto \
+		--enable-shared \		
+		$(test "$gnuArch" != 'riscv64-linux-musl' && echo '--with-lto') \
 		--with-ensurepip \
 	; \
 	nproc="$(nproc)"; \
@@ -94,7 +94,8 @@ RUN set -eux; \
 		--no-cache-dir \
 		--no-compile \
 		'setuptools==65.5.1' \
-		wheel \
+		# https://github.com/docker-library/python/issues/1023
+		'wheel<0.46' \
 	; \
 	pip3 --version
 
