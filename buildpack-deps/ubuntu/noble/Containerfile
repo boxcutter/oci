@@ -6,7 +6,7 @@ FROM ${BASE_IMAGE} AS curl
 # hadolint ignore=DL3009
 RUN set -eux; \
 	apt-get update; \
-	apt-get install -y --no-install-recommends \
+	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
 		ca-certificates \
 		curl \
 		gnupg \
