@@ -1,15 +1,15 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/ubuntu:noble-20250127
+ARG BASE_IMAGE=docker.io/ubuntu:noble-20250415.1
 # hadolint ignore=DL3006
 FROM $BASE_IMAGE
 
 # ensure local python is preferred over distribution python
-ENV PATH /usr/local/bin:$PATH
+ENV PATH=/usr/local/bin:$PATH
 
 # cannot remove LANG even though https://bugs.python.org/issue19846 is fixed
 # last attempted removal of LANG broke many users:
 # https://github.com/docker-library/python/pull/570
-ENV LANG C.UTF-8
+ENV LANG=C.UTF-8
 
 # runtime dependencies
 RUN set -eux; \
@@ -21,9 +21,9 @@ RUN set -eux; \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
-ENV GPG_KEY A035C8C19219BA821ECEA86B64E628F8D684696D
-ENV PYTHON_VERSION 3.11.11
-ENV PYTHON_SHA256 2a9920c7a0cd236de33644ed980a13cbbc21058bfdc528febb6081575ed73be3
+ENV GPG_KEY=A035C8C19219BA821ECEA86B64E628F8D684696D
+ENV PYTHON_VERSION=3.11.12
+ENV PYTHON_SHA256=849da87af4df137710c1796e276a955f7a85c9f971081067c8f565d15c352a09
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # hadolint ignore=DL3003,DL3013,DL3047,SC2086
@@ -74,7 +74,7 @@ RUN set -eux; \
 		--enable-optimizations \
 		--enable-option-checking=fatal \
 		--enable-shared \
-		--with-lto \
+		$(test "$gnuArch" != 'riscv64-linux-musl' && echo '--with-lto') \
 		--with-ensurepip \
 	; \
 	nproc="$(nproc)"; \
@@ -113,7 +113,7 @@ RUN set -eux; \
 		| awk '/=>/ { so = $(NF-1); if (index(so, "/usr/local/") == 1) { next }; gsub("^/(usr/)?", "", so); printf "*%s\n", so }' \
 		| sort -u \
 		| xargs -r dpkg-query --search \
-                | grep -v "diversion by" \
+		| grep -v "diversion by" \
 		| cut -d: -f1 \
 		| sort -u \
 		| xargs -r apt-mark manual \
@@ -129,7 +129,8 @@ RUN set -eux; \
 		--no-cache-dir \
 		--no-compile \
 		'setuptools==65.5.1' \
-		wheel \
+		# https://github.com/docker-library/python/issues/1023
+		'wheel<0.46' \
 	; \
 	pip3 --version
 
