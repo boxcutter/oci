@@ -34,7 +34,6 @@ Open container images for robotics, neuromorphic engineering, systems and embedd
 | [shellcheck](https://hub.docker.com/r/boxcutter/shellcheck) | Linter for bash/sh shell scripts | [shellcheck](https://github.com/boxcutter/oci/tree/main/shellcheck) |
 | [slidev](https://hub.docker.com/r/boxcutter/slidev) | Presentation slides for developers | [slidev](https://github.com/boxcutter/oci/tree/main/slidev) |
 | [ubuntu-autoinstall](https://hub.docker.com/r/boxcutter/ubuntu-autoinstall) | Create Ubuntu autoinstall images/ISOs | [ubuntu-autoinstall](https://github.com/boxcutter/oci/tree/main/ubuntu-autoinstall) |
-| [vagrant-libvirt](https://hub.docker.com/r/boxcutter/vagrant-libvirt) | Vagrant Libvirt Provider | [vagrant-libvirt](https://github.com/boxcutter/oci/tree/main/hashicorp/vagrant-libvirt) |
 
 # Why are you re-publishing some official images?
 
