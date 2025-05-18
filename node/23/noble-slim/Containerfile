@@ -1,12 +1,12 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/ubuntu:noble-20241118.1
+ARG BASE_IMAGE=docker.io/ubuntu:noble-20250415.1
 # hadolint ignore=DL3006
 FROM $BASE_IMAGE
 
-RUN groupadd --gid 1001 node \
-  && useradd --uid 1001 --gid node --shell /bin/bash --create-home node
+RUN groupadd --gid 999 node \
+  && useradd --uid 999 --gid node --shell /bin/bash --create-home node
 
-ENV NODE_VERSION=23.6.0
+ENV NODE_VERSION=23.11.1
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # hadolint ignore=SC2155
