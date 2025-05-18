@@ -1,6 +1,6 @@
 describe command('node --version') do
   its('exit_status') { should eq 0 }
-  its('stdout') { should match(/v22/) }
+  its('stdout') { should match(/v24/) }
 end
 
 describe file('/entrypoint.sh') do
