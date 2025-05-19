@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/ubuntu:noble-20250127
+ARG BASE_IMAGE=docker.io/ubuntu:noble-20250415.1
 FROM $BASE_IMAGE
 
 RUN set -eux; \
@@ -16,10 +16,10 @@ RUN set -eux; \
 
 ENV LANG=C.UTF-8
 
-# https://www.ruby-lang.org/en/news/2025/02/14/ruby-3-4-2-released/
-ENV RUBY_VERSION=3.4.2
-ENV RUBY_DOWNLOAD_URL=https://cache.ruby-lang.org/pub/ruby/3.4/ruby-3.4.2.tar.xz
-ENV RUBY_DOWNLOAD_SHA256=ebf1c2eb58f5da17c23e965d658dd7e6202c5c50f5179154c5574452bef4b3e0
+# https://www.ruby-lang.org/en/news/2025/05/14/ruby-3-4-4-released/
+ENV RUBY_VERSION=3.4.4
+ENV RUBY_DOWNLOAD_URL=https://cache.ruby-lang.org/pub/ruby/3.4/ruby-3.4.4.tar.xz
+ENV RUBY_DOWNLOAD_SHA256=f76d63efe9499dedd8526b74365c0c811af00dc9feb0bed7f5356488476e28f4
 
 # some of ruby's build scripts are written in ruby
 #   we purge system ruby later to make sure our final image uses what we just built
