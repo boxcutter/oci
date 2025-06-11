@@ -1,0 +1,61 @@
+# syntax=docker/dockerfile:1
+# Arguments used in FROM need to be defined before the first build stage
+ARG BUILD_IMAGE=docker.io/boxcutter/golang:1.24-noble
+ARG BASE_IMAGE=docker.io/ubuntu:noble-20250529
+
+FROM ${BUILD_IMAGE} AS build
+
+ARG SNMP_EXPORTER_SOURCE_URL
+
+WORKDIR /usr/src/snmp_exporter
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN <<EOF
+  apt-get update
+  apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    libsnmp-dev \
+    unzip
+  mkdir -p /tmp/snmp_exporter
+  dpkgArch="$(dpkg --print-architecture)"
+  case "${dpkgArch##*-}" in \
+    amd64) \
+      SNMP_EXPORTER_URL="${SNMP_EXPORTER_URL_AMD64}" \
+      SNMP_EXPORTER_SHA256="${SNMP_EXPORTER_SHA256_AMD64}" \
+      ;; \
+    arm64) \
+      SNMP_EXPORTER_URL="${SNMP_EXPORTER_URL_ARM64}" \
+      SNMP_EXPORTER_SHA256="${SNMP_EXPORTER_SHA256_ARM64}" \
+      ;; \
+    *) echo "unsupported architecture"; exit 1 ;; \
+  esac
+  curl -fsSL -o /tmp/snmp_exporter.tar.gz "${SNMP_EXPORTER_SOURCE_URL}"
+  tar xvf /tmp/snmp_exporter.tar.gz -C /usr/src/snmp_exporter --strip-components 1
+  rm -rf /var/lib/apt/lists/*
+EOF
+
+WORKDIR /usr/src/snmp_exporter/generator
+
+RUN <<EOF
+  make generator
+EOF
+
+FROM ${BASE_IMAGE}
+
+COPY --chmod=755 --from=build /usr/src/snmp_exporter/generator/generator /bin/generator
+
+RUN <<EOF
+  apt-get update
+  apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    libsnmp-dev \
+    unzip
+  rm -rf /var/lib/apt/lists/*
+EOF
+
+WORKDIR /opt
+
+ENTRYPOINT ["/bin/generator"]
+ENV MIBDIRS=mibs
