@@ -17,7 +17,7 @@ variable "VARIANT" {
 
 variable "BUILDTAGS" {
   default = [
-    { name = "noble", base = "docker.io/ubuntu:noble-20250127", version = "24.04" },
+    { name = "noble", base = "docker.io/ubuntu:noble-20250529", version = "24.04" },
   ]
 }
 
