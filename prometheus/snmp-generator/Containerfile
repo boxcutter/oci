@@ -1,9 +1,8 @@
 # syntax=docker/dockerfile:1
-# Arguments used in FROM need to be defined before the first build stage
-ARG BUILD_IMAGE=docker.io/boxcutter/golang:1.24-noble
-ARG BASE_IMAGE=docker.io/ubuntu:noble-20250529
+ARG BASE_IMAGE=docker.io/boxcutter/golang:1.24-noble
+FROM $BASE_IMAGE AS base
 
-FROM ${BUILD_IMAGE} AS build
+FROM base AS build
 
 ARG SNMP_EXPORTER_SOURCE_URL
 
@@ -41,7 +40,7 @@ RUN <<EOF
   make generator
 EOF
 
-FROM ${BASE_IMAGE}
+FROM base
 
 COPY --chmod=755 --from=build /usr/src/snmp_exporter/generator/generator /bin/generator
 
@@ -55,7 +54,7 @@ RUN <<EOF
   rm -rf /var/lib/apt/lists/*
 EOF
 
-WORKDIR /opt
+WORKDIR /code
 
 ENTRYPOINT ["/bin/generator"]
 ENV MIBDIRS=mibs
