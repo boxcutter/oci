@@ -1,0 +1,51 @@
+# syntax=docker/dockerfile:1
+ARG BASE_IMAGE=docker.io/ubuntu:noble-20250529
+# hadolint ignore=DL3006
+FROM $BASE_IMAGE AS base
+
+ARG SNMP_EXPORTER_URL_AMD64
+ARG SNMP_EXPORTER_SHA256_AMD64
+ARG SNMP_EXPORTER_URL_ARM64
+ARG SNMP_EXPORTER_SHA256_ARM64
+
+FROM base AS download
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN <<EOF
+  apt-get update
+  apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl
+  mkdir -p /tmp/snmp_exporter
+  dpkgArch="$(dpkg --print-architecture)"
+  case "${dpkgArch##*-}" in \
+    amd64) \
+      SNMP_EXPORTER_URL="${SNMP_EXPORTER_URL_AMD64}" \
+      SNMP_EXPORTER_SHA256="${SNMP_EXPORTER_SHA256_AMD64}" \
+      ;; \
+    arm64) \
+      SNMP_EXPORTER_URL="${SNMP_EXPORTER_URL_ARM64}" \
+      SNMP_EXPORTER_SHA256="${SNMP_EXPORTER_SHA256_ARM64}" \
+      ;; \
+    *) echo "unsupported architecture"; exit 1 ;; \
+  esac
+  curl -fsSL -o /tmp/snmp_exporter.tar.gz "${SNMP_EXPORTER_URL}"
+  echo "${SNMP_EXPORTER_SHA256} /tmp/snmp_exporter.tar.gz" | sha256sum -c -
+  tar xvf /tmp/snmp_exporter.tar.gz -C /tmp/snmp_exporter --strip-components 1
+EOF
+
+FROM base
+
+RUN <<EOF
+  apt-get update
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    ca-certificates
+  rm -rf /var/lib/apt/lists/*  
+EOF
+
+COPY --chmod=755 --from=download /tmp/snmp_exporter/snmp_exporter /usr/local/bin/snmp_exporter
+COPY --from=download /tmp/snmp_exporter/snmp.yml /etc/snmp_exporter/snmp.yml
+
+EXPOSE 9116
+USER nobody
+ENTRYPOINT [ "/usr/local/bin/snmp_exporter" ]
+CMD ["--config.file=/etc/snmp_exporter/snmp.yml"]
