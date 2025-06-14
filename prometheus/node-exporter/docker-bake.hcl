@@ -3,7 +3,7 @@ variable "TAG_PREFIX" {
 }
 
 variable "VERSION" {
-  default = "1.7.0"
+  default = "1.9.1"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
@@ -14,12 +14,10 @@ variable "LOCAL_PLATFORM" {
 target "_common" {
   dockerfile = "Containerfile"
   args = {
-    NODE_EXPORTER_URL_AMD64 = "https://github.com/prometheus/node_exporter/releases/download/v1.8.2/node_exporter-1.8.2.linux-amd64.tar.gz"
-    NODE_EXPORTER_SHA256_AMD64 = "6809dd0b3ec45fd6e992c19071d6b5253aed3ead7bf0686885a51d85c6643c66"
-    NODE_EXPORTER_URL_ARM64 = "https://github.com/prometheus/node_exporter/releases/download/v1.8.2/node_exporter-1.8.2.linux-arm64.tar.gz"
-    NODE_EXPORTER_SHA256_ARM64 = "627382b9723c642411c33f48861134ebe893e70a63bcc8b3fc0619cd0bfac4be"
-    NODE_EXPORTER_URL_ARMHF = "https://github.com/prometheus/node_exporter/releases/download/v1.8.2/node_exporter-1.8.2.linux-armv7.tar.gz"
-    NODE_EXPORTER_SHA256_ARMHF = "0fb88e682d055a70a8597504874b0a76d1df6a8a511f3d7cb1d48c7db84a2d2a"
+    NODE_EXPORTER_URL_AMD64 = "https://github.com/prometheus/node_exporter/releases/download/v1.9.1/node_exporter-1.9.1.linux-amd64.tar.gz"
+    NODE_EXPORTER_SHA256_AMD64 = "becb950ee80daa8ae7331d77966d94a611af79ad0d3307380907e0ec08f5b4e8"
+    NODE_EXPORTER_URL_ARM64 = "https://github.com/prometheus/node_exporter/releases/download/v1.9.1/node_exporter-1.9.1.linux-arm64.tar.gz"
+    NODE_EXPORTER_SHA256_ARM64 = "848f139986f63232ced83babe3cad1679efdbb26c694737edc1f4fbd27b96203"
   }
   tags = [
     "${TAG_PREFIX}:${VERSION}",
