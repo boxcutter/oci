@@ -3,7 +3,7 @@ variable "TAG_PREFIX" {
 }
 
 variable "VERSION" {
-  default = "0.27.0"
+  default = "0.28.1"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
@@ -14,12 +14,10 @@ variable "LOCAL_PLATFORM" {
 target "_common" {
   dockerfile = "Containerfile"
   args = {
-    ALERTMANAGER_URL_AMD64 = "https://github.com/prometheus/alertmanager/releases/download/v0.27.0/alertmanager-0.27.0.linux-amd64.tar.gz"
-    ALERTMANAGER_SHA256_AMD64 = "23c3f5a3c73de91dbaec419f3c492bef636deb02680808e5d842e6553aa16074"
-    ALERTMANAGER_URL_ARM64 = "https://github.com/prometheus/alertmanager/releases/download/v0.27.0/alertmanager-0.27.0.linux-arm64.tar.gz"
-    ALERTMANAGER_SHA256_ARM64 = "a754304b682cec61f4bd5cfc029b451a30134554b3a2f21a9c487e12814ff8f3"
-    ALERTMANAGER_URL_ARMHF = "https://github.com/prometheus/alertmanager/releases/download/v0.27.0/alertmanager-0.27.0.linux-armv7.tar.gz"
-    ALERTMANAGER_SHA256_ARMHF = "10800f0256873c2eed843297f2a49958f743f6497eada7f7fb8f35aa1d009b53"
+    ALERTMANAGER_URL_AMD64 = "https://github.com/prometheus/alertmanager/releases/download/v0.28.1/alertmanager-0.28.1.linux-amd64.tar.gz"
+    ALERTMANAGER_SHA256_AMD64 = "5ac7ab5e4b8ee5ce4d8fb0988f9cb275efcc3f181b4b408179fafee121693311"
+    ALERTMANAGER_URL_ARM64 = "https://github.com/prometheus/alertmanager/releases/download/v0.28.1/alertmanager-0.28.1.linux-arm64.tar.gz"
+    ALERTMANAGER_SHA256_ARM64 = "d8832540e5b9f613d2fd759e31d603173b9c61cc7bb5e3bc7ae2f12038b1ce4f"
   }
   tags = [
     "${TAG_PREFIX}:${VERSION}",

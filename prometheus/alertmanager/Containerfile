@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/ubuntu:noble-20241015
+ARG BASE_IMAGE=docker.io/ubuntu:noble-20250529
 # hadolint ignore=DL3006
 FROM $BASE_IMAGE AS base
 
@@ -7,8 +7,6 @@ ARG ALERTMANAGER_URL_AMD64
 ARG ALERTMANAGER_SHA256_AMD64
 ARG ALERTMANAGER_URL_ARM64
 ARG ALERTMANAGER_SHA256_ARM64
-ARG ALERTMANAGER_URL_ARMHF
-ARG ALERTMANAGER_SHA256_ARMHF
 
 FROM base as download
 
@@ -27,10 +25,6 @@ RUN apt-get update \
     arm64) \
       ALERTMANAGER_URL="$ALERTMANAGER_URL_ARM64" \
       ALERTMANAGER_SHA256="$ALERTMANAGER_SHA256_ARM64" \
-      ;; \
-    armhf) \
-      ALERTMANAGER_URL="$ALERTMANAGER_URL_ARMHF" \
-      ALERTMANAGER_SHA256="$ALERTMANAGER_SHA256_ARMHF" \
       ;; \
     *) echo "unsupported architecture"; exit 1 ;; \
     esac \
