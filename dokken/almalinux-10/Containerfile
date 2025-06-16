@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/almalinux:10-kitten
+ARG BASE_IMAGE=docker.io/almalinux:10
 FROM $BASE_IMAGE
 
 # hadolint ignore=DL3041
