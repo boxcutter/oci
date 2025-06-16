@@ -55,6 +55,7 @@ jobs:
             dokken/eurolinux-9: 'dokken/eurolinux-9/**'
             dokken/fedora-40: 'dokken/fedora-40/**'
             dokken/fedora-41: 'dokken/fedora-41/**'
+            dokken/fedora-42: 'dokken/fedora-42/**'
             dokken/fedora-latest: 'dokken/fedora-latest/**'
             dokken/opensuse-leap-15: 'dokken/opensuse-leap-15/**'
             dokken/opensuse-leap-15.5: 'dokken/opensuse-leap-15.5/**'
