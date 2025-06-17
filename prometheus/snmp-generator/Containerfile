@@ -5,6 +5,9 @@ FROM $BASE_IMAGE AS base
 FROM base AS build
 
 ARG SNMP_EXPORTER_SOURCE_URL
+ARG PEPLINK_SNMP_MIBS_URL
+# Temporary, Eltex mibs don't download, fixed in main
+ARG SNMP_EXPORTER_MAIN_URL
 
 WORKDIR /usr/src/snmp_exporter
 
@@ -15,34 +18,41 @@ RUN <<EOF
     ca-certificates \
     curl \
     libsnmp-dev \
-    unzip
+    unzip \
+    libarchive-tools
   mkdir -p /tmp/snmp_exporter
-  dpkgArch="$(dpkg --print-architecture)"
-  case "${dpkgArch##*-}" in \
-    amd64) \
-      SNMP_EXPORTER_URL="${SNMP_EXPORTER_URL_AMD64}" \
-      SNMP_EXPORTER_SHA256="${SNMP_EXPORTER_SHA256_AMD64}" \
-      ;; \
-    arm64) \
-      SNMP_EXPORTER_URL="${SNMP_EXPORTER_URL_ARM64}" \
-      SNMP_EXPORTER_SHA256="${SNMP_EXPORTER_SHA256_ARM64}" \
-      ;; \
-    *) echo "unsupported architecture"; exit 1 ;; \
-  esac
   curl -fsSL -o /tmp/snmp_exporter.tar.gz "${SNMP_EXPORTER_SOURCE_URL}"
   tar xvf /tmp/snmp_exporter.tar.gz -C /usr/src/snmp_exporter --strip-components 1
   rm -rf /var/lib/apt/lists/*
 EOF
 
-WORKDIR /usr/src/snmp_exporter/generator
+WORKDIR /usr/src/main
 
 RUN <<EOF
-  make generator
+  curl -fsSL -o /tmp/main.tar.gz "${SNMP_EXPORTER_MAIN_URL}"
+  tar xvf /tmp/main.tar.gz -C /usr/src/main --strip-components 1
+EOF
+
+WORKDIR /usr/src/snmp_exporter/generator
+
+RUN make generator
+
+WORKDIR /usr/src/main/generator
+
+RUN make mibs
+
+WORKDIR /opt/snmp_generator/mibs/peplink
+
+RUN <<EOF
+  curl -fsSL -o /tmp/peplink-snmp-mibs.zip "${PEPLINK_SNMP_MIBS_URL}"
+  bsdtar -xf /tmp/peplink-snmp-mibs.zip --strip-components=1 -C /opt/snmp_generator/mibs/peplink
 EOF
 
 FROM base
 
 COPY --chmod=755 --from=build /usr/src/snmp_exporter/generator/generator /bin/generator
+COPY --from=build /usr/src/main/generator/mibs /opt/snmp_exporter/mibs/mibs
+COPY --from=build /opt/snmp_generator/mibs/peplink /opt/snmp_exporter/mibs/peplink
 
 RUN <<EOF
   apt-get update
