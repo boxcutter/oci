@@ -1,4 +1,4 @@
-snmp_exporter
+snmp-exporter
 -----------------
 This image repackages snmp_exporter releases from
 https://github.com/prometheus/snmp_exporter/releases

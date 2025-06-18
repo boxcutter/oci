@@ -26,7 +26,7 @@ target "_common" {
   labels = {
     "org.opencontainers.image.source" = "https://github.com/boxcutter/oci"
     "org.opencontainers.image.licenses" = "Apache-2.0"
-    "org.opencontainers.image.description" = "Blackbox exporter for probing remote machine metrics."
+    "org.opencontainers.image.description" = "SNMP Exporter"
     "org.opencontainers.image.title" = "${TAG_PREFIX}"
     "org.opencontainers.image.created" = "${timestamp()}"
     "dev.boxcutter.image.readme-filepath" = "prometheus/snmp-exporter/README.md"
