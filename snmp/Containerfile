@@ -1,0 +1,12 @@
+# syntax=docker/dockerfile:1
+ARG BASE_IMAGE=docker.io/ubuntu:noble-20250529
+FROM $BASE_IMAGE
+
+RUN <<EOF
+  apt-get update -y
+  apt-get install -y --no-install-recommends \
+    snmp
+  rm -rf /var/lib/apt/lists/*
+EOF
+
+USER ubuntu
