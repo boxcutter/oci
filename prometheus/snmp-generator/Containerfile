@@ -51,8 +51,8 @@ EOF
 FROM base
 
 COPY --chmod=755 --from=build /usr/src/snmp_exporter/generator/generator /bin/generator
-COPY --from=build /usr/src/main/generator/mibs /opt/snmp_exporter/mibs/mibs
-COPY --from=build /opt/snmp_generator/mibs/peplink /opt/snmp_exporter/mibs/peplink
+COPY --from=build /usr/src/main/generator/mibs /opt/snmp_exporter/generator/mibs
+COPY --from=build /opt/snmp_generator/mibs/peplink /opt/snmp_exporter/generator/peplink
 
 RUN <<EOF
   apt-get update
