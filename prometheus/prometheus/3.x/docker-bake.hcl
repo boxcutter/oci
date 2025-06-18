@@ -15,9 +15,9 @@ target "_common" {
   dockerfile = "Containerfile"
   args = {
     PROMETHEUS_URL_AMD64 = "https://github.com/prometheus/prometheus/releases/download/v3.4.1/prometheus-3.4.1.linux-amd64.tar.gz"
-    PROMETHEUS_SHA256_AMD64 = ""
+    PROMETHEUS_SHA256_AMD64 = "09203151c132f36b004615de1a3dea22117ad17e6d7a59962e34f3abf328f312"
     PROMETHEUS_URL_ARM64 = "https://github.com/prometheus/prometheus/releases/download/v3.4.1/prometheus-3.4.1.linux-arm64.tar.gz"
-    PROMETHEUS_SHA256_ARM64 = ""
+    PROMETHEUS_SHA256_ARM64 = "2a85be1dff46238c0d799674e856c8629c8526168dd26c3de2cecfbfc6f9a0a2"
   }
   tags = [
     "${TAG_PREFIX}:${VERSION}",
