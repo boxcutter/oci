@@ -81,6 +81,7 @@ jobs:
             golang/1.24/noble: 'golang/1.24/noble/**'
             hadolint: 'hadolint/**'
             hashicorp/vagrant-libvirt: 'hashicorp/vagrant-libvirt/**'
+            jsonnet: 'jsonnet/**'
             jupyter/docker-stacks-foundation: 'jupyter/docker-stacks-foundation/**'
             jupyter/base-notebook: 'jupyter/base-notebook/**'
             jupyter/minimal-notebook: 'jupyter/minimal-notebook/**'

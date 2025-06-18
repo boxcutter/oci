@@ -1,0 +1,52 @@
+# syntax=docker/dockerfile:1
+# Arguments used in FROM need to be defined before the first build stage
+ARG BUILD_IMAGE=docker.io/boxcutter/golang:1.23-noble
+ARG BASE_IMAGE=docker.io/ubuntu:noble-20250529
+# hadolint ignore=DL3006
+FROM $BASE_IMAGE AS base
+
+ARG JSONNET_URL_AMD64
+ARG JSONNET_SHA256_AMD64
+ARG JSONNET_URL_ARM64
+ARG JSONNET_SHA256_ARM64
+
+FROM base AS download
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN <<EOF
+  apt-get update
+  apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl
+  mkdir -p /tmp/jsonnet
+  dpkgArch="$(dpkg --print-architecture)"
+  case "${dpkgArch##*-}" in \
+    amd64) \
+      JSONNET_URL="${JSONNET_URL_AMD64}" \
+      JSONNET_SHA256="${JSONNET_SHA256_AMD64}" \
+      ;; \
+    arm64) \
+      JSONNET_URL="${JSONNET_URL_ARM64}" \
+      JSONNET_SHA256="${JSONNET_SHA256_ARM64}" \
+      ;; \
+    *) echo "unsupported architecture"; exit 1 ;; \
+  esac
+  curl -fsSL -o /tmp/jsonnet.tar.gz "${JSONNET_URL}"
+  echo "${JSONNET_SHA256} /tmp/jsonnet.tar.gz" | sha256sum -c -
+  tar xvf /tmp/jsonnet.tar.gz -C /tmp/jsonnet
+EOF
+
+FROM ${BUILD_IMAGE} AS build
+
+RUN <<EOF
+  go install github.com/monitoring-mixins/mixtool/cmd/mixtool@main
+EOF
+
+FROM base
+
+COPY --chmod=755 --from=download /tmp/jsonnet/jsonnet /usr/local/bin/jsonnet
+COPY --chmod=755 --from=download /tmp/jsonnet/jsonnetfmt /usr/local/bin/jsonnetfmt
+COPY --chmod=755 --from=download /tmp/jsonnet/jsonnet-lint /usr/local/bin/jsonnet-lint
+COPY --chmod=755 --from=download /tmp/jsonnet/jsonnet-deps /usr/local/bin/jsonnet-deps
+COPY --chmod=755 --from=build /go/bin/mixtool /usr/local/bin/mixtool
+
+USER ubuntu
