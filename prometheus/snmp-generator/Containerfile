@@ -6,8 +6,6 @@ FROM base AS build
 
 ARG SNMP_EXPORTER_SOURCE_URL
 ARG PEPLINK_SNMP_MIBS_URL
-# Temporary, Eltex mibs don't download, fixed in main
-ARG SNMP_EXPORTER_MAIN_URL
 
 WORKDIR /usr/src/snmp_exporter
 
@@ -26,20 +24,64 @@ RUN <<EOF
   rm -rf /var/lib/apt/lists/*
 EOF
 
-WORKDIR /usr/src/main
-
-RUN <<EOF
-  curl -fsSL -o /tmp/main.tar.gz "${SNMP_EXPORTER_MAIN_URL}"
-  tar xvf /tmp/main.tar.gz -C /usr/src/main --strip-components 1
-EOF
-
 WORKDIR /usr/src/snmp_exporter/generator
 
-RUN make generator
-
-WORKDIR /usr/src/main/generator
-
-RUN make mibs
+# "make mibs" frequently breaks, so just include the ones we know that work
+SHELL ["/bin/bash", "-o", "pipefail", "-e", "-c"]
+RUN <<EOF
+  make generator
+  # broken 2025-06-18
+  # make mibs/apc-powernet-mib
+  make mibs/readynas
+  make mibs/readydataos
+  make mibs/AIRESPACE-REF-MIB
+  make mibs/AIRESPACE-WIRELESS-MIB
+  make mibs/ARISTA-ENTITY-SENSOR-MIB
+  make mibs/ARISTA-SMI-MIB
+  make mibs/ARISTA-SW-IP-FORWARDING-MIB
+  make mibs/iDRAC-SMIv2.mib
+  make mibs/.hpe-mib
+  make mibs/IANA-CHARSET-MIB.txt
+  make mibs/IANA-IFTYPE-MIB.txt
+  make mibs/IANA-PRINTER-MIB.txt
+  make mibs/FServer-Std.MIB
+  make mibs/KEEPALIVED-MIB
+  make mibs/VRRP-MIB
+  make mibs/VRRPv3-MIB
+  make mibs/.kemp-lm
+  make mibs/MIKROTIK-MIB
+  make mibs/.net-snmp
+  make mibs/.paloalto_panos
+  make mibs/PICO-IPSEC-FLOW-MONITOR-MIB.txt
+  make mibs/PICO-SMI-ID-MIB.txt
+  make mibs/PICO-SMI-MIB.txt
+  make mibs/PRINTER-MIB-V2.txt
+  make mibs/servertech-sentry3-mib
+  make mibs/servertech-sentry4-mib
+  make mibs/.synology
+  make mibs/.sophos_xg
+  make mibs/.tplinkddm
+  make mibs/UBNT-UniFi-MIB
+  make mibs/UBNT-AirFiber-MIB
+  make mibs/UBNT-AirMAX-MIB.txt
+  make mibs/PDU-MIB.txt
+  make mibs/PDU2-MIB.txt
+  make mibs/Infrapower-MIB.mib
+  make mibs/LIEBERT_GP_PDU.MIB
+  make mibs/CyberPower.MIB
+  make mibs/EAP.MIB
+  make mibs/EAP-Client.MIB
+  make mibs/powercom
+  make mibs/.cisco_imc
+  make mibs/.cisco-device
+  make mibs/FROGFOOT-RESOURCES-MIB
+  make mibs/.dlink-mibs
+  # Broken 2025-06-15
+  # make mibs/.eltex-mes
+  make mibs/.juniper
+  make mibs/.dell-network
+  make mibs/.yamaha-rt
+EOF
 
 WORKDIR /opt/snmp_generator/mibs/peplink
 
@@ -51,7 +93,7 @@ EOF
 FROM base
 
 COPY --chmod=755 --from=build /usr/src/snmp_exporter/generator/generator /bin/generator
-COPY --from=build /usr/src/main/generator/mibs /opt/snmp_exporter/generator/mibs
+COPY --from=build /usr/src/snmp_exporter/generator/mibs /opt/snmp_exporter/generator/mibs
 COPY --from=build /opt/snmp_generator/mibs/peplink /opt/snmp_exporter/generator/peplink
 
 RUN <<EOF

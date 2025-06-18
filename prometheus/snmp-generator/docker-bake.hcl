@@ -15,7 +15,6 @@ target "_common" {
   dockerfile = "Containerfile"
   args = {
     SNMP_EXPORTER_SOURCE_URL = "https://github.com/prometheus/snmp_exporter/archive/refs/tags/v0.29.0.tar.gz"
-    SNMP_EXPORTER_MAIN_URL = "https://github.com/prometheus/snmp_exporter/archive/refs/heads/main.tar.gz"
     PEPLINK_SNMP_MIBS_URL = "https://download.peplink.com/resources/peplink_pepwave_snmp_mib-2024-07.zip"
   }
   tags = [
