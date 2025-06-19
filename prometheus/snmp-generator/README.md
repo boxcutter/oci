@@ -7,9 +7,9 @@ All the default MIBs produced by the `make mibs` command are available
 in the `/opt/snmp_exporter/generator/mibs` directory.
 
 Peplink SNMP MIBs are available in the following directories:
-- /opt/snmp_exporter/generator/peplink/peplink
-- /opt/snmp_exporter/generator/peplink/pepwave
-- /opt/snmp_exporter/generator/peplink/pepxim
+- `/opt/snmp_exporter/generator/peplink/peplink`
+- `/opt/snmp_exporter/generator/peplink/pepwave`
+- `/opt/snmp_exporter/generator/peplink/pepxim`
 
 To generate an `snmp.yml` for the Prometheus SNMP exporter, pass in the
 directors of mibs, a path to a `generator.yml` file and the path to the
