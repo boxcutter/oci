@@ -101,6 +101,7 @@ jobs:
             pgweb: 'pgweb/**'
             postgres/15/noble: 'postgres/15/noble/**'
             postgres/16/noble: 'postgres/16/noble/**'
+            postgres/17/noble: 'postgres/17/noble/**'
             prometheus/alertmanager: 'prometheus/alertmanager/**'
             prometheus/blackbox-exporter: 'prometheus/blackbox-exporter/**'
             prometheus/node-exporter: 'prometheus/node-exporter/**'
