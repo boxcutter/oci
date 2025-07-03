@@ -132,6 +132,7 @@ jobs:
             slidev: 'slidev/**'
             snmp: 'snmp/**'
             ubuntu-autoinstall: 'ubuntu-autoinstall/**'
+            valkey/8.1/ubuntu: 'valkey/8.1/ubuntu/**'
             
   # Job to build and test each of the modified images
   build:
