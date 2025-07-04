@@ -242,6 +242,7 @@ jobs:
             ros/iron/ubuntu/jammy: 'ros/iron/ubuntu/jammy/**'
             ros/jazzy/ubuntu/noble: 'ros/jazzy/ubuntu/noble/**'
             ros/noetic/ubuntu/focal: 'ros/noetic/ubuntu/focal/**'
+            uv: 'uv/**'
 
   # Job to build and test each of the modified images
   self-hosted-build:

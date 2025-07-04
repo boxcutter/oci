@@ -1,0 +1,43 @@
+# syntax=docker/dockerfile:1
+ARG BASE_IMAGE=docker.io/ubuntu:noble-20250619
+FROM $BASE_IMAGE AS download
+
+ARG UV_URL_AMD64
+ARG UV_SHA256_AMD64
+ARG UV_URL_ARM64
+ARG UV_SHA246_ARM64
+
+WORKDIR /tmp/uv
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN <<EOF
+  apt-get update
+  apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl
+  rm -rf /var/lib/apt/lists/*
+  dpkgArch="$(dpkg --print-architecture)" 
+  case "${dpkgArch##*-}" in \
+    amd64) \
+      UV_URL="${UV_URL_AMD64}" \
+      UV_SHA256="${UV_SHA256_AMD64}" \
+      ;; \
+    arm64) \
+      UV_URL="${UV_URL_ARM64}" \
+      UV_SHA256="${UV_SHA256_ARM64}" \
+      ;; \
+    *) echo "unsupported architecture"; exit 1 ;; \
+  esac 
+  curl -fsSL -o /tmp/uv.tar.gz "${UV_URL}"
+  echo "${UV_SHA256} /tmp/uv.tar.gz" | sha256sum -c -
+  tar --extract \
+    --file /tmp/uv.tar.gz \
+    --strip-components 1 \
+    --directory /tmp/uv/
+EOF
+
+FROM scratch
+
+COPY --from=download /tmp/uv/uv /tmp/uv/uvx /
+WORKDIR /io
+ENTRYPOINT ["/uv"]
