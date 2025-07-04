@@ -7,23 +7,26 @@ FROM base AS download
 
 ARG RAW_GITHUBUSERCONTENT_BASE_URL
 
-# download gpg key
+# Download gpg key. We download the gpg key separately rather than using the
+# packages, as we use different mirrors for the ros2 package URI
+# Upstream uses
+# https://github.com/ros-infrastructure/ros-apt-source/releases/download/1.1.0/ros2-apt-source_1.1.0.noble_all.deb
 RUN <<EOF
   apt-get update
   apt-get install -y --no-install-recommends \
     ca-certificates \
     curl
-  curl -sSL "${RAW_GITHUBUSERCONTENT_BASE_URL}/ros/rosdistro/master/ros.key" \
-    -o /usr/share/keyrings/ros2-latest-archive-keyring.gpg
+  curl -sSL "${RAW_GITHUBUSERCONTENT_BASE_URL}/ros-apt-source-ros-apt-source/keys/ros2-archive-keyring.gpg" \
+    -o /usr/share/keyrings/ros2-archive-keyring.gpg
 EOF
 
 FROM base AS ros-core
 
 ARG ROS_PACKAGES_URI
 
-COPY --from=download /usr/share/keyrings/ros2-latest-archive-keyring.gpg /usr/share/keyrings/ros2-latest-archive-keyring.gpg
+COPY --from=download /usr/share/keyrings/ros2-archive-keyring.gpg /usr/share/keyrings/ros2-archive-keyring.gpg
 
-# setup timezone
+# Set Timezone. Some packages like python-dev require timezone to be set.
 RUN echo 'Etc/UTC' > /etc/timezone && \
     ln -s /usr/share/zoneinfo/Etc/UTC /etc/localtime && \
     apt-get update && \
@@ -32,12 +35,14 @@ RUN echo 'Etc/UTC' > /etc/timezone && \
 
 # install packages
 RUN apt-get update && apt-get install -q -y --no-install-recommends \
+    ca-certificates \
+    curl \
     dirmngr \
     gnupg2 \
     && rm -rf /var/lib/apt/lists/*
 
 # setup sources.list
-RUN echo "deb [ signed-by=/usr/share/keyrings/ros2-latest-archive-keyring.gpg ] ${ROS_PACKAGES_URI} noble main" > /etc/apt/sources.list.d/ros2-latest.list
+RUN echo "deb [ signed-by=/usr/share/keyrings/ros2--archive-keyring.gpg ] ${ROS_PACKAGES_URI} noble main" > /etc/apt/sources.list.d/ros2.list
 
 # setup environment
 ENV LANG=C.UTF-8
