@@ -21,6 +21,7 @@ target "_common" {
   dockerfile = "Containerfile"
   tags = [
     "${TAG_PREFIX}:${VERSION}",
+    "${TAG_PREFIX}:${join(".", slice(split(".", "${VERSION}"), 0, 2))}",
     "${TAG_PREFIX}:latest"
   ]
 }
