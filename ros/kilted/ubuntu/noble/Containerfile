@@ -1,0 +1,121 @@
+# syntax=docker/dockerfile:1
+ARG BASE_IMAGE=docker.io/ubuntu:noble-20250619
+# hadolint ignore=DL3006
+FROM ${BASE_IMAGE} AS base
+
+FROM base AS download
+
+ARG RAW_GITHUBUSERCONTENT_BASE_URL
+
+# Download gpg key. We download the gpg key separately rather than using the
+# packages, as we use different mirrors for the ros2 package URI
+# Upstream uses
+# https://github.com/ros-infrastructure/ros-apt-source/releases/download/1.1.0/ros2-apt-source_1.1.0.noble_all.deb
+RUN <<EOF
+  apt-get update
+  apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl
+  curl -fsSL "${RAW_GITHUBUSERCONTENT_BASE_URL}/ros-infrastructure/ros-apt-source/main/ros-apt-source/keys/ros2-archive-keyring.gpg" \
+    -o /usr/share/keyrings/ros2-archive-keyring.gpg
+EOF
+
+FROM base AS ros-core
+
+ARG ROS_PACKAGES_URI
+
+COPY --from=download /usr/share/keyrings/ros2-archive-keyring.gpg /usr/share/keyrings/ros2-archive-keyring.gpg
+
+# Set Timezone. Some packages like python-dev require timezone to be set.
+RUN echo 'Etc/UTC' > /etc/timezone && \
+    ln -s /usr/share/zoneinfo/Etc/UTC /etc/localtime && \
+    apt-get update && \
+    apt-get install -q -y --no-install-recommends tzdata && \
+    rm -rf /var/lib/apt/lists/*
+
+# install packages
+RUN apt-get update && apt-get install -q -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    dirmngr \
+    gnupg2 \
+    && rm -rf /var/lib/apt/lists/*
+
+# setup sources.list
+RUN echo "deb [ signed-by=/usr/share/keyrings/ros2-archive-keyring.gpg ] ${ROS_PACKAGES_URI} noble main" > /etc/apt/sources.list.d/ros2.list
+
+# setup environment
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
+
+ENV ROS_DISTRO=kilted
+
+# install ros2 packages
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ros-kilted-ros-core=0.12.0-2* \
+    && rm -rf /var/lib/apt/lists/*
+
+# setup entrypoint
+COPY ./ros_entrypoint.sh /
+
+ENTRYPOINT ["/ros_entrypoint.sh"]
+CMD ["bash"]
+
+FROM ros-core AS ros-base
+
+ARG RAW_GITHUBUSERCONTENT_BASE_URL
+
+# install bootstrap tools
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    build-essential \
+    git \
+    python3-colcon-common-extensions \
+    python3-colcon-mixin \
+    python3-rosdep \
+    python3-vcstool \
+    && rm -rf /var/lib/apt/lists/*
+
+# bootstrap rosdep
+RUN rosdep init && \
+  rosdep update --rosdistro "$ROS_DISTRO"
+
+# setup colcon mixin and metadata
+RUN colcon mixin add default \
+      "${RAW_GITHUBUSERCONTENT_BASE_URL}/colcon/colcon-mixin-repository/master/index.yaml" && \
+    colcon mixin update && \
+    colcon metadata add default \
+      "${RAW_GITHUBUSERCONTENT_BASE_URL}/colcon/colcon-metadata-repository/master/index.yaml" && \
+    colcon metadata update
+
+# install ros2 packages
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ros-kilted-ros-base=0.12.0-2* \
+    && rm -rf /var/lib/apt/lists/*
+
+FROM ros-base AS perception
+
+# install ros2 packages
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ros-kilted-perception=0.12.0-2* \
+    && rm -rf /var/lib/apt/lists/*
+
+FROM ros-base AS simulation
+
+# install ros2 packages
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ros-kilted-simulation=0.12.0-2* \
+    && rm -rf /var/lib/apt/lists/*
+
+FROM ros-base AS desktop
+
+# install ros2 packages
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ros-kilted-desktop=0.12.0-2* \
+    && rm -rf /var/lib/apt/lists/*
+
+FROM desktop AS desktop-full
+
+# install ros2 packages
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ros-kilted-desktop-full=0.12.0-2* \
+    && rm -rf /var/lib/apt/lists/*
