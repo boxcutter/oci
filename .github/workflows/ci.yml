@@ -239,7 +239,6 @@ jobs:
             python/3.13/slim-jammy: 'python/3.13/slim-jammy/**'
             python/3.13/slim-noble: 'python/3.13/slim-noble/**'
             ros/humble/ubuntu/jammy: 'ros/humble/ubuntu/jammy/**'
-            ros/iron/ubuntu/jammy: 'ros/iron/ubuntu/jammy/**'
             ros/jazzy/ubuntu/noble: 'ros/jazzy/ubuntu/noble/**'
             ros/kilted/ubuntu/noble: 'ros/kilted/ubuntu/noble/**'
             uv: 'uv/**'
