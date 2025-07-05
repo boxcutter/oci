@@ -42,7 +42,7 @@ RUN apt-get update && apt-get install -q -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # setup sources.list
-RUN echo "deb [ signed-by=/usr/share/keyrings/ros2--archive-keyring.gpg ] ${ROS_PACKAGES_URI} noble main" > /etc/apt/sources.list.d/ros2.list
+RUN echo "deb [ signed-by=/usr/share/keyrings/ros2-archive-keyring.gpg ] ${ROS_PACKAGES_URI} noble main" > /etc/apt/sources.list.d/ros2.list
 
 # setup environment
 ENV LANG=C.UTF-8
