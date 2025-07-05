@@ -16,7 +16,7 @@ RUN <<EOF
   apt-get install -y --no-install-recommends \
     ca-certificates \
     curl
-  curl -sSL "${RAW_GITHUBUSERCONTENT_BASE_URL}/ros-apt-source-ros-apt-source/keys/ros2-archive-keyring.gpg" \
+  curl -sSL "${RAW_GITHUBUSERCONTENT_BASE_URL}/ros-apt-source/ros-apt-source/keys/ros2-archive-keyring.gpg" \
     -o /usr/share/keyrings/ros2-archive-keyring.gpg
 EOF
 
