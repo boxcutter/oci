@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/ubuntu:jammy-20250415.1
+ARG BASE_IMAGE=docker.io/ubuntu:jammy-20250619
 # hadolint ignore=DL3006
 FROM ${BASE_IMAGE} AS base
 
@@ -35,8 +35,8 @@ RUN <<EOF
   apt-get install -y --no-install-recommends \
     ca-certificates \
     curl
-  curl -sSL "${RAW_GITHUBUSERCONTENT_BASE_URL}/ros/rosdistro/master/ros.key" \
-    -o /usr/share/keyrings/ros2-latest-archive-keyring.gpg
+  curl -fsSL "${RAW_GITHUBUSERCONTENT_BASE_URL}/ros-infrastructure/ros-apt-source/main/ros-apt-source/keys/ros2-archive-keyring.gpg" \
+    -o /usr/share/keyrings/ros2-archive-keyring.gpg
   rm -rf /var/lib/apt/lists/*
 EOF
 
@@ -51,12 +51,14 @@ RUN echo 'Etc/UTC' > /etc/timezone && \
 
 # install packages
 RUN apt-get update && apt-get install -q -y --no-install-recommends \
+    ca-certificates \
+    curl \
     dirmngr \
     gnupg2 \
     && rm -rf /var/lib/apt/lists/*
 
 # setup sources.list
-RUN echo "deb [ signed-by=/usr/share/keyrings/ros2-latest-archive-keyring.gpg ] ${ROS_PACKAGES_URI} jammy main" > /etc/apt/sources.list.d/ros2-latest.list
+RUN echo "deb [ signed-by=/usr/share/keyrings/ros2-archive-keyring.gpg ] ${ROS_PACKAGES_URI} jammy main" > /etc/apt/sources.list.d/ros2.list
 
 # setup environment
 ENV LANG=C.UTF-8
