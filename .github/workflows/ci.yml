@@ -58,7 +58,6 @@ jobs:
             dokken/fedora-42: 'dokken/fedora-42/**'
             dokken/fedora-latest: 'dokken/fedora-latest/**'
             dokken/opensuse-leap-15: 'dokken/opensuse-leap-15/**'
-            dokken/opensuse-leap-15.5: 'dokken/opensuse-leap-15.5/**'
             dokken/opensuse-leap-15.6: 'dokken/opensuse-leap-15.6/**'
             dokken/oraclelinux-7: 'dokken/oraclelinux-7/**'
             dokken/oraclelinux-8: 'dokken/oraclelinux-8/**'
