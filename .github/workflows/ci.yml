@@ -67,7 +67,6 @@ jobs:
             dokken/ubuntu-20.04: 'dokken/ubuntu-20.04/**'
             dokken/ubuntu-22.04: 'dokken/ubuntu-22.04/**'
             dokken/ubuntu-24.04: 'dokken/ubuntu-24.04/**'
-            dokken/ubuntu-24.10: 'dokken/ubuntu-24.10/**'
             dokken/ubuntu-25.04: 'dokken/ubuntu-25.04/**'
             doctl: 'doctl/**'
             erlang/26/slim: 'erlang/26/slim/**'
