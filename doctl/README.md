@@ -40,7 +40,7 @@ Listing public images
 ```bash
 % docker container run --rm \
     --env=DIGITALOCEAN_ACCESS_TOKEN \
-    docker.io/boxcutter/doctl compute image list-distribution --public
+    docker.io/boxcutter/doctl doctl compute image list-distribution --public
 ID           Name                              Type    Distribution    Slug                   Public    Min Disk    Created
 135509519    9 x64                             base    Rocky Linux     rockylinux-9-x64       true      10          2023-06-28T21:06:21Z
 143033891    8 x64                             base    Rocky Linux     rockylinux-8-x64       true      10          2023-10-25T11:45:21Z
@@ -64,7 +64,7 @@ Listing regions
 ```bash
 % docker container run --rm \
     --env=DIGITALOCEAN_ACCESS_TOKEN \
-    docker.io/boxcutter/doctl compute region list
+    docker.io/boxcutter/doctl doctl compute region list
 Slug    Name               Available
 nyc1    New York 1         true
 sfo1    San Francisco 1    false
@@ -87,7 +87,7 @@ Listing image sizes/pricing
 ```bash
 % docker container run --rm --interactive --tty \
   --env=DIGITALOCEAN_ACCESS_TOKEN \
-  docker.io/boxcutter/doctl compute size list
+  docker.io/boxcutter/doctl doctl compute size list
 Slug                        Description                               Memory     VCPUs    Disk    Price Monthly    Price Hourly
 s-1vcpu-512mb-10gb          Basic                                     512        1        10      4.00             0.005950
 s-1vcpu-1gb                 Basic                                     1024       1        25      6.00             0.008930
@@ -244,7 +244,7 @@ docker container run --rm \
   --env=DIGITALOCEAN_ACCESS_TOKEN \
   --env=DIGITALOCEAN_SSH_KEY_IDS \
   --env=DIGITALOCEAN_REGION \
-  docker.io/boxcutter/doctl compute droplet create ubuntu22-04 \
+  docker.io/boxcutter/doctl doctl compute droplet create ubuntu22-04 \
     --ssh-keys $DIGITALOCEAN_SSH_KEY_IDS \
     --size s-1vcpu-1gb \
     --image ubuntu-24-04-x64 \
@@ -257,7 +257,7 @@ Listing current droplets
 ```bash
 docker container run --rm \
   --env=DIGITALOCEAN_ACCESS_TOKEN \
-  docker.io/boxcutter/doctl compute droplet list
+  docker.io/boxcutter/doctl doctl compute droplet list
 ```
 
 SSH into a running instance
@@ -275,7 +275,7 @@ Mounting private key in the container
 docker container run --rm --interactive --tty \
   --env=DIGITALOCEAN_ACCESS_TOKEN \
   --mount type=bind,source="$HOME/.ssh/id_ed25519",target="/root/.ssh/id_ed25519",readonly \
-  docker.io/boxcutter/doctl compute ssh <DROPLET_ID>
+  docker.io/boxcutter/doctl doctl compute ssh <DROPLET_ID>
 ```
 
 Using SSH forwarding to get the private key into the container environment
@@ -287,7 +287,7 @@ docker container run --rm --interactive --tty \
   --env=DIGITALOCEAN_ACCESS_TOKEN \
   --env=SSH_AUTH_SOCK \
   --mount type=bind,source=$SSH_AUTH_SOCK,target=$SSH_AUTH_SOCK,readonly \
-  docker.io/boxcutter/doctl compute ssh <DROPLET_ID>
+  docker.io/boxcutter/doctl doctl compute ssh <DROPLET_ID>
 
 # Using SSH forwarding with Docker Desktop for Mac
 # Seems like you need to use a magic path to forward SSH_AUTH_SOCK into the VM running the Linux instancea
@@ -297,14 +297,14 @@ docker container run --rm --interactive --tty \
   --env=DIGITALOCEAN_ACCESS_TOKEN \
   --env=SSH_AUTH_SOCK=/run/host-services/ssh-auth.sock \
   --mount type=bind,source=/run/host-services/ssh-auth.sock,target=/run/host-services/ssh-auth.sock,readonly \
-  docker.io/boxcutter/doctl compute ssh <DROPLET_ID>  
+  docker.io/boxcutter/doctl doctl compute ssh <DROPLET_ID>  
 ```
 
 Deleting a Droplet
 ```
 docker container run --rm \
   --env=DIGITALOCEAN_ACCESS_TOKEN \
-  docker.io/boxcutter/doctl compute droplet delete --force <DROPLET_ID>
+  docker.io/boxcutter/doctl doctl compute droplet delete --force <DROPLET_ID>
 ```
 
 Creating a Kubernetes Cluster
@@ -313,7 +313,7 @@ Creating a Kubernetes Cluster
 docker container run --rm \
   --env=DIGITALOCEAN_ACCESS_TOKEN \
   --env=DIGITALOCEAN_REGION \
-  docker.io/boxcutter/doctl kubernetes cluster create first-cluster \
+  docker.io/boxcutter/doctl doctl kubernetes cluster create first-cluster \
     --region $DIGITALOCEAN_REGION \
     --size s-1vcpu-2gb-intel \
     --count 1
@@ -322,7 +322,9 @@ docker container run --rm \
 List droplets compatible with Kubernetes clusters
 
 ```bash
-doctl kubernetes options sizes
+docker container run --rm \
+  --env=DIGITALOCEAN_ACCESS_TOKEN \
+  docker.io/boxcutter/doctl doctl kubernetes options sizes
 ```
 
 To manage the cluster
@@ -332,9 +334,13 @@ To manage the cluster
 docker container run --rm \
   --env=DIGITALOCEAN_ACCESS_TOKEN \
   --mount type=bind,source=$HOME/.kube,target=/home/doctl/.kube \
-  docker.io/boxcutter/doctl kubernetes cluster kubeconfig save first-cluster
+  docker.io/boxcutter/doctl doctl kubernetes cluster kubeconfig save first-cluster
 
 
+docker container run --rm \
+  --env=DIGITALOCEAN_ACCESS_TOKEN \
+  --mount type=bind,source=$HOME/.kube,target=/home/doctl/.kube \
+  docker.io/boxcutter/doctl kubectl get nodes
 ```
 
 Listing current Kubernetes Clusters
@@ -342,7 +348,7 @@ Listing current Kubernetes Clusters
 ```bash
 docker container run --rm \
   --env=DIGITALOCEAN_ACCESS_TOKEN \
-  docker.io/boxcutter/doctl kubernetes cluster list
+    docker.io/boxcutter/doctl doctl kubernetes cluster list
 ```
 
 Deleting Kubernetes cluster
@@ -350,7 +356,8 @@ Deleting Kubernetes cluster
 ```bash
 docker container run --rm \
   --env=DIGITALOCEAN_ACCESS_TOKEN \
-  docker.io/boxcutter/doctl kubernetes cluster delete <NAME|ID> --force
+  --mount type=bind,source=$HOME/.kube,target=/home/doctl/.kube \
+  docker.io/boxcutter/doctl doctl kubernetes cluster delete <NAME|ID> --force
 ```
 
 # CLI
