@@ -307,10 +307,54 @@ docker container run --rm \
   docker.io/boxcutter/doctl compute droplet delete --force <DROPLET_ID>
 ```
 
+Creating a Kubernetes Cluster
+
+```bash
+docker container run --rm \
+  --env=DIGITALOCEAN_ACCESS_TOKEN \
+  --env=DIGITALOCEAN_REGION \
+  docker.io/boxcutter/doctl kubernetes cluster create first-cluster \
+    --region $DIGITALOCEAN_REGION \
+    --size s-1vcpu-2gb-intel \
+    --count 1
+```
+
+List droplets compatible with Kubernetes clusters
+
+```bash
+doctl kubernetes options sizes
+```
+
+To manage the cluster
+
+```
+doctl kubernetes cluster kubeconfig save <cluster-name>
+# Writes/merges kubeconfig into ~/.kube/config
+docker container run --rm \
+  --env=DIGITALOCEAN_ACCESS_TOKEN \
+  --mount type=bind,source=$HOME/.kube,target=/root/.kube \
+  docker.io/boxcutter/doctl kubernetes cluster kubeconfig save first-cluster --set-current-context --force
+```
+
+Listing current Kubernetes Clusters
+
+```bash
+docker container run --rm \
+  --env=DIGITALOCEAN_ACCESS_TOKEN \
+  docker.io/boxcutter/doctl kubernetes cluster list
+```
+
+Deleting Kubernetes cluster
+
+```bash
+docker container run --rm \
+  --env=DIGITALOCEAN_ACCESS_TOKEN \
+  docker.io/boxcutter/doctl kubernetes cluster delete <NAME|ID> --force
+```
 
 # CLI
 
-```
+```bash
 % docker container run --rm docker.io/boxcutter/doctl
 doctl is a command line interface (CLI) for the DigitalOcean API.
 

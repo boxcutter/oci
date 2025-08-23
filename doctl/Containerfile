@@ -20,10 +20,14 @@ RUN <<EOF
     amd64) \
       DOCTL_URL="${DOCTL_URL_AMD64}" \
       DOCTL_SHA256="${DOCTL_SHA256_AMD64}" \
+      KUBECTL_URL="https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" \
+      KUBECTL_SHA256_URL="https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256" \
       ;; \
     arm64) \
       DOCTL_URL="${DOCTL_URL_ARM64}" \
       DOCTL_SHA256="${DOCTL_SHA256_AMD64}" \
+      KUBECTL_URL="https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl" \
+      KUBECTL_SHA256_URL="https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl.sha256" \
       ;; \
     *) echo "unsupported architecture"; exit 1 ;; \
   esac
@@ -31,6 +35,11 @@ RUN <<EOF
   echo "${DOCTL_SHA256} /tmp/doctl.tar.gz" | sha256sum -c -
   mkdir -p /tmp/doctl
   tar xzvf /tmp/doctl.tar.gz -C /tmp/doctl
+
+  curl -fsSL -o /tmp/kubectl ${KUBECTL_URL}
+  curl -fsSL -o /tmp/kubectl.sha256 ${KUBECTL_SHA256_URL}
+  echo "$(cat /tmp/kubectl.sha256)  /tmp/kubectl" | sha256sum -c -
+
   rm -rf /var/lib/apt/lists/*
 EOF
 
@@ -46,7 +55,12 @@ RUN <<EOF
   rm -rf /var/lib/apt/lists/*
 EOF
 
-WORKDIR /app
-COPY --from=build /tmp/doctl/doctl /usr/local/bin/doctl
+RUN useradd -m doctl
+USER doctl
+WORKDIR /home/doctl
+
+# WORKDIR /app
+COPY --from=build --chmod=0755 /tmp/doctl/doctl /usr/local/bin/doctl
+COPY --from=build --chmod=0755 /tmp/kubectl /usr/local/bin/kubectl
 
 ENTRYPOINT ["/usr/local/bin/doctl"]
