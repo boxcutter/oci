@@ -328,12 +328,13 @@ doctl kubernetes options sizes
 To manage the cluster
 
 ```
-doctl kubernetes cluster kubeconfig save <cluster-name>
 # Writes/merges kubeconfig into ~/.kube/config
 docker container run --rm \
   --env=DIGITALOCEAN_ACCESS_TOKEN \
-  --mount type=bind,source=$HOME/.kube,target=/root/.kube \
-  docker.io/boxcutter/doctl kubernetes cluster kubeconfig save first-cluster --set-current-context --force
+  --mount type=bind,source=$HOME/.kube,target=/home/doctl/.kube \
+  docker.io/boxcutter/doctl kubernetes cluster kubeconfig save first-cluster
+
+
 ```
 
 Listing current Kubernetes Clusters

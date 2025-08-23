@@ -59,8 +59,7 @@ RUN useradd -m doctl
 USER doctl
 WORKDIR /home/doctl
 
-# WORKDIR /app
 COPY --from=build --chmod=0755 /tmp/doctl/doctl /usr/local/bin/doctl
 COPY --from=build --chmod=0755 /tmp/kubectl /usr/local/bin/kubectl
 
-ENTRYPOINT ["/usr/local/bin/doctl"]
+CMD ["/usr/local/bin/doctl"]
