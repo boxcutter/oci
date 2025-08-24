@@ -10,8 +10,8 @@ end
 
 describe user('node') do
   it { should exist }
-  its('uid') { should eq 999 }
-  its('gid') { should eq 999 }
+  its('uid') { should eq 1001 }
+  its('gid') { should eq 1001 }
 end
 
 describe user('ubuntu') do
