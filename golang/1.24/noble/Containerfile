@@ -6,7 +6,7 @@ FROM base AS build
 
 ENV PATH=/usr/local/go/bin:$PATH
 
-ENV GOLANG_VERSION=1.24.4
+ENV GOLANG_VERSION=1.24.6
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # hadolint ignore=DL3003, SC2086
@@ -16,36 +16,36 @@ RUN set -eux; \
 	url=; \
 	case "$arch" in \
 		'amd64') \
-			url='https://dl.google.com/go/go1.24.4.linux-amd64.tar.gz'; \
-			sha256='77e5da33bb72aeaef1ba4418b6fe511bc4d041873cbf82e5aa6318740df98717'; \
+			url='https://dl.google.com/go/go1.24.6.linux-amd64.tar.gz'; \
+			sha256='bbca37cc395c974ffa4893ee35819ad23ebb27426df87af92e93a9ec66ef8712'; \
 			;; \
 		'armhf') \
-			url='https://dl.google.com/go/go1.24.4.linux-armv6l.tar.gz'; \
-			sha256='6a554e32301cecae3162677e66d4264b81b3b1a89592dd1b7b5c552c7a49fe37'; \
+			url='https://dl.google.com/go/go1.24.6.linux-armv6l.tar.gz'; \
+			sha256='7feb4d25f5e72f94fda81c99d4adb6630dfa2c35211e0819417d53af6e71809e'; \
 			;; \
 		'arm64') \
-			url='https://dl.google.com/go/go1.24.4.linux-arm64.tar.gz'; \
-			sha256='d5501ee5aca0f258d5fe9bfaed401958445014495dc115f202d43d5210b45241'; \
+			url='https://dl.google.com/go/go1.24.6.linux-arm64.tar.gz'; \
+			sha256='124ea6033a8bf98aa9fbab53e58d134905262d45a022af3a90b73320f3c3afd5'; \
 			;; \
 		'i386') \
-			url='https://dl.google.com/go/go1.24.4.linux-386.tar.gz'; \
-			sha256='130c9b061082eca15513e595e9952a2ded32e737e609dd0e49f7dfa74eba026d'; \
+			url='https://dl.google.com/go/go1.24.6.linux-386.tar.gz'; \
+			sha256='bb5bf69d75e7edbc93339824753a1a4655a928451a2c5e13ff90959ad69e065b'; \
 			;; \
 		'mips64el') \
-			url='https://dl.google.com/go/go1.24.4.linux-mips64le.tar.gz'; \
-			sha256='fa763d8673f94d6e534bb72c3cf675d4c2b8da4a6da42a89f08c5586106db39c'; \
+			url='https://dl.google.com/go/go1.24.6.linux-mips64le.tar.gz'; \
+			sha256='64ddc6b28907b4ab997f2d81c226be403511a59a6100536560af26ccfb10b4a4'; \
 			;; \
 		'ppc64el') \
-			url='https://dl.google.com/go/go1.24.4.linux-ppc64le.tar.gz'; \
-			sha256='9ca4afef813a2578c23843b640ae0290aa54b2e3c950a6cc4c99e16a57dec2ec'; \
+			url='https://dl.google.com/go/go1.24.6.linux-ppc64le.tar.gz'; \
+			sha256='63fc9559a3d6dfd63aa902f714375b879bbc848466181c035c122489b9646e27'; \
 			;; \
 		'riscv64') \
-			url='https://dl.google.com/go/go1.24.4.linux-riscv64.tar.gz'; \
-			sha256='1d7034f98662d8f2c8abd7c700ada4093acb4f9c00e0e51a30344821d0785c77'; \
+			url='https://dl.google.com/go/go1.24.6.linux-riscv64.tar.gz'; \
+			sha256='e92c19ff15a9004fe43e1f62d433555250ef9fe3fabee3dc29ebd4802c2b8021'; \
 			;; \
 		's390x') \
-			url='https://dl.google.com/go/go1.24.4.linux-s390x.tar.gz'; \
-			sha256='0449f3203c39703ab27684be763e9bb78ca9a051e0e4176727aead9461b6deb5'; \
+			url='https://dl.google.com/go/go1.24.6.linux-s390x.tar.gz'; \
+			sha256='4cde28d9ffb6eef86bf8dac6852a45db335009f67e60bee3e477dd0ba0ff9704'; \
 			;; \
 		*) echo >&2 "error: unsupported architecture '$arch' (likely packaging update needed)"; exit 1 ;; \
 	esac; \
@@ -114,6 +114,16 @@ RUN set -eux; \
 		make \
 		pkg-config \
 	; \
+# go depends on "gold" explicitly on arm64
+# https://github.com/docker-library/golang/issues/570 (go depends on "gold" explicitly on arm64)
+# https://github.com/golang/go/issues/22040
+# ... and as of trixie, "gold" is removed from the "binutils" package:
+# > WARNING: gold is being removed from binutils, and is deprecated upstream.
+# (and available as "binutils-gold" which is also a virtual on bookworm so we can reasonably be explicit everywhere)
+	dpkgArch="$(dpkg --print-architecture)"; \
+	if [ "$dpkgArch" = 'arm64' ]; then \
+		apt-get install -y --no-install-recommends binutils-gold; \
+	fi; \
 	rm -rf /var/lib/apt/lists/*
 
 ENV GOLANG_VERSION=1.24.4
