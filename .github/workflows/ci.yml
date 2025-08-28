@@ -105,6 +105,7 @@ jobs:
             prometheus/prometheus/3.x: 'prometheus/prometheus/3.x/**'
             prometheus/snmp-exporter: 'prometheus/snmp-exporter/**'
             prometheus/snmp-generator: 'prometheus/snmp-generator/**'
+            pulumi/pulumi: 'pulumi/pulumi/**'
             pulumi/pulumi-base: 'pulumi/pulumi-base/**'
             pulumi/pulumi-python: 'pulumi/pulumi-python/**'
             redis/6.2/noble: 'redis/6.2/noble/**'
