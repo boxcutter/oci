@@ -105,7 +105,6 @@ jobs:
             prometheus/prometheus/3.x: 'prometheus/prometheus/3.x/**'
             prometheus/snmp-exporter: 'prometheus/snmp-exporter/**'
             prometheus/snmp-generator: 'prometheus/snmp-generator/**'
-            pulumi/pulumi: 'pulumi/pulumi/**'
             pulumi/pulumi-base: 'pulumi/pulumi-base/**'
             pulumi/pulumi-python: 'pulumi/pulumi-python/**'
             redis/6.2/noble: 'redis/6.2/noble/**'
@@ -215,6 +214,7 @@ jobs:
           base: ${{ github.ref }}
           filters: |
             dokken/cinc: 'dokken/cinc/**'
+            pulumi/pulumi: 'pulumi/pulumi/**'
             python/3.9/jammy: 'python/3.9/jammy/**'
             python/3.9/noble: 'python/3.9/noble/**'
             python/3.9/slim-jammy: 'python/3.9/slim-jammy/**'
