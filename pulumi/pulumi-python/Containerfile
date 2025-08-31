@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
-ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/ubuntu:noble-20240605 AS base
+ARG LANGUAGE_VERSION=3.13
+FROM docker.io/ubuntu:noble-20250716 AS base
 FROM base AS build
 
 ARG PULUMI_VERSION
@@ -8,7 +8,9 @@ RUN <<EOF
   apt-get update
   apt-get install -y --no-install-recommends \
     ca-certificates \
-    curl
+    build-essential \
+    curl \
+    git
 EOF
 
 # Install the Pulumi SDK, including the CLI and language runtimes.
@@ -17,18 +19,28 @@ RUN curl -fsSL https://get.pulumi.com/ | bash -s -- --version $PULUMI_VERSION
 
 # The runtime container
 # This is our base container, so let's copy all the runtimes to .pulumi/bin
-FROM $CONTAINER_REGISTRY/boxcutter/python:3.9-jammy
+ARG LANGUAGE_VERSION=3.13
+FROM docker.io/boxcutter/python:${LANGUAGE_VERSION}-slim-noble
 
 WORKDIR /pulumi/projects
 
-RUN --mount=type=cache,target=/var/lib/apt/list \
-    --mount=type=cache,target=/var/cache/apt <<EOF
-  apt-get update
+RUN <<EOF
+  apt-get update -y
   DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     ca-certificates \
+    curl \
     git \
     vim
 EOF
+
+# Install poetry
+RUN curl -sSL https://install.python-poetry.org | POETRY_HOME=/usr/local/share/pypoetry python3 -
+RUN ln -s /usr/local/share/pypoetry/bin/poetry /usr/local/bin/
+
+# Install uv
+RUN curl -LsSf https://astral.sh/uv/install.sh | XDG_BIN_HOME=/usr/local/share/uv bash -s -- --no-modify-path
+RUN ln -s /usr/local/share/uv/uv /usr/local/bin/
+RUN ln -s /usr/local/share/uv/uvx /usr/local/bin/
 
 # Uses the workdir, copies from pulumi interim container
 COPY --from=build /root/.pulumi/bin/pulumi /pulumi/bin/pulumi
