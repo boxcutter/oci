@@ -1,0 +1,43 @@
+# syntax=docker/dockerfile:1
+ARG LANGUAGE_VERSION=24
+FROM docker.io/ubuntu:noble-20250716 AS base
+FROM base AS build
+
+ARG PULUMI_VERSION
+RUN <<EOF
+  apt-get update
+  apt-get install -y --no-install-recommends \
+    ca-certificates \
+    build-essential \
+    curl \
+    git
+EOF
+
+# Install the Pulumi SDK, including the CLI and language runtimes.
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN curl -fsSL https://get.pulumi.com/ | bash -s -- --version $PULUMI_VERSION
+
+# The runtime container
+# This is our base container, so let's copy all the runtimes to .pulumi/bin
+ARG LANGUAGE_VERSION=24
+FROM docker.io/boxcutter/node:${LANGUAGE_VERSION}-noble-slim
+
+WORKDIR /pulumi/projects
+
+RUN <<EOF
+  apt-get update -y
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    git \
+    vim
+  npm install -g npm@10.5.1 bun pnpm
+EOF
+
+# Uses the workdir, copies from pulumi interim container
+COPY --from=build /root/.pulumi/bin/pulumi /pulumi/bin/pulumi
+COPY --from=build /root/.pulumi/bin/*-nodejs* /pulumi/bin/
+COPY --from=build /root/.pulumi/bin/pulumi-analyzer-policy /pulumi/bin/
+
+ENV PATH="/pulumi/bin:${PATH}"
+CMD ["pulumi"]
