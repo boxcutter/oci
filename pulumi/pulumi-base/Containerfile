@@ -8,7 +8,9 @@ RUN <<EOF
   apt-get update
   apt-get install -y --no-install-recommends \
     ca-certificates \
-    curl
+    curl \
+    build-essential \
+    git
   rm -rf /var/lib/apt/lists/*
 EOF
 
