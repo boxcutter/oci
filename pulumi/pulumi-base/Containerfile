@@ -1,6 +1,7 @@
 # syntax=docker/dockerfile:1
-ARG CONTAINER_REGISTRY=docker.io
-FROM $CONTAINER_REGISTRY/ubuntu:noble-20250716 AS base
+ARG BASE_IMAGE=docker.io/ubuntu:noble-20250716
+# hadolint ignore=DL3006
+FROM ${BASE_IMAGE} AS base
 FROM base AS build
 
 ARG PULUMI_VERSION
