@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/ubuntu:jammy-20250730
+ARG BASE_IMAGE=docker.io/ubuntu:jammy-20250819
 # hadolint ignore=DL3006
 FROM $BASE_IMAGE
 
@@ -29,7 +29,9 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # hadolint ignore=DL3003,DL3013,DL3047,SC2086
 RUN set -eux; \
 	\
-	savedAptMark="$(apt-mark showmanual)"; \
+    # Snapshot *existing* manual packages (Ubuntu marks many base packages manual)
+    before="$(apt-mark showmanual | tr ' ' '\n' | sed '/^$/d' | sort -u)"; \
+    \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
 		dpkg-dev \
@@ -106,20 +108,30 @@ RUN set -eux; \
 	; \
 	\
 	ldconfig; \
-	\
-	apt-mark auto '.*' > /dev/null; \
-	apt-mark manual $savedAptMark; \
-	find /usr/local -type f -executable -not \( -name '*tkinter*' \) -exec ldd '{}' ';' \
-		| awk '/=>/ { so = $(NF-1); if (index(so, "/usr/local/") == 1) { next }; gsub("^/(usr/)?", "", so); printf "*%s\n", so }' \
-		| sort -u \
-		| xargs -r dpkg-query --search \
-		| cut -d: -f1 \
-		| sort -u \
-		| xargs -r apt-mark manual \
-	; \
-	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
-	rm -rf /var/lib/apt/lists/*; \
-	\
+    \
+    # Identify runtime-shared lib providers and mark them manual (so purge keeps them)
+    find /usr/local -type f -executable -not \( -name '*tkinter*' \) -exec ldd '{}' ';' \
+      | awk '/=>/ { so = $(NF-1); if (index(so, "/usr/local/") == 1) { next } ; gsub("^/(usr/)?", "", so); printf "*%s\n", so }' \
+      | sort -u \
+      | xargs -rt dpkg-query --search \
+# https://manpages.debian.org/bookworm/dpkg/dpkg-query.1.en.html#S (we ignore diversions and it'll be really unusual for more than one package to provide any given .so file)      
+      | awk 'sub(":$", "", $1) { print $1 }' \
+      | sort -u \
+      | xargs -r apt-mark manual \
+    ; \
+    \
+    # Compute *new* manuals introduced by our build, then flip only those back to auto
+    after="$(apt-mark showmanual | tr ' ' '\n' | sed '/^$/d' | sort -u)"; \
+    new_manual="$(comm -13 <(printf '%s\n' "${before}") <(printf '%s\n' "${after}"))"; \
+    if [ -n "${new_manual}" ]; then \
+      printf '%s\n' "${new_manual}" | xargs -r apt-mark auto; \
+    fi; \
+    \
+    # Remove build deps that are no longer needed; clean caches
+    apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
+    apt-get clean; \
+    rm -rf /var/lib/apt/lists/*; \
+    \
 	export PYTHONDONTWRITEBYTECODE=1; \
 	python3 --version; \
 	\
