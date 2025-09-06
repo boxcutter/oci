@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/boxcutter
-FROM $BASE_IMAGE/buildpack-deps:noble
+ARG BASE_IMAGE=docker.io/boxcutter/buildpack-deps:noble
+FROM $BASE_IMAGE
 
 # skip installing gem documentation with `gem install`/`gem update`
 RUN set -eux; \
