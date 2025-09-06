@@ -142,7 +142,6 @@ RUN set -eux; \
     \
     # Remove build deps that are no longer needed; clean caches
     apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
-    apt-get clean; \
     rm -rf /var/lib/apt/lists/*; \
     \
 	export PYTHONDONTWRITEBYTECODE=1; \
