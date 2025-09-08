@@ -1,9 +1,13 @@
 # syntax=docker/dockerfile:1
 ARG LANGUAGE_VERSION=3.13
-FROM docker.io/ubuntu:noble-20250716 AS base
-FROM base AS build
+ARG BUILD_IMAGE=docker.io/ubuntu:noble-20250805
+ARG_BASE_IMAGE=docker.io/polymathrobotics/python:${LANGUAGE_VERSION}-slim-noble
+# hadolint ignore=DL3006
+FROM $BUILD_IMAGE AS build
 
 ARG PULUMI_VERSION
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN <<EOF
   apt-get update
   apt-get install -y --no-install-recommends \
@@ -19,8 +23,7 @@ RUN curl -fsSL https://get.pulumi.com/ | bash -s -- --version $PULUMI_VERSION
 
 # The runtime container
 # This is our base container, so let's copy all the runtimes to .pulumi/bin
-ARG LANGUAGE_VERSION=3.13
-FROM docker.io/boxcutter/python:${LANGUAGE_VERSION}-slim-noble
+FROM $BASE_IMAGE
 
 WORKDIR /pulumi/projects
 
