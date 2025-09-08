@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 ARG LANGUAGE_VERSION=3.13
 ARG BUILD_IMAGE=docker.io/ubuntu:noble-20250805
-ARG_BASE_IMAGE=docker.io/polymathrobotics/python:${LANGUAGE_VERSION}-slim-noble
+ARG BASE_IMAGE=docker.io/polymathrobotics/python:${LANGUAGE_VERSION}-slim-noble
 # hadolint ignore=DL3006
 FROM $BUILD_IMAGE AS build
 
