@@ -15,7 +15,5 @@ describe user('node') do
 end
 
 describe user('ubuntu') do
-  it { should exist }
-  its('uid') { should eq 1000 }
-  its('gid') { should eq 1000 }
+  it { should_not exist }
 end
