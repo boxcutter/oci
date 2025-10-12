@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/ubuntu:noble-20250910
+ARG BASE_IMAGE=docker.io/ubuntu:noble-20251001
 # hadolint ignore=DL3006
 FROM $BASE_IMAGE
 
@@ -8,7 +8,7 @@ RUN usermod --login node ubuntu \
   && groupmod --new-name node ubuntu \
   && usermod --home /home/node --move-home node
 
-ENV NODE_VERSION=24.9.0
+ENV NODE_VERSION=24.10.0
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # hadolint ignore=SC2155
