@@ -53,7 +53,6 @@ jobs:
             dokken/eurolinux-7: 'dokken/eurolinux-7/**'
             dokken/eurolinux-8: 'dokken/eurolinux-8/**'
             dokken/eurolinux-9: 'dokken/eurolinux-9/**'
-            dokken/fedora-40: 'dokken/fedora-40/**'
             dokken/fedora-41: 'dokken/fedora-41/**'
             dokken/fedora-42: 'dokken/fedora-42/**'
             dokken/fedora-latest: 'dokken/fedora-latest/**'
