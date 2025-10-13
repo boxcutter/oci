@@ -50,6 +50,7 @@ jobs:
             dokken/debian-11: 'dokken/debian-11/**'
             dokken/debian-12: 'dokken/debian-12/**'
             dokken/debian-13: 'dokken/debian-13/**'
+            dokken/debian-14: 'dokken/debian-14/**'
             dokken/fedora-41: 'dokken/fedora-41/**'
             dokken/fedora-42: 'dokken/fedora-42/**'
             dokken/fedora-latest: 'dokken/fedora-latest/**'
