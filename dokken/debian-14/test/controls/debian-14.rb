@@ -1,3 +1,4 @@
-describe command('lsb_release --release') do
-  its('stdout') { should match(/Release:\t14/) }
+describe file('/etc/os-release') do
+  it { should exist }
+  its('content') { should match(/^VERSION-CODENAME=forky$/) }
 end
