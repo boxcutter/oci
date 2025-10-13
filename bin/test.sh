@@ -4,7 +4,7 @@
 set -eu
 set -o pipefail
 
-CINC_AUDITOR_CONTAINER_IMAGE=docker.io/boxcutter/cinc-auditor:6.8.11
+CINC_AUDITOR_CONTAINER_IMAGE=docker.io/boxcutter/cinc-auditor:6.8.24
 
 CONTAINERFILE_DIR=$(pwd)
 CINC_PROFILE_DIR="${CONTAINERFILE_DIR}/test"
