@@ -1,0 +1,29 @@
+I, [2025-10-12T19:21:57.000444 #4115]  INFO -- Kitchen: -----> Starting Test Kitchen (v3.9.0)
+E, [2025-10-12T19:21:57.000564 #4115] ERROR -- Kitchen: ------Exception-------
+E, [2025-10-12T19:21:57.000575 #4115] ERROR -- Kitchen: Class: Kitchen::UserError
+E, [2025-10-12T19:21:57.000582 #4115] ERROR -- Kitchen: Message: Kitchen YAML file /Users/taylor/github/boxcutter/oci/dokken/cinc/kitchen.yml does not exist.
+E, [2025-10-12T19:21:57.000587 #4115] ERROR -- Kitchen: ----------------------
+E, [2025-10-12T19:21:57.000592 #4115] ERROR -- Kitchen: ------Backtrace-------
+E, [2025-10-12T19:21:57.000598 #4115] ERROR -- Kitchen: /opt/cinc-workstation/embedded/lib/ruby/gems/3.1.0/gems/test-kitchen-3.9.0/lib/kitchen/loader/yaml.rb:65:in `read'
+E, [2025-10-12T19:21:57.000604 #4115] ERROR -- Kitchen: /opt/cinc-workstation/embedded/lib/ruby/gems/3.1.0/gems/test-kitchen-3.9.0/lib/kitchen/config.rb:153:in `data'
+E, [2025-10-12T19:21:57.000609 #4115] ERROR -- Kitchen: /opt/cinc-workstation/embedded/lib/ruby/gems/3.1.0/gems/test-kitchen-3.9.0/lib/kitchen/config.rb:131:in `suites'
+E, [2025-10-12T19:21:57.000615 #4115] ERROR -- Kitchen: /opt/cinc-workstation/embedded/lib/ruby/gems/3.1.0/gems/test-kitchen-3.9.0/lib/kitchen/config.rb:183:in `filter_instances'
+E, [2025-10-12T19:21:57.000620 #4115] ERROR -- Kitchen: /opt/cinc-workstation/embedded/lib/ruby/gems/3.1.0/gems/test-kitchen-3.9.0/lib/kitchen/config.rb:142:in `build_instances'
+E, [2025-10-12T19:21:57.000625 #4115] ERROR -- Kitchen: /opt/cinc-workstation/embedded/lib/ruby/gems/3.1.0/gems/test-kitchen-3.9.0/lib/kitchen/config.rb:116:in `instances'
+E, [2025-10-12T19:21:57.000630 #4115] ERROR -- Kitchen: /opt/cinc-workstation/embedded/lib/ruby/gems/3.1.0/gems/test-kitchen-3.9.0/lib/kitchen/command.rb:109:in `filtered_instances'
+E, [2025-10-12T19:21:57.000636 #4115] ERROR -- Kitchen: /opt/cinc-workstation/embedded/lib/ruby/gems/3.1.0/gems/test-kitchen-3.9.0/lib/kitchen/command.rb:139:in `parse_subcommand'
+E, [2025-10-12T19:21:57.000641 #4115] ERROR -- Kitchen: /opt/cinc-workstation/embedded/lib/ruby/gems/3.1.0/gems/test-kitchen-3.9.0/lib/kitchen/command/action.rb:34:in `block in call'
+E, [2025-10-12T19:21:57.000645 #4115] ERROR -- Kitchen: /opt/cinc-workstation/embedded/lib/ruby/3.1.0/benchmark.rb:296:in `measure'
+E, [2025-10-12T19:21:57.000649 #4115] ERROR -- Kitchen: /opt/cinc-workstation/embedded/lib/ruby/gems/3.1.0/gems/test-kitchen-3.9.0/lib/kitchen/command/action.rb:33:in `call'
+E, [2025-10-12T19:21:57.000652 #4115] ERROR -- Kitchen: /opt/cinc-workstation/embedded/lib/ruby/gems/3.1.0/gems/test-kitchen-3.9.0/lib/kitchen/cli.rb:52:in `perform'
+E, [2025-10-12T19:21:57.000656 #4115] ERROR -- Kitchen: /opt/cinc-workstation/embedded/lib/ruby/gems/3.1.0/gems/test-kitchen-3.9.0/lib/kitchen/cli.rb:198:in `block (2 levels) in <class:CLI>'
+E, [2025-10-12T19:21:57.000659 #4115] ERROR -- Kitchen: /opt/cinc-workstation/embedded/lib/ruby/gems/3.1.0/gems/thor-1.4.0/lib/thor/command.rb:28:in `run'
+E, [2025-10-12T19:21:57.000663 #4115] ERROR -- Kitchen: /opt/cinc-workstation/embedded/lib/ruby/gems/3.1.0/gems/thor-1.4.0/lib/thor/invocation.rb:127:in `invoke_command'
+E, [2025-10-12T19:21:57.000667 #4115] ERROR -- Kitchen: /opt/cinc-workstation/embedded/lib/ruby/gems/3.1.0/gems/thor-1.4.0/lib/thor.rb:538:in `dispatch'
+E, [2025-10-12T19:21:57.000670 #4115] ERROR -- Kitchen: /opt/cinc-workstation/embedded/lib/ruby/gems/3.1.0/gems/thor-1.4.0/lib/thor/base.rb:584:in `start'
+E, [2025-10-12T19:21:57.000677 #4115] ERROR -- Kitchen: /opt/cinc-workstation/embedded/lib/ruby/gems/3.1.0/gems/test-kitchen-3.9.0/bin/kitchen:11:in `block in <top (required)>'
+E, [2025-10-12T19:21:57.000680 #4115] ERROR -- Kitchen: /opt/cinc-workstation/embedded/lib/ruby/gems/3.1.0/gems/test-kitchen-3.9.0/lib/kitchen/errors.rb:183:in `with_friendly_errors'
+E, [2025-10-12T19:21:57.000684 #4115] ERROR -- Kitchen: /opt/cinc-workstation/embedded/lib/ruby/gems/3.1.0/gems/test-kitchen-3.9.0/bin/kitchen:11:in `<top (required)>'
+E, [2025-10-12T19:21:57.000687 #4115] ERROR -- Kitchen: /opt/cinc-workstation/bin/kitchen:453:in `load'
+E, [2025-10-12T19:21:57.000691 #4115] ERROR -- Kitchen: /opt/cinc-workstation/bin/kitchen:453:in `<main>'
+E, [2025-10-12T19:21:57.000700 #4115] ERROR -- Kitchen: ----End Backtrace-----
