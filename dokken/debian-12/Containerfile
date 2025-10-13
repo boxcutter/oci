@@ -26,6 +26,7 @@ RUN <<EOF
     nmap \
     perl \
     procps \
+    python-is-python3 \
     strace \
     sudo \
     systemd \
