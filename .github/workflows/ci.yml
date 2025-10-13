@@ -64,6 +64,7 @@ jobs:
             dokken/oraclelinux-9: 'dokken/oraclelinux-9/**'
             dokken/rockylinux-8: 'dokken/rockylinux-8/**'
             dokken/rockylinux-9: 'dokken/rockylinux-9/**'
+            dokken/rockylinux-10: 'dokken/rockylinux-10/**'
             dokken/ubuntu-20.04: 'dokken/ubuntu-20.04/**'
             dokken/ubuntu-22.04: 'dokken/ubuntu-22.04/**'
             dokken/ubuntu-24.04: 'dokken/ubuntu-24.04/**'
