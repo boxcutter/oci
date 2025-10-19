@@ -7,6 +7,11 @@ set -o pipefail
 : "${DEBUG:=0}"
 : "${SOURCE_ISO:=ubuntu-24.04.5-live-server-amd64.iso}"
 : "${DESTINATION_ISO:=ubuntu-autoinstall.iso}"
+: "${AUTOINSTALL_CONFIG_FILE:=autoinstall.yaml}"
+: "${CONFIG_MODE:=nocloud}"
+: "${GRUB_CONFIG_FILE:=}"
+: "${LOOPBACK_CONFIG_FILE:=}"
+: "${METADATA_CONFIG_FILE:=}"
 
 : "${DEBUG:=0}"
 
@@ -15,13 +20,6 @@ debug() {
     echo "DEBUG: $*" >&2
   fi
 }
-
-
-AUTOINSTALL_CONFIG_FILE="autoinstall.example"
-GRUB_CONFIG_FILE=""
-LOOPBACK_CONFIG_FILE=""
-METADATA_CONFIG_FILE=""
-CONFIG_MODE="nocloud"
 
 ISO_FILESYSTEM_DIR=""
 BOOT_IMAGE_DIR=""
@@ -97,13 +95,17 @@ create_tmp_dirs() {
 }
 
 extract_iso() {
-  echo "Extracting ISO image -> ${SOURCE_ISO}..."
+  echo "==> Extracting ISO image: ${SOURCE_ISO}..."
 
   # -osirrox on - enable "ISO Readback ROckRidge eXtractor" so it is possible
   #               to read/extract files out of an ISO into a local directory.
   # -indev "${ISO} - specifies the input image
   # -extract SOURCE TARGET - extract directory from ISO into target.
-  xorriso -osirrox on -indev "${SOURCE_ISO}" -extract / "${ISO_FILESYSTEM_DIR}"
+  xorriso -osirrox on \
+    -indev "${SOURCE_ISO}" \
+    -report_about SORRY \
+    -extract / "${ISO_FILESYSTEM_DIR}" \
+    > /dev/null 2>&1 || die "ISO extraction failed"
 
   # Ubuntu's installation ISOs are hybrid boot images, they contain a bootable
   # MBR (for BIOS boot) and a GPT header (for UEFI boot).
@@ -169,29 +171,29 @@ patch_grub_file() {
     sed -i -E 's/\s*ds=nocloud\\;s=\/cdrom\/nocloud\/\s*//g' "${file}"
   fi
 
-  cat "${file}"
+  debug "$(cat "${file}")"
 }
 
 configure_autoinstall() {
   # Use custom GRUB files if provided, else patch existing ones
   if [[ -n "${GRUB_CONFIG_FILE}" ]]; then
-    echo "Using custom grub.cfg: ${GRUB_CONFIG_FILE}"
+    echo "==> Using custom grub.cfg: ${GRUB_CONFIG_FILE}"
     cp -f "${GRUB_CONFIG_FILE}" "${ISO_FILESYSTEM_DIR}/boot/grub/grub.cfg"
   else
-    echo "Patching existing grub.cfg"
+    echo "==> Patching existing grub.cfg"
     patch_grub_file "${ISO_FILESYSTEM_DIR}/boot/grub/grub.cfg"
   fi
 
   if [[ -n "${LOOPBACK_CONFIG_FILE}" ]]; then
-    echo "Using custom loopback.cfg: ${LOOPBACK_CONFIG_FILE}"
+    echo "==> Using custom loopback.cfg: ${LOOPBACK_CONFIG_FILE}"
     cp -f "${LOOPBACK_CONFIG_FILE}" "${ISO_FILESYSTEM_DIR}/boot/grub/loopback.cfg"
   else
-    echo "Patching existing loopback.cfg"
+    echo "==> Patching existing loopback.cfg"
     patch_grub_file "${ISO_FILESYSTEM_DIR}/boot/grub/loopback.cfg"
   fi
 
   if [[ "${CONFIG_MODE}" == "nocloud" ]]; then
-    echo "Embedding NoCloud seed at /nocloud"
+    echo "==> Embedding NoCloud seed at /nocloud"
     mkdir -p "${ISO_FILESYSTEM_DIR}/nocloud"
     cp -f "${AUTOINSTALL_CONFIG_FILE}" "${ISO_FILESYSTEM_DIR}/nocloud/user-data"
     if [[ -n "${METADATA_CONFIG_FILE}" ]]; then
@@ -200,13 +202,13 @@ configure_autoinstall() {
       : > "${ISO_FILESYSTEM_DIR}/nocloud/meta-data"
     fi
   else
-    echo "Copying autoinstall to ISO root as /autoinstall.yaml"
+    echo "==> Copying autoinstall to ISO root as /autoinstall.yaml"
     cp -f "${AUTOINSTALL_CONFIG_FILE}" "${ISO_FILESYSTEM_DIR}/autoinstall.yaml"
   fi
 }
 
 reassemble_iso() {
-  echo "Rebuilding ISO -> ${DESTINATION_ISO}"
+  echo "==> Rebuilding ISO: ${DESTINATION_ISO}"
   xorriso -as mkisofs \
     -r -V "ubuntu-autoinstall-${TODAY}" -J -joliet-long -l \
     -iso-level 3 \
@@ -221,7 +223,8 @@ reassemble_iso() {
     -eltorito-alt-boot \
     -e '--interval:appended_partition_2:all::' \
     -no-emul-boot \
-    -o "${DESTINATION_ISO}" "${ISO_FILESYSTEM_DIR}"
+    -o "${DESTINATION_ISO}" "${ISO_FILESYSTEM_DIR}" \
+    > /dev/null 2>&1 || die "ISO creation failed"
   echo "Built: ${DESTINATION_ISO}"
 }
 

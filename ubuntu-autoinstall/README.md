@@ -11,6 +11,8 @@ file that contains your answers to all installation configuration prompts ahead 
 
 Once you have an autoinstall.yaml file, download the ubuntu install ISO you wish to customize, and run this script to copy the `autoinstall.yaml` file to the ISO and modify the boot config so the autoinstall will be run in zero touch mode.
 
+## Autoinstall on the root of the installation media
+
 By default, this script uses the `--config-root` mode for configuring the autoinstall. The `autoinstall.yaml` is copied to the root of the install media. This is the recommended way to create a zero-touch install for Ubuntu 24.04 (or higher):
 
 ### Ubuntu Desktop
@@ -36,6 +38,10 @@ $ docker run -it --rm \
     --autoinstall autoinstall.yaml \
     --config-root
 ```
+
+## Autoinstall by way of cloud-config
+
+
 
 ## CLI
 
