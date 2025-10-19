@@ -2,10 +2,21 @@
 
 set -eu
 set -o pipefail
-set -x
 
-SOURCE_ISO="ubuntu-22.04.4-live-server-amd64.iso"
-DESTINATION_ISO="ubuntu-autoinstall.iso"
+# Ensure environment variables have defaults while allowing overrides
+: "${DEBUG:=0}"
+: "${SOURCE_ISO:=ubuntu-24.04.5-live-server-amd64.iso}"
+: "${DESTINATION_ISO:=ubuntu-autoinstall.iso}"
+
+: "${DEBUG:=0}"
+
+debug() {
+  if [ "$DEBUG" -eq 1 ]; then
+    echo "DEBUG: $*" >&2
+  fi
+}
+
+
 AUTOINSTALL_CONFIG_FILE="autoinstall.example"
 GRUB_CONFIG_FILE=""
 LOOPBACK_CONFIG_FILE=""
@@ -82,18 +93,41 @@ args() {
 create_tmp_dirs() {
   ISO_FILESYSTEM_DIR="$(mktemp -d)" || die "Could not create temporary ISO filesystem directory"
   BOOT_IMAGE_DIR="$(mktemp -d)" || die "Could not create temporary boot image directory"
-  echo "Working dirs: ISO_FILESYSTEM_DIR=${ISO_FILESYSTEM_DIR}, BOOT_IMAGE_DIR=${BOOT_IMAGE_DIR}"
+  debug "Temp dirs: ISO_FILESYSTEM_DIR=${ISO_FILESYSTEM_DIR}, BOOT_IMAGE_DIR=${BOOT_IMAGE_DIR}"
 }
 
 extract_iso() {
-  echo "Extracting ISO image..."
+  echo "Extracting ISO image -> ${SOURCE_ISO}..."
+
+  # -osirrox on - enable "ISO Readback ROckRidge eXtractor" so it is possible
+  #               to read/extract files out of an ISO into a local directory.
+  # -indev "${ISO} - specifies the input image
+  # -extract SOURCE TARGET - extract directory from ISO into target.
   xorriso -osirrox on -indev "${SOURCE_ISO}" -extract / "${ISO_FILESYSTEM_DIR}"
 
+  # Ubuntu's installation ISOs are hybrid boot images, they contain a bootable
+  # MBR (for BIOS boot) and a GPT header (for UEFI boot).
   MBR_IMAGE="ubuntu-original-${TODAY}.mbr"
   EFI_IMAGE="ubuntu-original-${TODAY}.efi"
 
+  # The Master Boot Record (MBR) is standardized and always 512 bytes total:
+  # | Offset (bytes) | Length (bytes) | Purpose                               |
+  # |----------------|----------------|----------------------------------------|
+  # | 0 – 445        | 446            | Bootloader code (executable boot stub) |
+  # | 446 – 509      | 64             | Partition table (4 × 16-byte entries)  |
+  # | 510 – 511      | 2              | Boot signature (0x55AA)                |
+
+  # Only copy the bootloader code from the master boot record, not the
+  # partition table or checksum
   dd if="${SOURCE_ISO}" bs=1 count=446 of="${BOOT_IMAGE_DIR}/${MBR_IMAGE}" status=none
 
+  # Example fdisk output for a hybrid ISO (which supports BIOS and UEFI boot):
+  # Device      Boot Start     End Sectors  Size Id Type
+  # ubuntu.iso1 *       0  767999  768000  375M  0  Empty
+  # ubuntu.iso2      768000  774143    6144    3M ef EFI (FAT-12/16/32)
+
+  # Extract the appended EFI (GPT) image from the Ubuntu hybrid ISO. The UEFI
+  # boot partition is tacked onto the end of the ISO filesystem.
   local START_BLOCK SECTORS
   START_BLOCK=$(fdisk -l "${SOURCE_ISO}" | awk '/\.iso2 /{print $2}')
   SECTORS=$(fdisk -l "${SOURCE_ISO}" | awk '/\.iso2 /{print $4}')
@@ -106,9 +140,23 @@ patch_grub_file() {
   local file="$1"
   [[ -f "${file}" ]] || return 0
 
-  # 1) Ensure 'autoinstall' is present before the trailing '---' on linux lines
+  # The Ubuntu installer contains a safeguard intneded to prevent USB flash
+  # drives with an autoinstall.yaml file from wiping out the wrong system.
+  # By default, the Ubuntu installer will prompt for confirmation before
+  # for installing. To bypass this prompt, you must add the argument
+  # 'autoinstall' on the kernel command line
+
+  # 1) Ensure 'autoinstall' is present before the trailing '---' on linux
+  #    lines to make zero-touch deployments
   if ! grep -qE '^\s*linux .*autoinstall' "${file}"; then
-    sed -i -E '/^[[:space:]]*linux / s/ ---/ autoinstall ---/' "${file}"
+    sed -i -E '
+      /^[[:space:]]*linux(efi)?[[:space:]]/ {
+        /[[:space:]]autoinstall([[:space:]]|$)/ b     # skip if already has autoinstall
+        /[[:space:]]---/ s/[[:space:]]+---/ autoinstall ---/
+        t
+        s/$/ autoinstall/
+      }
+    ' "${file}"
   fi
 
   if [[ "${CONFIG_MODE}" == "nocloud" ]]; then
@@ -120,6 +168,8 @@ patch_grub_file() {
     # 2b) Remove any accidental NoCloud arg when in root mode
     sed -i -E 's/\s*ds=nocloud\\;s=\/cdrom\/nocloud\/\s*//g' "${file}"
   fi
+
+  cat "${file}"
 }
 
 configure_autoinstall() {
