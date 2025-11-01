@@ -4,8 +4,8 @@ ARG BASE_IMAGE=docker.io/boxcutter/node:24-noble-slim
 FROM $BASE_IMAGE
 
 # Rename existing node user to slidev
-RUN usermod --login node slidev \
-  && groupmod --new-name node slidev \
+RUN usermod --login slidev node \
+  && groupmod --new-name slidev node \
   && usermod --home /home/slidev --move-home slidev
 
 COPY --chmod=0755 entrypoint.sh /
