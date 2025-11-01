@@ -1,5 +1,9 @@
 #!/bin/bash
 
+if [ "$NPM_MIRROR" != "" ]; then
+  npm config set registry $NPM_MIRROR
+fi
+
 npm install @slidev/cli @slidev/theme-default @slidev/theme-seriph
 npm install --save-dev playwright-chromium
 
