@@ -8,7 +8,7 @@ describe file('/entrypoint.sh') do
   its('mode') { should cmp '0755' }
 end
 
-describe user('ubuntu') do
+describe user('slidev') do
   it { should exist }
   its('uid') { should eq 1000 }
   its('gid') { should eq 1000 }
