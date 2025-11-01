@@ -3,13 +3,18 @@ ARG BASE_IMAGE=docker.io/boxcutter/node:24-noble-slim
 # hadolint ignore=DL3006
 FROM $BASE_IMAGE
 
+# Rename existing node user to slidev
+RUN usermod --login node node \
+  && groupmod --new-name node slidev \
+  && usermod --home /home/slidev --move-home slidev
+
 COPY --chmod=0755 entrypoint.sh /
 
 USER root
 
 RUN npx playwright install-deps
 
-USER ubuntu
+USER node
 
 WORKDIR /slidev
 
