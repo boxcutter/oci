@@ -14,7 +14,7 @@ USER root
 
 RUN npx playwright install-deps
 
-USER node
+USER slidev
 
 WORKDIR /slidev
 
