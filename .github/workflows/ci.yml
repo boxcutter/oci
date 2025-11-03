@@ -73,6 +73,7 @@ jobs:
             erlang/26: 'erlang/26/**'
             flake8: 'flake8/**'
             fpm: 'fpm/**'
+            gcc/13: 'gcc/13/**'
             glab: 'glab/**'
             go2chef: 'go2chef/**'
             golang/1.24/noble: 'golang/1.24/noble/**'
