@@ -3,7 +3,7 @@ variable "TAG_PREFIX" {
 }
 
 variable "VERSION" {
-  default = "1.141.0"
+  default = "1.146.0"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
@@ -13,10 +13,10 @@ variable "LOCAL_PLATFORM" {
 
 target "_common" {
   args = {
-    DOCTL_URL_AMD64 = "https://github.com/digitalocean/doctl/releases/download/v1.141.0/doctl-1.141.0-linux-amd64.tar.gz"
-    DOCTL_SHA256_AMD64 = "72045e8e6fc16a5e52eaf3ceef8c5cbe92f6ba2d02e3ed79996f3125f4efd932"
-    DOCTL_URL_ARM64 = "https://github.com/digitalocean/doctl/releases/download/v1.141.0/doctl-1.141.0-linux-arm64.tar.gz"
-    DOCTL_SHA256_ARM64 = "97e3b2977947a96bd23e502b02b377b953a777f786d535749b2d3f3ac36ce661"
+    DOCTL_URL_AMD64 = "https://github.com/digitalocean/doctl/releases/download/v1.146.0/doctl-1.146.0-linux-amd64.tar.gz"
+    DOCTL_SHA256_AMD64 = "ef16a6f9e4e3eb6f1a5f34218819f3443f67b54c567a3de9e06a4caec6d0d0d8"
+    DOCTL_URL_ARM64 = "https://github.com/digitalocean/doctl/releases/download/v1.146.0/doctl-1.146.0-linux-arm64.tar.gz"
+    DOCTL_SHA256_ARM64 = "09f5b36471ae820d45d436b92d59f4170eae48074771e0356a0df56cffa94020"
   }
   dockerfile = "Containerfile"
   tags = [
