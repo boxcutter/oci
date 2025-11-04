@@ -216,6 +216,7 @@ jobs:
           filters: |
             dokken/cinc: 'dokken/cinc/**'
             gcc/13: 'gcc/13/**'
+            gcc/14: 'gcc/14/**'
             gcc/15: 'gcc/15/**'
             pulumi/pulumi: 'pulumi/pulumi/**'
             python/3.9/jammy: 'python/3.9/jammy/**'
