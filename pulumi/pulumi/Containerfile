@@ -4,7 +4,7 @@ FROM $CONTAINER_REGISTRY/boxcutter/golang:1.24-noble AS builder
 
 RUN go install sigs.k8s.io/aws-iam-authenticator/cmd/aws-iam-authenticator@v0.7.4
 
-FROM $CONTAINER_REGISTRY/ubuntu:noble-20250716 AS base
+FROM $CONTAINER_REGISTRY/ubuntu:noble-20251001 AS base
 
 # These values are passed in by the build system automatically. The options are: arm64, amd64
 # See: https://docs.docker.com/build/building/variables/#pre-defined-build-arguments
@@ -181,10 +181,12 @@ ENTRYPOINT ["pulumi"]
 
 FROM base AS nonroot
 
-ARG UID=1001
-ARG GID=1001
-RUN addgroup --gid $GID pulumi && \
-  adduser --uid $UID --gid $GID --disabled-password --gecos "" pulumi
+ARG UID=1000
+ARG GID=1000
+# Rename existing ubuntu user to pulumi
+RUN usermod --login pulumi ubuntu \
+  && groupmod --new-name pulumi ubuntu \
+  && usermod --home /home/pulumi --move-home pulumi
 USER pulumi:pulumi
 # Update env vars for the non-root user
 ENV GOPATH=/home/pulumi/go
