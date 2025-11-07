@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 ARG LANGUAGE_VERSION=24
-FROM docker.io/ubuntu:noble-20250716 AS base
+FROM docker.io/ubuntu:noble-20251001 AS base
 FROM base AS build
 
 ARG PULUMI_VERSION
