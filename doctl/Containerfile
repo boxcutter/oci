@@ -51,7 +51,9 @@ RUN <<EOF
     ca-certificates \
     curl \
     jq \
-    openssh-client
+    openssh-client \
+    vim \
+    nano
   rm -rf /var/lib/apt/lists/*
 EOF
 
