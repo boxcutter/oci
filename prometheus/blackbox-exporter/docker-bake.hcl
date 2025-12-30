@@ -3,7 +3,7 @@ variable "TAG_PREFIX" {
 }
 
 variable "VERSION" {
-  default = "0.26.0"
+  default = "0.28.0"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
@@ -14,10 +14,10 @@ variable "LOCAL_PLATFORM" {
 target "_common" {
   dockerfile = "Containerfile"
   args = {
-    BLACKBOX_EXPORTER_URL_AMD64 = "https://github.com/prometheus/blackbox_exporter/releases/download/v0.26.0/blackbox_exporter-0.26.0.linux-amd64.tar.gz"
-    BLACKBOX_EXPORTER_SHA256_AMD64 = "4b1bb299c685ecff75d41e55e90aae8e02a658395fb14092c7f9c5c9d75016c7"
-    BLACKBOX_EXPORTER_URL_ARM64 = "https://github.com/prometheus/blackbox_exporter/releases/download/v0.26.0/blackbox_exporter-0.26.0.linux-arm64.tar.gz"
-    BLACKBOX_EXPORTER_SHA256_ARM64 = "afb5581b1d4ea45078eebc96e4f989f912d1144d2cc131db8a6c0963bcc6a654"
+    BLACKBOX_EXPORTER_URL_AMD64 = "https://github.com/prometheus/blackbox_exporter/releases/download/v0.28.0/blackbox_exporter-0.28.0.linux-amd64.tar.gz"
+    BLACKBOX_EXPORTER_SHA256_AMD64 = "caf5d242fb1cf6d5cb678f3f799f22703d4fafea26b03dcbbd7e1f1825e06329"
+    BLACKBOX_EXPORTER_URL_ARM64 = "https://github.com/prometheus/blackbox_exporter/releases/download/v0.28.0/blackbox_exporter-0.28.0.linux-arm64.tar.gz"
+    BLACKBOX_EXPORTER_SHA256_ARM64 = "63312be0983d85e5109710a7dc93df3051157ae581853fa3655d171cc1b2806e"
   }
   tags = [
     "${TAG_PREFIX}:${VERSION}",
