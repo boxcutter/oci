@@ -102,7 +102,6 @@ jobs:
             prometheus/alertmanager: 'prometheus/alertmanager/**'
             prometheus/blackbox-exporter: 'prometheus/blackbox-exporter/**'
             prometheus/node-exporter: 'prometheus/node-exporter/**'
-            prometheus/prometheus/2.x: 'prometheus/prometheus/2.x/**'
             prometheus/prometheus/3.x: 'prometheus/prometheus/3.x/**'
             prometheus/snmp-exporter: 'prometheus/snmp-exporter/**'
             prometheus/snmp-generator: 'prometheus/snmp-generator/**'
