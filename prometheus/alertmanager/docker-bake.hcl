@@ -15,9 +15,9 @@ target "_common" {
   dockerfile = "Containerfile"
   args = {
     ALERTMANAGER_URL_AMD64 = "https://github.com/prometheus/alertmanager/releases/download/v0.30.0/alertmanager-0.30.0.linux-amd64.tar.gz"
-    ALERTMANAGER_SHA256_AMD64 = "sha256:86fd95034e3e17094d6951118c54b396200be22a1c16af787e1f7129ebce8f1f"
+    ALERTMANAGER_SHA256_AMD64 = "86fd95034e3e17094d6951118c54b396200be22a1c16af787e1f7129ebce8f1f"
     ALERTMANAGER_URL_ARM64 = "https://github.com/prometheus/alertmanager/releases/download/v0.30.0/alertmanager-0.30.0.linux-arm64.tar.gz"
-    ALERTMANAGER_SHA256_ARM64 = "sha256:061a5ab3998fb8af75192980a559c7bfa3892da55098da839d7a79d94abe0b61"
+    ALERTMANAGER_SHA256_ARM64 = "061a5ab3998fb8af75192980a559c7bfa3892da55098da839d7a79d94abe0b61"
   }
   tags = [
     "${TAG_PREFIX}:${VERSION}",
