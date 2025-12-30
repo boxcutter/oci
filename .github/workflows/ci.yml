@@ -20,7 +20,7 @@ jobs:
       # Expose matched filters as job 'images' output variable
       images: ${{ steps.filter.outputs.changes }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Determine Paths to Build for Auto Trigger
         uses: dorny/paths-filter@v3
@@ -143,7 +143,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Get build parameters
         shell: bash
@@ -176,7 +176,7 @@ jobs:
     runs-on: [self-hosted, multi-arch]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Get build parameters
         shell: bash
@@ -207,7 +207,7 @@ jobs:
     outputs:
       images: ${{ steps.self-hosted-filter.outputs.changes }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - uses: dorny/paths-filter@v3
         id: self-hosted-filter
@@ -256,7 +256,7 @@ jobs:
     runs-on: [self-hosted, multi-arch]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Get build parameters
         shell: bash
