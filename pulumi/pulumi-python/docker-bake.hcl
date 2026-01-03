@@ -3,7 +3,7 @@ variable "TAG_PREFIX" {
 }
 
 variable "VERSION" {
-  default = "3.192.0"
+  default = "3.214.0"
 }
 
 # Explicitly define the latest Python version used for the consolidated image
@@ -18,11 +18,11 @@ variable "LOCAL_PLATFORM" {
 
 variable "IMAGES" {
   default = [
-    "pulumi-python-3.9",
     "pulumi-python-3.10",
     "pulumi-python-3.11",
     "pulumi-python-3.12",
-    "pulumi-python-3.13"
+    "pulumi-python-3.13",
+    "pulumi-python-3.14"
   ]
 }
 

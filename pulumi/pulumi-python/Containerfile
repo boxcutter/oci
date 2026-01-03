@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 ARG LANGUAGE_VERSION=3.13
-ARG BUILD_IMAGE=docker.io/ubuntu:noble-20250805
-ARG BASE_IMAGE=docker.io/polymathrobotics/python:${LANGUAGE_VERSION}-slim-noble
+ARG BUILD_IMAGE=docker.io/ubuntu:noble-20251013
+ARG BASE_IMAGE=docker.io/boxcutter/python:${LANGUAGE_VERSION}-slim-noble
 # hadolint ignore=DL3006
 FROM $BUILD_IMAGE AS build
 
@@ -9,8 +9,7 @@ ARG PULUMI_VERSION
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN <<EOF
-  apt-get update
-  apt-get install -y --no-install-recommends \
+  apt-get install -y --update --no-install-recommends \
     ca-certificates \
     build-essential \
     curl \
@@ -28,8 +27,7 @@ FROM $BASE_IMAGE
 WORKDIR /pulumi/projects
 
 RUN <<EOF
-  apt-get update -y
-  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --update --no-install-recommends \
     ca-certificates \
     curl \
     git \
