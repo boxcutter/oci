@@ -54,6 +54,7 @@ jobs:
             dokken/debian-14: 'dokken/debian-14/**'
             dokken/fedora-41: 'dokken/fedora-41/**'
             dokken/fedora-42: 'dokken/fedora-42/**'
+            dokken/fedora-43: 'dokken/fedora-43/**'
             dokken/fedora-latest: 'dokken/fedora-latest/**'
             dokken/opensuse-leap-15: 'dokken/opensuse-leap-15/**'
             dokken/opensuse-leap-15.6: 'dokken/opensuse-leap-15.6/**'
