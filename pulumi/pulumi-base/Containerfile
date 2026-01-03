@@ -1,13 +1,12 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/ubuntu:noble-20250716
+ARG BASE_IMAGE=docker.io/ubuntu:noble-20251013
 # hadolint ignore=DL3006
 FROM ${BASE_IMAGE} AS base
 FROM base AS build
 
 ARG PULUMI_VERSION
 RUN <<EOF
-  apt-get update
-  apt-get install -y --no-install-recommends \
+  apt-get install -y --update --no-install-recommends \
     ca-certificates \
     curl \
     build-essential \
