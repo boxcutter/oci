@@ -82,7 +82,7 @@ To run the container:
            --runtime nvidia \
            --env DISPLAY=$DISPLAY \
            --mount type=bind,source=/tmp/.X11-unix/,target=/tmp/.X11-unix \
-           docker.io/polymathrobotics/nvidia-l4t-base:r35.4.1
+           docker.io/boxcutter/nvidia-l4t-base:r35.4.1
 
 ### Exposing additional GPU features
 
