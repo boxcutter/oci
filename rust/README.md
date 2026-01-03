@@ -4,7 +4,7 @@ Rust is a systems programming language sponsored by Mozilla Research. It is desi
 
 This image packages releases from https://github.com/rust-lang/docker-rust
 
-Image source: https://github.com/polymathrobotics/oci/tree/main/rust
+Image source: https://github.com/boxcutter/oci/tree/main/rust
 
 ## Using rust
 
