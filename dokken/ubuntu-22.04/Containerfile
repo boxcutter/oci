@@ -6,7 +6,6 @@ FROM ${BASE_IMAGE}
 RUN <<EOF
   apt-get update
   DEBIAN_FRONTEND=noninteractive apt-get -y install \
-    apt-transport-https \
     apt-utils \
     curl \
     dbus \
@@ -56,4 +55,4 @@ RUN <<EOF
   systemctl mask dev-hugepages.mount sys-fs-fuse-connections.mount network.service
 EOF
 
-CMD [ "/bin/systemd" ]
+CMD [ "/usr/lib/systemd/systemd" ]

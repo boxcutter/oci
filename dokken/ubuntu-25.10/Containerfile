@@ -1,23 +1,23 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/debian:bookworm
+ARG BASE_IMAGE=docker.io/ubuntu:25.10
 FROM ${BASE_IMAGE}
 
 # hadolint ignore=DL3015
 RUN <<EOF
-  apt-get update
-  DEBIAN_FRONTEND=noninteractive apt-get -y install \
+  DEBIAN_FRONTEND=noninteractive apt-get -y --update install \
     apt-utils \
-    cron \
     curl \
     dbus \
+    cron \
     dirmngr \
     dmidecode \
     gnupg \
-    ifupdown \
+    iproute2 \
     iptables \
     iputils-ping \
     kmod \
     less \
+    linux-base \
     locales \
     lsb-release \
     lsof \
@@ -25,7 +25,7 @@ RUN <<EOF
     nmap \
     perl \
     procps \
-    python-is-python3 \
+    snapd \
     strace \
     sudo \
     systemd \
@@ -34,7 +34,7 @@ RUN <<EOF
     tzdata \
     udev \
     vim-tiny \
-    wget
+    wget 
   apt-get clean
   apt-get -y autoremove
   rm -rf /tmp/* /var/tmp/*
@@ -53,4 +53,4 @@ RUN <<EOF
   systemctl mask dev-hugepages.mount sys-fs-fuse-connections.mount network.service
 EOF
 
-CMD [ "/bin/systemd" ]
+CMD [ "/usr/lib/systemd/systemd" ]

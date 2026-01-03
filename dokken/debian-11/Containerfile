@@ -6,7 +6,6 @@ FROM ${BASE_IMAGE}
 RUN <<EOF
   apt-get update
   DEBIAN_FRONTEND=noninteractive apt-get -y install \
-    apt-transport-https \
     apt-utils \
     cron \
     curl \

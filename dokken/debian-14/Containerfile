@@ -4,9 +4,7 @@ FROM ${BASE_IMAGE}
 
 # hadolint ignore=DL3015
 RUN <<EOF
-  apt-get update
-  DEBIAN_FRONTEND=noninteractive apt-get -y install \
-    apt-transport-https \
+  DEBIAN_FRONTEND=noninteractive apt-get -y --update install \
     apt-utils \
     cron \
     curl \
@@ -38,7 +36,6 @@ RUN <<EOF
   apt-get clean
   apt-get -y autoremove
   rm -rf /tmp/* /var/tmp/*
-  ln -s /bin/mkdir /usr/bin/mkdir
   find /etc/systemd/system \
     /lib/systemd/system \
     -path '*.wants/*' \
