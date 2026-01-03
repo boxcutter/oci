@@ -1,6 +1,7 @@
 # syntax=docker/dockerfile:1
-ARG CONTAINER_REGISTRY=docker.io/boxcutter
-FROM $CONTAINER_REGISTRY/python:3.9-jammy
+ARG BASE_IMAGE=docker.io/boxcutter/python:3.13-noble
+# hadolint ignore=DL3006
+FROM $BASE_IMAGE AS base
 
 ARG BLACK_VERSION
 WORKDIR /code
