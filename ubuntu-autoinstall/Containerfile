@@ -1,10 +1,9 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/ubuntu:noble-20251001
+ARG BASE_IMAGE=docker.io/ubuntu:noble-20251013
 FROM $BASE_IMAGE
 
 RUN <<EOF
-  apt-get update
-  apt-get install -y --no-install-recommends \
+  apt-get install -y --update --no-install-recommends \
     fdisk \
     xorriso
 EOF
