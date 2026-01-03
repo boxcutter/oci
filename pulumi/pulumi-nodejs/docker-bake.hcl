@@ -3,8 +3,8 @@ variable "TAG_PREFIX" {
 }
 
 variable "VERSION" {
-  default = "3.206.0"
-}
+  default = "3.214.0"
+"}
 
 # Explicitly define the latest nodejs version used for the consolidated image
 variable "LATEST_NODEJS" {

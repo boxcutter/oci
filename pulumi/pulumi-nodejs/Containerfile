@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 ARG LANGUAGE_VERSION=24
-FROM docker.io/ubuntu:noble-20251001 AS base
+FROM docker.io/ubuntu:noble-20251013 AS base
 FROM base AS build
 
 ARG PULUMI_VERSION
@@ -25,8 +25,7 @@ FROM docker.io/boxcutter/node:${LANGUAGE_VERSION}-noble-slim
 WORKDIR /pulumi/projects
 
 RUN <<EOF
-  apt-get update -y
-  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --update --no-install-recommends \
     ca-certificates \
     curl \
     git \
