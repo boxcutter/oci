@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/ubuntu:jammy-20250819
+ARG BASE_IMAGE=docker.io/ubuntu:jammy-20251013
 # hadolint ignore=DL3006
 FROM $BASE_IMAGE
 
@@ -22,8 +22,8 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*
 
 ENV GPG_KEY=A035C8C19219BA821ECEA86B64E628F8D684696D
-ENV PYTHON_VERSION=3.10.18
-ENV PYTHON_SHA256=ae665bc678abd9ab6a6e1573d2481625a53719bc517e9a634ed2b9fefae3817f
+ENV PYTHON_VERSION=3.10.19
+ENV PYTHON_SHA256=c8f4a596572201d81dd7df91f70e177e19a70f1d489968b54b5fbbf29a97c076
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # hadolint ignore=DL3003,DL3013,DL3047,SC2086
