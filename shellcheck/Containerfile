@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/ubuntu:noble-20241118.1
+ARG BASE_IMAGE=docker.io/ubuntu:noble-20251013
 FROM $BASE_IMAGE AS download
 
 ARG SHELLCHECK_URL_AMD64
@@ -7,8 +7,7 @@ ARG SHELLCHECK_URL_ARM64
 ARG SHELLCHECK_URL_ARMHF
 
 # hadolint ignore=SC2086
-RUN apt-get update \
-  && apt-get install -y --no-install-recommends \
+RUN apt-get install -y --update --no-install-recommends \
     ca-certificates \
     curl \
     xz-utils \
