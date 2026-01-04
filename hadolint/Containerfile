@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/ubuntu:noble-20240801
+ARG BASE_IMAGE=docker.io/ubuntu:noble-20251013
 FROM $BASE_IMAGE AS base
 
 FROM base AS download
@@ -11,8 +11,7 @@ ARG HADOLINT_SHA256_ARM64
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN <<EOF
-  apt-get update
-  apt-get install --no-install-recommends -y \
+  apt-get install --update --no-install-recommends -y \
     ca-certificates \
     curl \
     xz-utils
