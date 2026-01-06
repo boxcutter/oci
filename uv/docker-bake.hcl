@@ -3,7 +3,7 @@ variable "TAG_PREFIX" {
 }
 
 variable "VERSION" {
-  default = "0.7.19"
+  default = "0.9.21"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
@@ -13,10 +13,10 @@ variable "LOCAL_PLATFORM" {
 
 target "_common" {
   args = {
-    UV_URL_AMD64 = "https://github.com/astral-sh/uv/releases/download/0.7.19/uv-i686-unknown-linux-gnu.tar.gz"
-    UV_SHA256_AMD64 = "1785537fc65a35609dc33063b5f1cc85437a08ade4c0a832071c018481afe515"
-    UV_URL_ARM64 = "https://github.com/astral-sh/uv/releases/download/0.7.19/uv-aarch64-unknown-linux-gnu.tar.gz"
-    UV_SHA256_ARM64 = "31b81b4b4ecd51ee4202f1e710fc22b72666f716ffbb825aa397c8246624d60f"
+    UV_URL_AMD64 = "https://github.com/astral-sh/uv/releases/download/0.9.21/uv-x86_64-unknown-linux-musl.tar.gz"
+    UV_SHA256_AMD64 = "7abc29b3a06a99fb23564400fe884f5798a1786dc2ca05b6e0f70c53de748ab2"
+    UV_URL_ARM64 = "https://github.com/astral-sh/uv/releases/download/0.9.21/uv-aarch64-unknown-linux-musl.tar.gz"
+    UV_SHA256_ARM64 = "03a49fb609888032dbc3be9fd114b50fc9bce8b73b3df319746ae08d1fbdea83"
   }
   dockerfile = "Containerfile"
   tags = [
