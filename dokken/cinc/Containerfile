@@ -1,23 +1,24 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/busybox:1.35.0
-# hadolint ignore=DL3006
-FROM ${BASE_IMAGE}
-
-# Because this is a data container and is never run, only mounted via
-# the --volumes-from parameter, the operating system type doesn't matter.
-# So we use busybox, a really small distro, with just enough support to
-# be able to download and install the binaries for cinc.
+ARG BASE_IMAGE=docker.io/ubuntu:noble-20251013
+FROM $BASE_IMAGE AS download
 
 ARG CINC_URL_AMD64
 ARG CINC_SHA256_AMD64
 ARG CINC_URL_ARM64
 ARG CINC_SHA256_ARM64
+
 # This argument is automatically populated by BuildKit
 ARG TARGETARCH
 
-# We're using busybox with /bin/sh so DL4006 does not apply
-# hadolint ignore=DL4006
+WORKDIR /tmp/cinc
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN <<EOF
+  apt-get install -y --update --no-install-recommends \
+    ca-certificates \
+    curl
+  rm -rf /var/lib/apt/lists/*
+  dpkgArch="$(dpkg --print-architecture)" 
   case "$TARGETARCH" in \
     amd64) \
       CINC_URL=${CINC_URL_AMD64} \
@@ -29,9 +30,23 @@ RUN <<EOF
       ;; \
      *) echo "unsupported architecture"; exit 1 ;; \
   esac
-  echo "wget -q --no-check-certificate -O /tmp/cinc-client.rpm ${CINC_URL}"
-  wget --no-check-certificate -O /tmp/cinc-client.rpm ${CINC_URL}
-  echo "${CINC_SHA256} /tmp/cinc-client.rpm" | sha256sum -c -
+  curl -fsSL -o cinc-client.rpm "${CINC_URL}"
+  echo "${CINC_SHA256} cinc-client.rpm" | sha256sum -c -
+EOF
+
+
+FROM docker.io/busybox:stable
+
+COPY --from=download /tmp/cinc/cinc-client.rpm /tmp/cinc-client.rpm
+
+# Because this is a data container and is never run, only mounted via
+# the --volumes-from parameter, the operating system type doesn't matter.
+# So we use busybox, a really small distro, with just enough support to
+# be able to download and install the binaries for cinc.
+
+# We're using busybox with /bin/sh so DL4006 does not apply
+# hadolint ignore=DL4006
+RUN <<EOF
   # Since busybox includes tools to extract rpm packages, we fetch the rpm
   # package for cinc-client. However since this is a data volume and this
   # container never actually runs, this will work with any OS distro, as it
