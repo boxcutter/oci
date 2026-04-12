@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/busybox:1.36.1
+ARG BASE_IMAGE=docker.io/busybox:1.37.0
 # hadolint ignore=DL3006
 FROM ${BASE_IMAGE}
 
