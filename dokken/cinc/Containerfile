@@ -52,6 +52,7 @@ RUN <<EOF
   # container never actually runs, this will work with any OS distro, as it
   # is just serving the binaries to run on other OS, like an NFS mount.
   rpm2cpio /tmp/cinc-client.rpm | cpio -idm
+  [ -e /opt/cinc/bin/cinc-client ] || { echo "missing /opt/cinc/bin/cinc-client" >&2; exit 1; }
   rm -f /tmp/cinc-client.rpm
 EOF
 
