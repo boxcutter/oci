@@ -3,7 +3,7 @@ variable "TAG_PREFIX" {
 }
 
 variable "VERSION" {
-  default = "7.0.95"
+  default = "7.0.107"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
@@ -13,10 +13,10 @@ variable "LOCAL_PLATFORM" {
 
 target "_common" {
   args = {
-    CINC_AUDITOR_URL_AMD64 = "https://downloads.cinc.sh/files/stable/cinc-auditor/7.0.95/ubuntu/24.04/cinc-auditor_7.0.95-1_amd64.deb"
-    CINC_AUDITOR_SHA256_AMD64 = "7eed263d8eec95e7ff1e829b09cb75fdfd4522a972aa367c6ea7d5a4fde7f4c9",
-    CINC_AUDITOR_URL_ARM64 = "https://downloads.cinc.sh/files/stable/cinc-auditor/7.0.95/ubuntu/24.04/cinc-auditor_7.0.95-1_arm64.deb"
-    CINC_AUDITOR_SHA256_ARM64 = "aa68e0ec2139f167c6f503c6818f528db025b5cf710bd15ffcbbe2467323811f"
+    CINC_AUDITOR_URL_AMD64 = "https://downloads.cinc.sh/files/stable/cinc-auditor/7.0.107/ubuntu/24.04/cinc-auditor_7.0.107-1_amd64.deb"
+    CINC_AUDITOR_SHA256_AMD64 = "c72bf4b05b9f16c7d9f2e8f0ebbeb24238964389c8901f84e11742324ca83b85"
+    CINC_AUDITOR_URL_ARM64 = "https://downloads.cinc.sh/files/stable/cinc-auditor/7.0.107/ubuntu/24.04/cinc-auditor_7.0.107-1_arm64.deb"
+    CINC_AUDITOR_SHA256_ARM64 = "292c06bf4c40c28d557a0bd5e91a7dc22408aa650971a210c71ecba1454c0f64"
   }
   dockerfile = "Containerfile"
   tags = [
