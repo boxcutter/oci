@@ -12,6 +12,12 @@ ARG TARGETARCH
 
 WORKDIR /tmp/cinc
 
+# Upstream does this download within busybox using the busybox wget.
+# On arm64, this tends result in "connection dropped" on downloads on github
+# runners (or self-hosted runners). We've tried not checking SSL certs and
+# it still fails, so instead move the download outside of busybox which has
+# more complete certs and SSL implementation as a workaround. Seems to
+# work better.
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN <<EOF
   apt-get install -y --update --no-install-recommends \
