@@ -2,7 +2,7 @@ variable "TAG_PREFIX" {
   default = "docker.io/boxcutter/slidev"
 }
 
-varaible "VERSION" {
+variable "VERSION" {
   default = "0.1.0"
 }
 
