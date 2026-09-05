@@ -95,7 +95,7 @@ jobs:
             markmaker: 'markmaker/**'
             meshcmd: 'meshcmd/**'
             node/22/resolute-slim: 'node/22/resolute-slim/**'
-            node/24/noble-slim: 'node/24/noble-slim/**'
+            node/24/resolute-slim: 'node/24/resolute-slim/**'
             node/25/noble-slim: 'node/25/noble-slim/**'
             pgweb: 'pgweb/**'
             postgres/15/noble: 'postgres/15/noble/**'
