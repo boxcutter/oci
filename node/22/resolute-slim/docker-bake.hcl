@@ -3,24 +3,22 @@ variable "TAG_PREFIX" {
 }
 
 variable "VERSION" {
-  default = "22.21.1"
+  default = "22.23.2"
 }
 
-# There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
+# There's no darwin-based Docker, so if we're running on macOS, use linux
+# The Windows images are too big and slow to be usable, instead use linux
 variable "LOCAL_PLATFORM" {
-  default = regex_replace("${BAKE_LOCAL_PLATFORM}", "^(darwin)", "linux")
+  default = regex_replace(BAKE_LOCAL_PLATFORM, "^(darwin|windows)", "linux")
 }
 
 target "_common" {
-  args = {
-    GOLANG_VERSION = "${VERSION}"
-  }
   dockerfile = "Containerfile"
   tags = [
-    "${TAG_PREFIX}:${VERSION}-noble-slim",
-    "${TAG_PREFIX}:${join(".", slice(split(".", "${VERSION}"), 0, 2))}-noble-slim",
-    "${TAG_PREFIX}:${join(".", slice(split(".", "${VERSION}"), 0, 1))}-noble-slim",
-    "${TAG_PREFIX}:lts-noble-slim",
+    "${TAG_PREFIX}:${VERSION}-resolute-slim",
+    "${TAG_PREFIX}:${join(".", slice(split(".", "${VERSION}"), 0, 2))}-resolute-slim",
+    "${TAG_PREFIX}:${join(".", slice(split(".", "${VERSION}"), 0, 1))}-resolute-slim",
+    "${TAG_PREFIX}:lts-resolute-slim",
   ]
 
   labels = {
@@ -40,5 +38,5 @@ target "local" {
 
 target "default" {
   inherits = ["_common"]
-  platforms = ["linux/amd64", "linux/arm64/v8"]
+  platforms = ["linux/amd64", "linux/arm64"]
 } 
