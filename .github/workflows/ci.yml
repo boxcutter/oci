@@ -204,7 +204,8 @@ jobs:
 
   # Job to run change detection
   self-hosted-changes:
-    if: ${{ github.event_name != 'workflow_dispatch' }}
+    # Temporarily disabled: migrating self-hosted runners
+    if: ${{ false && github.event_name != 'workflow_dispatch' }}
     runs-on: [self-hosted, multi-arch]
     outputs:
       images: ${{ steps.self-hosted-filter.outputs.changes }}
@@ -256,7 +257,8 @@ jobs:
         # Parse JSON array containing names of all filters matching any of changed files
         # e.g. ['image1', 'image2'] if both image folders contains changes
         image: ${{ fromJSON(needs.self-hosted-changes.outputs.images) }}
-    if: ${{ needs.self-hosted-changes.outputs.images != '[]' && needs.self-hosted-changes.outputs.images != '' && github.event_name != 'workflow_dispatch'}}
+    # Temporarily disabled: self-hosted runners being migrated
+    if: ${{ false && needs.self-hosted-changes.outputs.images != '[]' && needs.self-hosted-changes.outputs.images != '' && github.event_name != 'workflow_dispatch'}}
     runs-on: [self-hosted, multi-arch]
     steps:
       - name: Checkout code
