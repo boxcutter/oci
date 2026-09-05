@@ -1,17 +1,13 @@
-variable "IMAGE_NAME" {
-  default = "slidev"
+variable "TAG_PREFIX" {
+  default = "docker.io/boxcutter/slidev"
 }
 
 varaible "VERSION" {
   default = "0.1.0"
 }
 
-variable "CONTAINER_REGISTRY" {
-  default = "docker.io/boxcutter"
-}
-
 # There's no darwin-based Docker, so if we're running on macOS, use linux
-# The Windows images are too big and slow to be usable, instead iuse linux
+# The Windows images are too big and slow to be usable, instead use linux
 variable "LOCAL_PLATFORM" {
   default = regex_replace(BAKE_LOCAL_PLATFORM, "^(darwin|windows)", "linux")
 }
@@ -20,15 +16,15 @@ target "_common" {
   dockerfile = "Containerfile"
 
   tags = [
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:${VERSION}",
-    "${CONTAINER_REGISTRY}/${IMAGE_NAME}:latest"
+    "${TAG_PREFIX}:${VERSION}",
+    "${TAG_PREFIX}:latest"
   ]
 
   labels = {
     "org.opencontainers.image.source" = "https://github.com/boxcutter/oci"
     "org.opencontainers.image.licenses" = "Apache-2.0"
     "org.opencontainers.image.description" = "Slidev."
-    "org.opencontainers.image.title" = "${IMAGE_NAME}"
+    "org.opencontainers.image.title" = "${TAG_PREFIX}"
     "org.opencontainers.image.created" = "${timestamp()}"
   }
 }
