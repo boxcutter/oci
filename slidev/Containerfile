@@ -19,9 +19,12 @@ USER slidev
 WORKDIR /slidev
 
 ENV CHOKIDAR_USEPOLLING=true
+# Keep Playwright browsers in node_modules on the bind mount so they persist
+# between runs and match the playwright-chromium version in the project
+ENV PLAYWRIGHT_BROWSERS_PATH=0
 
 # Define the main process
 ENTRYPOINT ["/entrypoint.sh"]
 
 # Provide the default arguments
-CMD ["--help"]
+CMD ["--remote"]
