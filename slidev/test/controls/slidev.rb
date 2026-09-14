@@ -13,3 +13,7 @@ describe user('slidev') do
   its('uid') { should eq 1000 }
   its('gid') { should eq 1000 }
 end
+
+describe os_env('PLAYWRIGHT_BROWSERS_PATH') do
+  its('content') { should eq '0' }
+end
