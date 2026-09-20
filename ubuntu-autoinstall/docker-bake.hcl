@@ -8,7 +8,7 @@ variable "VERSION" {
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
 variable "LOCAL_PLATFORM" {
-  default = regex_replace("${BAKE_LOCAL_PLATFORM}", "^(darwin)", "linux")
+  default = regex_replace(BAKE_LOCAL_PLATFORM, "^(darwin)", "linux")
 }
 
 target "_common" {
@@ -33,5 +33,5 @@ target "local" {
 
 target "default" {
   inherits = ["_common"]
-  platforms = ["linux/amd64", "linux/arm64/v8"]
+  platforms = ["linux/amd64", "linux/arm64"]
 } 
