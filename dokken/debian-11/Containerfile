@@ -54,4 +54,15 @@ RUN <<EOF
   systemctl mask dev-hugepages.mount sys-fs-fuse-connections.mount network.service
 EOF
 
+# Distrust the roots that the compromised eMudhra intermediates chain to
+# (https://emudhra.we-have-a-problem.com/), whether or not this release
+# ships a patched ca-certificates.
+RUN <<EOF
+  sed -i \
+    -e 's|^mozilla/emSign_ECC_Root_CA_-_G3.crt|!&|' \
+    -e 's|^mozilla/Comodo_AAA_Services_root.crt|!&|' \
+    /etc/ca-certificates.conf &&
+  update-ca-certificates --fresh
+EOF
+
 CMD [ "/bin/systemd" ]

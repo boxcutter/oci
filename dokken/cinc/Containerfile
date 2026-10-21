@@ -40,10 +40,24 @@ RUN <<EOF
   echo "${CINC_SHA256} cinc-client.rpm" | sha256sum -c -
 EOF
 
+# The CA bundles inside the cinc package trust the roots that the
+# compromised eMudhra intermediates chain to
+# (https://emudhra.we-have-a-problem.com/). Build a bundle without them to
+# put in their place.
+RUN <<EOF
+  sed -i \
+    -e 's|^mozilla/emSign_ECC_Root_CA_-_G3.crt|!&|' \
+    -e 's|^mozilla/Comodo_AAA_Services_root.crt|!&|' \
+    /etc/ca-certificates.conf &&
+  update-ca-certificates --fresh &&
+  cp /etc/ssl/certs/ca-certificates.crt /tmp/cinc/ca-bundle.pem
+EOF
+
 
 FROM docker.io/busybox:stable
 
 COPY --from=download /tmp/cinc/cinc-client.rpm /tmp/cinc-client.rpm
+COPY --from=download /tmp/cinc/ca-bundle.pem /tmp/ca-bundle.pem
 
 # Because this is a data container and is never run, only mounted via
 # the --volumes-from parameter, the operating system type doesn't matter.
@@ -60,6 +74,11 @@ RUN <<EOF
   rpm2cpio /tmp/cinc-client.rpm | cpio -idm
   [ -e /opt/cinc/bin/cinc-client ] || { echo "missing /opt/cinc/bin/cinc-client" >&2; exit 1; }
   rm -f /tmp/cinc-client.rpm
+  # Replace the package's own CA bundles (OpenSSL's and the copies some gems
+  # carry) with the one built above.
+  find /opt/cinc/embedded -type f \( -name cacert.pem -o -name ca-bundle.crt \) \
+    -exec cp /tmp/ca-bundle.pem {} \;
+  rm -f /tmp/ca-bundle.pem
 EOF
 
 VOLUME [ "/opt/cinc" ]

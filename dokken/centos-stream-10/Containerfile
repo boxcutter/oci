@@ -57,4 +57,18 @@ RUN <<EOF
   systemctl mask dev-hugepages.mount sys-fs-fuse-connections.mount network.service systemd-journal-flush.service	
 EOF
 
+# Distrust the roots that the compromised eMudhra intermediates chain to
+# (https://emudhra.we-have-a-problem.com/), whether or not this release
+# ships a patched ca-certificates.
+RUN <<'EOF'
+  d=/etc/pki/ca-trust/source/blocklist
+  [ -d "$d" ] || d=/etc/pki/ca-trust/source/blacklist
+  for root in "Comodo AAA Services root" "emSign ECC Root CA - G3"; do
+    trust extract --overwrite --format=pem-bundle \
+      --filter="pkcs11:object=$(echo "$root" | sed 's/ /%20/g');type=cert" \
+      "$d/$(echo "$root" | tr ' ' '_').pem" || exit 1
+  done
+  update-ca-trust
+EOF
+
 CMD [ "/usr/lib/systemd/systemd" ]
