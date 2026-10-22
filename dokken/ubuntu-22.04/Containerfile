@@ -4,6 +4,7 @@ FROM ${BASE_IMAGE}
 
 # hadolint ignore=DL3015
 RUN <<EOF
+  set -e
   apt-get update
   DEBIAN_FRONTEND=noninteractive apt-get -y install \
     apt-utils \

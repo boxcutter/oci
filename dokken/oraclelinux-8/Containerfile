@@ -4,6 +4,7 @@ FROM ${BASE_IMAGE}
 
 # hadolint ignore=DL3041
 RUN <<EOF
+  set -e
   dnf -y install \
 	binutils \
 	ca-certificates \

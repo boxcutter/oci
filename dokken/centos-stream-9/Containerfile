@@ -5,6 +5,7 @@ FROM ${BASE_IMAGE}
 # NOTE: CentOS Stream 9 is still under heavy development
 # hadolint ignore=DL3041
 RUN <<EOF
+  set -e
   dnf --allowerasing  -y install \
 	binutils \
 	ca-certificates \

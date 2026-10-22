@@ -3,6 +3,7 @@ ARG BASE_IMAGE=docker.io/oraclelinux:7
 FROM ${BASE_IMAGE}
 
 RUN <<EOF
+  set -e
   yum -y install \
       binutils \
       ca-certificates \
