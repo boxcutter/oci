@@ -2,8 +2,11 @@
 ARG BASE_IMAGE=docker.io/debian:11
 FROM ${BASE_IMAGE}
 
+# Bullseye reached end of life and was moved to archive.debian.org, so the
+# pool on deb.debian.org no longer has the packages its indexes list.
 # hadolint ignore=DL3015
 RUN <<EOF
+  sed -i 's|http://deb.debian.org/|http://archive.debian.org/|' /etc/apt/sources.list
   apt-get update
   DEBIAN_FRONTEND=noninteractive apt-get -y install \
     apt-utils \
