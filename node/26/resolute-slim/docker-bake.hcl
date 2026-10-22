@@ -3,7 +3,7 @@ variable "TAG_PREFIX" {
 }
 
 variable "VERSION" {
-  default = "26.8.1"
+  default = "26.12.1"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, use linux

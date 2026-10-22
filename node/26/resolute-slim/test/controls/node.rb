@@ -12,6 +12,7 @@ describe user('node') do
   it { should exist }
   its('uid') { should eq 1000 }
   its('gid') { should eq 1000 }
+  its('groups') { should eq ['node'] }
 end
 
 describe user('ubuntu') do

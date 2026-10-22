@@ -3,7 +3,7 @@ variable "TAG_PREFIX" {
 }
 
 variable "VERSION" {
-  default = "24.20.0"
+  default = "24.22.1"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, use linux
@@ -18,7 +18,7 @@ target "_common" {
     "${TAG_PREFIX}:${VERSION}-resolute-slim",
     "${TAG_PREFIX}:${join(".", slice(split(".", "${VERSION}"), 0, 2))}-resolute-slim",
     "${TAG_PREFIX}:${join(".", slice(split(".", "${VERSION}"), 0, 1))}-resolute-slim",
-    "${TAG_PREFIX}:current-resolute-slim",
+    "${TAG_PREFIX}:lts-resolute-slim",
   ]
 
   labels = {
