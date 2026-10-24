@@ -8,30 +8,32 @@ Open container images for robotics, neuromorphic engineering, systems and embedd
 | [actionlint](https://hub.docker.com/r/boxcutter/actionlint) | Static checker for GitHub Actions workflow files | [actionlint](https://github.com/boxcutter/oci/tree/main/actionlint) |
 | [aws-cli](https://hub.docker.com/r/boxcutter/aws-cli) | Amazon Web Services Command-Line Interface | [aws-cli](https://github.com/boxcutter/oci/tree/main/aws-cli) |
 | [black](https://hub.docker.com/r/boxcutter/black) | Black is the uncompromising Python code formatter | [black](https://github.com/boxcutter/oci/tree/main/black) |
+| [buildpack-deps](https://hub.docker.com/r/boxcutter/buildpack-deps) | A collection of common build dependencies used for installing various modules. | [buildpack-deps](https://github.com/boxcutter/oci/tree/main/buildpack-deps) |
+| [cinc](https://hub.docker.com/r/boxcutter/cinc) | Cinc Client is an automation platform built from Chef Infra | [dokken/cinc](https://github.com/boxcutter/oci/tree/main/dokken/cinc) |
 | [cinc-auditor](https://hub.docker.com/r/boxcutter/cinc-auditor) | Cinc Auditor is built from Chef InSpec, an open-source framework for testing and auditing applications and infrastructure | [cinc-auditor](https://github.com/boxcutter/oci/tree/main/cinc/cinc-auditor) |
 | [cmake-clang](https://hub.docker.com/r/boxcutter/cmake-clang) | CMake build system with clang compiler toolchain. | [cmake/cmake-clang](https://github.com/boxcutter/oci/tree/main/cmake/clang) |
 | [cmake-gcc](https://hub.docker.com/r/boxcutter/cmake-gcc) | CMake build system with gcc compiler toolchain. | [cmake/cmake-gcc](https://github.com/boxcutter/oci/tree/main/cmake/gcc) |
 | [doctl](https://hub.docker.com/r/boxcutter/doctl) | Digital Ocean command-line interface | [doctl](https://github.com/boxcutter/oci/tree/main/doctl) |
+| [dokken-&lt;platform&gt;](https://hub.docker.com/u/boxcutter?search=dokken) | Operating system images for use with kitchen-dokken: AlmaLinux, Amazon Linux, CentOS Stream, Debian, Fedora, openSUSE Leap, Oracle Linux, Rocky Linux and Ubuntu | [dokken](https://github.com/boxcutter/oci/tree/main/dokken) |
 | [flake8](https://hub.docker.com/r/boxcutter/flake8) | Flake8: Your Tool For Style Guide Enforcement | [flake8](https://github.com/boxcutter/oci/tree/main/flake8) |
 | [fpm](https://hub.docker.com/r/boxcutter/fpm) | fpm Packaging made simple | [fpm](https://github.com/boxcutter/oci/tree/main/fpm) |
+| [gcc](https://hub.docker.com/r/boxcutter/gcc) | The GNU Compiler Collection is a compiling system that supports several languages. | [gcc](https://github.com/boxcutter/oci/tree/main/gcc) |
 | [glab](https://hub.docker.com/r/boxcutter/glab) | The GitLab CLI tool | [glab](https://github.com/boxcutter/oci/tree/main/glab) |
 | [golang](https://hub.docker.com/r/boxcutter/golang) | Go (golang) is a general purpose, higher-level, imperative programming language | [golang](https://github.com/boxcutter/oci/tree/main/golang) |
 | [hadolint](https://hub.docker.com/r/boxcutter/hadolint) | Containerfile/Dockerfiles linter | [hadolint](https://github.com/boxcutter/oci/tree/main/hadolint) |
+| [jsonnet](https://hub.docker.com/r/boxcutter/jsonnet) | Jsonnet utilities | [jsonnet](https://github.com/boxcutter/oci/tree/main/jsonnet) |
 | [markdownlint](https://hub.docker.com/r/boxcutter/markdownlint) | A tool to check markdown files and flag style issues. | [markdownlint](https://github.com/boxcutter/oci/tree/main/markdownlint) |
 | [markmaker](https://hub.docker.com/r/boxcutter/markmaker) | Jérôme Petazzoni's tool for creating slide decks with markdown. | [markmaker](https://github.com/boxcutter/oci/tree/main/markmaker) |
 | [meshcmd](https://hub.docker.com/r/boxcutter/meshcmd) | Command line tool used to perform many tasks related to computer management of Intel Active Management Technology (AMT) devices | [meshcmd](https://github.com/boxcutter/oci/tree/main/meshcmd) |
 | [node](https://hub.docker.com/r/boxcutter/node) | Node.js is a JavaScript-based platform for server-side and networking applications. | [node](https://github.com/boxcutter/oci/tree/main/node) |
-| [pgweb](https://hub.docker.com/r/boxcutter/pgweb) | Simple web-based and cross platform PostgreSQL database explorer. | [pgweb](https://github.com/boxcutter/oci/tree/main/pgweb) |
-| [postgres](https://hub.docker.com/r/boxcutter/postgres) | The PostgreSQL object-relational database system provides reliability and data integrity. | [postgres](https://github.com/boxcutter/oci/tree/main/postgres) |
-| [prometheus](https://hub.docker.com/r/boxcutter/prometheus)<br>[alertmanager](https://hub.docker.com/r/boxcutter/alertmanager)<br>[blackbox-exporter](https://hub.docker.com/r/boxcutter/blackbox-exporter)<br>[node-exporter](https://hub.docker.com/r/boxcutter/node-exporter) | Prometheus monitoring system and time series database | [prometheus/prometheus](https://github.com/boxcutter/oci/tree/main/prometheus/prometheus)<br>[prometheus/alertmanager](https://github.com/boxcutter/oci/tree/main/prometheus/alertmanager)<br>[prometheus/blackbox-exporter](https://github.com/boxcutter/oci/tree/main/prometheus/blackbox-exporter)<br>[prometheus/node-exporter](https://github.com/boxcutter/oci/tree/main/prometheus/node-exporter) |
-| [pulumi-base](https://hub.docker.com/r/boxcutter/pulumi-base)<br>[pulumi-python](https://hub.docker.com/r/boxcutter/pulumi-python) | Pulumi Infrastructure as Code CLI | [pulumi-base](https://github.com/boxcutter/oci/tree/main/pulumi/pulumi-base)<br>[pulumi-python](https://github.com/boxcutter/oci/tree/main/pulumi/pulumi-python) |
+| [prometheus](https://hub.docker.com/r/boxcutter/prometheus)<br>[alertmanager](https://hub.docker.com/r/boxcutter/alertmanager)<br>[blackbox-exporter](https://hub.docker.com/r/boxcutter/blackbox-exporter)<br>[node-exporter](https://hub.docker.com/r/boxcutter/node-exporter)<br>[snmp-exporter](https://hub.docker.com/r/boxcutter/snmp-exporter)<br>[snmp-generator](https://hub.docker.com/r/boxcutter/snmp-generator) | Prometheus monitoring system and time series database | [prometheus/prometheus](https://github.com/boxcutter/oci/tree/main/prometheus/prometheus)<br>[prometheus/alertmanager](https://github.com/boxcutter/oci/tree/main/prometheus/alertmanager)<br>[prometheus/blackbox-exporter](https://github.com/boxcutter/oci/tree/main/prometheus/blackbox-exporter)<br>[prometheus/node-exporter](https://github.com/boxcutter/oci/tree/main/prometheus/node-exporter)<br>[prometheus/snmp-exporter](https://github.com/boxcutter/oci/tree/main/prometheus/snmp-exporter)<br>[prometheus/snmp-generator](https://github.com/boxcutter/oci/tree/main/prometheus/snmp-generator) |
+| [pulumi-base](https://hub.docker.com/r/boxcutter/pulumi-base)<br>[pulumi-nodejs](https://hub.docker.com/r/boxcutter/pulumi-nodejs)<br>[pulumi-python](https://hub.docker.com/r/boxcutter/pulumi-python) | Pulumi Infrastructure as Code CLI | [pulumi-base](https://github.com/boxcutter/oci/tree/main/pulumi/pulumi-base)<br>[pulumi-nodejs](https://github.com/boxcutter/oci/tree/main/pulumi/pulumi-nodejs)<br>[pulumi-python](https://github.com/boxcutter/oci/tree/main/pulumi/pulumi-python) |
 | [python](https://hub.docker.com/r/boxcutter/python) | Python is an interpreted, interactive, object-oriented, open-source programming language. | [python](https://github.com/boxcutter/oci/tree/main/python) |
-| [redis](https://hub.docker.com/r/boxcutter/redis) | Redis is an open source key-value store that functions as a data structure server. | [redis](https://github.com/boxcutter/oci/tree/main/redis) |
-| [ros](https://hub.docker.com/r/boxcutter/ros) | The Robot Operating System (ROS) is an open source project for building robot applications. | [humble-jammy](https://github.com/boxcutter/oci/tree/main/ros/humble/ubuntu/jammy)<br>[iron-jammy](https://github.com/boxcutter/oci/tree/main/ros/iron/ubuntu/jammy)<br>[noetic-focal](https://github.com/boxcutter/oci/tree/main/ros/noetic/ubuntu/focal)<br>[rolling-jammy](https://github.com/boxcutter/oci/tree/main/ros/rolling/ubuntu/jammy) |
 | [ruby](https://hub.docker.com/r/boxcutter/ruby) | Ruby is a dynamic, reflective, object-oriented, general-purpose, open-source programming language. | [ruby](https://github.com/boxcutter/oci/tree/main/ruby) |
 | [rust](https://hub.docker.com/r/boxcutter/rust) | Rust is a systems programming language. | [rust](https://github.com/boxcutter/oci/tree/main/rust) | 
 | [shellcheck](https://hub.docker.com/r/boxcutter/shellcheck) | Linter for bash/sh shell scripts | [shellcheck](https://github.com/boxcutter/oci/tree/main/shellcheck) |
 | [slidev](https://hub.docker.com/r/boxcutter/slidev) | Presentation slides for developers | [slidev](https://github.com/boxcutter/oci/tree/main/slidev) |
+| [snmp](https://hub.docker.com/r/boxcutter/snmp) | SNMP utilities | [snmp](https://github.com/boxcutter/oci/tree/main/snmp) |
 | [ubuntu-autoinstall](https://hub.docker.com/r/boxcutter/ubuntu-autoinstall) | Create Ubuntu autoinstall images/ISOs | [ubuntu-autoinstall](https://github.com/boxcutter/oci/tree/main/ubuntu-autoinstall) |
 
 # Why are you re-publishing some official images?
@@ -117,11 +119,11 @@ The files are as follows:
 
 Normally we just use the GitHub Actions pipelines that have been configured in `.github/workflows` to build
 these images. However, the scripts to build the container images in the `/bin` subdirectory can be used to
-build any image locally on your machine. For example, to build `ros-core`:
+build any image locally on your machine. For example, to build `hadolint`:
 
 ```bash
 # Make the current working directory the location of the Containerfile for the image you want to build
-cd ros/ros-core
+cd hadolint
 # Check the Containerfile with hadolint
 $(git rev-parse --show-toplevel)/bin/lint.sh
 # Build the image for testing on the local processor architecture
