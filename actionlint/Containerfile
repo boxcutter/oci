@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/ubuntu:noble-20251013
+ARG BASE_IMAGE=docker.io/ubuntu:resolute-20261006
 FROM $BASE_IMAGE AS base
 
 FROM base AS download
@@ -11,29 +11,42 @@ ARG ACTIONLINT_SHA256_ARM64
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN <<EOF
+  set -e
   apt-get install --update --no-install-recommends -y \
     ca-certificates \
     curl
   rm -rf /var/lib/apt/lists/*
   dpkgArch="$(dpkg --print-architecture)"
-  case "${dpkgArch##*-}" in \
-    amd64) \
-      ACTIONLINT_URL="${ACTIONLINT_URL_AMD64}" \
-      ACTIONLINT_SHA256="${ACTIONLINT_SHA256_AMD64}" \
-      ;; \
-    arm64) \
-      ACTIONLINT_URL="${ACTIONLINT_URL_ARM64}" \
-      ACTIONLINT_SHA256="${ACTIONLINT_SHA256_ARM64}" \
-      ;; \
-    *) echo "unsupported architecture"; exit 1 ;; \
+  case "${dpkgArch##*-}" in
+    amd64)
+      ACTIONLINT_URL="${ACTIONLINT_URL_AMD64}"
+      ACTIONLINT_SHA256="${ACTIONLINT_SHA256_AMD64}"
+      ;;
+    arm64)
+      ACTIONLINT_URL="${ACTIONLINT_URL_ARM64}"
+      ACTIONLINT_SHA256="${ACTIONLINT_SHA256_ARM64}"
+      ;;
+    *) echo "unsupported architecture: ${dpkgArch}"; exit 1 ;;
   esac
-  curl -fsSL -o /tmp/actionlint.tar.gz ${ACTIONLINT_URL}
+  curl -fsSL -o /tmp/actionlint.tar.gz "${ACTIONLINT_URL}"
   echo "${ACTIONLINT_SHA256} /tmp/actionlint.tar.gz" | sha256sum -c -
   mkdir -p /tmp/actionlint
-  tar xvf /tmp/actionlint.tar.gz -C /tmp/actionlint
+  tar -xzf /tmp/actionlint.tar.gz -C /tmp/actionlint actionlint
 EOF
 
 FROM base
+
+# actionlint shells out to shellcheck and pyflakes to lint `run:` scripts;
+# without them those checks are silently skipped. Upstream's image ships both.
+RUN <<EOF
+  set -e
+  apt-get install --update --no-install-recommends -y \
+    pyflakes3 \
+    shellcheck
+  rm -rf /var/lib/apt/lists/*
+  # Debian only ships pyflakes3; actionlint looks for "pyflakes" by default
+  ln -s /usr/bin/pyflakes3 /usr/local/bin/pyflakes
+EOF
 
 COPY --from=download /tmp/actionlint/actionlint /usr/local/bin/actionlint
 

@@ -4,6 +4,8 @@ actionlint is a static checker for GitHub Actions workflow files.
 
 This image packages releases from https://github.com/rhysd/actionlint
 
+shellcheck and pyflakes are included, so `run:` scripts are checked too.
+
 Image source: https://github.com/boxcutter/oci/tree/main/actionlint
 
 To check all workflows in your repository, mount your repository's root directory as a volume and run actionlint in the mounted directory. When you are at a root directory of your repository:
@@ -25,7 +27,7 @@ Or mount the workflows directory and pass the paths as arguments:
 
 ```bash
 docker container run -i --rm \
-  --mount type=bind,source=/path/to/workflows,target=//workflows \
+  --mount type=bind,source=/path/to/workflows,target=/workflows \
   docker.io/boxcutter/actionlint -color /workflows/ci.yml
 ```
 
@@ -60,9 +62,9 @@ Usage: actionlint [FLAGS] [FILES...] [-]
 
 Documents:
 
-  - List of checks: https://github.com/rhysd/actionlint/tree/v1.7.7/docs/checks.md
-  - Usage:          https://github.com/rhysd/actionlint/tree/v1.7.7/docs/usage.md
-  - Configuration:  https://github.com/rhysd/actionlint/tree/v1.7.7/docs/config.md
+  - List of checks: https://github.com/rhysd/actionlint/tree/v1.7.12/docs/checks.md
+  - Usage:          https://github.com/rhysd/actionlint/tree/v1.7.12/docs/usage.md
+  - Configuration:  https://github.com/rhysd/actionlint/tree/v1.7.12/docs/config.md
 
 Flags:
   -color
@@ -90,5 +92,5 @@ Flags:
   -verbose
       Enable verbose output
   -version
-      Show version and how this binary was installed  
+      Show version and how this binary was installed
 ```
