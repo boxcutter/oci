@@ -15,7 +15,6 @@ Open container images for robotics, neuromorphic engineering, systems and embedd
 | [flake8](https://hub.docker.com/r/boxcutter/flake8) | Flake8: Your Tool For Style Guide Enforcement | [flake8](https://github.com/boxcutter/oci/tree/main/flake8) |
 | [fpm](https://hub.docker.com/r/boxcutter/fpm) | fpm Packaging made simple | [fpm](https://github.com/boxcutter/oci/tree/main/fpm) |
 | [glab](https://hub.docker.com/r/boxcutter/glab) | The GitLab CLI tool | [glab](https://github.com/boxcutter/oci/tree/main/glab) |
-| [go2chef](https://hub.docker.com/r/boxcutter/go2chef) | A Golang tool to bootstrap a system from zero so that it's able to run Chef to be managed | [go2chef](https://github.com/boxcutter/oci/tree/main/go2chef) |
 | [golang](https://hub.docker.com/r/boxcutter/golang) | Go (golang) is a general purpose, higher-level, imperative programming language | [golang](https://github.com/boxcutter/oci/tree/main/golang) |
 | [hadolint](https://hub.docker.com/r/boxcutter/hadolint) | Containerfile/Dockerfiles linter | [hadolint](https://github.com/boxcutter/oci/tree/main/hadolint) |
 | [markdownlint](https://hub.docker.com/r/boxcutter/markdownlint) | A tool to check markdown files and flag style issues. | [markdownlint](https://github.com/boxcutter/oci/tree/main/markdownlint) |

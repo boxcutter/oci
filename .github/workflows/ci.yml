@@ -76,7 +76,6 @@ jobs:
             gcc/14: 'gcc/14/**'
             gcc/15: 'gcc/15/**'
             glab: 'glab/**'
-            go2chef: 'go2chef/**'
             golang/1.24/noble: 'golang/1.24/noble/**'
             golang/1.25/noble: 'golang/1.25/noble/**'
             hadolint: 'hadolint/**'
