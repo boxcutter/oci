@@ -3,7 +3,7 @@ variable "TAG_PREFIX" {
 }
 
 variable "VERSION" {
-  default = "3.3.8"
+  default = "3.3.13"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
@@ -14,8 +14,6 @@ variable "LOCAL_PLATFORM" {
 target "_common" {
   dockerfile = "Containerfile"
   tags = [
-    "${TAG_PREFIX}:slim-noble",
-    "${TAG_PREFIX}:3-slim-noble",
     "${TAG_PREFIX}:${VERSION}-slim-noble",
     "${TAG_PREFIX}:${join(".", slice(split(".", "${VERSION}"), 0, 2))}-slim-noble",
   ]
@@ -37,4 +35,4 @@ target "local" {
 target "default" {
   inherits = ["_common"]
   platforms = ["linux/amd64", "linux/arm64/v8"]
-} 
+}
