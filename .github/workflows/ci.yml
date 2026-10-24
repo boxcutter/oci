@@ -14,15 +14,15 @@ on:
 jobs:
   # Job to run change detection
   changes:
-    if: ${{ github.event_name != 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     outputs:
-      # Expose matched filters as job 'images' output variable
-      images: ${{ steps.filter.outputs.changes }}
+      # Expose matched filters, or the manually requested directories, as job 'images' output variable
+      images: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.list || steps.filter.outputs.changes }}
     steps:
       - uses: actions/checkout@v7
 
       - name: Determine Paths to Build for Auto Trigger
+        if: ${{ github.event_name != 'workflow_dispatch' }}
         uses: dorny/paths-filter@v4
         id: filter
         with:
@@ -155,16 +155,24 @@ jobs:
             uv: 'uv/**'
             valkey/8.1/ubuntu: 'valkey/8.1/ubuntu/**'
             
-  # Job to build and test each of the modified images
+  # Job to build and test each of the modified images, natively on each platform
   build:
     needs: changes
     strategy:
+      # Let the other images and platforms finish; merge only publishes complete images
+      fail-fast: false
       matrix:
         # Parse JSON array containing names of all filters matching any of changed files
         # e.g. ['image1', 'image2'] if both image folders contains changes
         image: ${{ fromJSON(needs.changes.outputs.images) }}
+        platform: [linux/amd64, linux/arm64]
+        include:
+          - platform: linux/amd64
+            runner: ubuntu-latest
+          - platform: linux/arm64
+            runner: ubuntu-24.04-arm
     if: ${{ needs.changes.outputs.images != '' && needs.changes.outputs.images != '[]' }}
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.runner }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
@@ -184,42 +192,29 @@ jobs:
       - uses: boxcutter/container-build-publish-action@main
         with:
           workdir: ${{ matrix.image }}
-          build-type: 'hosted'
+          platform: ${{ matrix.platform }}
           run-lint-stage: ${{ env.run-lint-stage }}
           run-test-stage: ${{ env.run-test-stage }}
           test-entrypoint: ${{ env.test-entrypoint }}
           dockerhub-username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
           dockerhub-password: ${{ secrets.CONTAINER_DESCRIPTION_PASSWORD }}
 
-  # Job to build and test each of the modified images
-  manual-build:
+  # Job to tag the per-platform images of each modified image as one multi-platform image
+  merge:
+    needs: [changes, build]
     strategy:
+      fail-fast: false
       matrix:
-        directory: ${{ fromJSON(github.event.inputs.list) }}
-    if: ${{ github.event.inputs.list != '' && github.event.inputs.list != '[]' && github.event_name == 'workflow_dispatch' }}
+        image: ${{ fromJSON(needs.changes.outputs.images) }}
+    # Run even when another image failed to build; the merge refuses to publish an incomplete image
+    if: ${{ !cancelled() && github.event_name != 'pull_request' && needs.changes.outputs.images != '' && needs.changes.outputs.images != '[]' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
 
-      - name: Get build parameters
-        shell: bash
-        working-directory: ${{ matrix.directory }}
-        run: |
-          TOPLEVEL=$(git rev-parse --show-toplevel)
-          {
-            echo "run-lint-stage=$("${TOPLEVEL}/bin/run-lint-stage.sh")"
-            echo "run-test-stage=$("${TOPLEVEL}/bin/run-test-stage.sh")"
-            echo "test-entrypoint=$("${TOPLEVEL}/bin/test-entrypoint.sh")"
-          } >> "${GITHUB_ENV}"
-          cat "${GITHUB_ENV}"
-
-      - uses: boxcutter/container-build-publish-action@main
+      - uses: boxcutter/container-build-publish-action/merge@main
         with:
-          workdir: ${{ matrix.directory }}
-          build-type: 'hosted'
-          run-lint-stage: ${{ env.run-lint-stage }}
-          run-test-stage: ${{ env.run-test-stage }}
-          test-entrypoint: ${{ env.test-entrypoint }}
+          workdir: ${{ matrix.image }}
           dockerhub-username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
           dockerhub-password: ${{ secrets.CONTAINER_DESCRIPTION_PASSWORD }}
