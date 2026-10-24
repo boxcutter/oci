@@ -8,11 +8,12 @@ RUN usermod --login slidev node \
   && groupmod --new-name slidev node \
   && usermod --home /home/slidev --move-home slidev
 
+# Install only the system libraries Chromium needs, since projects export with
+# playwright-chromium. The browser itself is installed per project by npm.
+RUN npx --yes playwright@latest install-deps chromium \
+  && rm -rf /var/lib/apt/lists/* /root/.npm
+
 COPY --chmod=0755 entrypoint.sh /
-
-USER root
-
-RUN npx playwright install-deps
 
 USER slidev
 
@@ -22,6 +23,8 @@ ENV CHOKIDAR_USEPOLLING=true
 # Keep Playwright browsers in node_modules on the bind mount so they persist
 # between runs and match the playwright-chromium version in the project
 ENV PLAYWRIGHT_BROWSERS_PATH=0
+
+EXPOSE 3030
 
 # Define the main process
 ENTRYPOINT ["/entrypoint.sh"]
