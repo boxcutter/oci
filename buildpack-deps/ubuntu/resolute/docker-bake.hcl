@@ -66,5 +66,5 @@ target "default" {
     "${TAG_PREFIX}:${buildtags.name}${variant.tag}",
     "${TAG_PREFIX}:${buildtags.version}${variant.tag}"
   ]
-  platforms = ["linux/amd64", "linux/arm64/v8"]  
+  platforms = ["linux/amd64", "linux/arm64/v8"]
 }

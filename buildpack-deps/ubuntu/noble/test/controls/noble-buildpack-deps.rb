@@ -1,6 +1,3 @@
-image_value = input('test_container_image')
-puts "MISCHA: #{image_value}"
-
 # Everything is based on the curl variant, so curl should exist everywhere
 describe command('curl') do
   it { should exist }
@@ -11,11 +8,11 @@ control 'curl' do
   only_if('curl only') do
     input('test_container_image').include?('curl')
   end
-  
+
   describe command('git') do
     it { should_not exist }
   end
-  
+
   describe command('unzip') do
     it { should_not exist }
   end
@@ -35,14 +32,14 @@ control 'scm' do
   describe command('bzr') do
     it { should_not exist }
   end
-  
+
   describe command('git') do
     it { should exist }
   end
 end
 
 # Stuff that is only in the top level variant
-control 'scm' do
+control 'buildpack-deps' do
   only_if('buildpack-deps') do
     !input('test_container_image').include?('curl') && !input('test_container_image').include?('scm')
   end
@@ -50,4 +47,4 @@ control 'scm' do
   describe command('unzip') do
     it { should exist }
   end
-end 
+end
