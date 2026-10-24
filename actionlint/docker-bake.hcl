@@ -3,7 +3,7 @@ variable "TAG_PREFIX" {
 }
 
 variable "VERSION" {
-  default = "1.7.7"
+  default = "1.7.12"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
@@ -13,10 +13,10 @@ variable "LOCAL_PLATFORM" {
 
 target "_common" {
   args = {
-    ACTIONLINT_URL_AMD64 = "https://github.com/rhysd/actionlint/releases/download/v1.7.7/actionlint_1.7.7_linux_amd64.tar.gz"
-    ACTIONLINT_SHA256_AMD64 = "023070a287cd8cccd71515fedc843f1985bf96c436b7effaecce67290e7e0757"
-    ACTIONLINT_URL_ARM64 = "https://github.com/rhysd/actionlint/releases/download/v1.7.7/actionlint_1.7.7_linux_arm64.tar.gz"
-    ACTIONLINT_SHA256_ARM64 = "401942f9c24ed71e4fe71b76c7d638f66d8633575c4016efd2977ce7c28317d0"
+    ACTIONLINT_URL_AMD64 = "https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz"
+    ACTIONLINT_SHA256_AMD64 = "8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8"
+    ACTIONLINT_URL_ARM64 = "https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_arm64.tar.gz"
+    ACTIONLINT_SHA256_ARM64 = "325e971b6ba9bfa504672e29be93c24981eeb1c07576d730e9f7c8805afff0c6"
   }
   dockerfile = "Containerfile"
   tags = [
@@ -24,9 +24,9 @@ target "_common" {
     "${TAG_PREFIX}:latest"
   ]
   labels = {
-    "org.opencontainers.image.source" = "https://github.com/boxcutter/actionlint"
+    "org.opencontainers.image.source" = "https://github.com/boxcutter/oci"
     "org.opencontainers.image.licenses" = "Apache-2.0"
-    "org.opencontainers.image.description" = "Static checker for GitHub Actions workflow files." 
+    "org.opencontainers.image.description" = "Static checker for GitHub Actions workflow files."
     "org.opencontainers.image.title" = "${TAG_PREFIX}"
     "org.opencontainers.image.created" = "${timestamp()}"
   }
