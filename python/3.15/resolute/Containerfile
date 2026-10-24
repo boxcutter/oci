@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/boxcutter/buildpack-deps:jammy
+ARG BASE_IMAGE=docker.io/boxcutter/buildpack-deps:resolute
 # hadolint ignore=DL3006
 FROM $BASE_IMAGE
 
@@ -12,7 +12,7 @@ ENV PATH=/usr/local/bin:$PATH
 # last attempted removal of LANG broke many users:
 # https://github.com/docker-library/python/pull/570
 # embedded interpreter reproducer (fails with UnicodeEncodeError without LANG on 3.14 and earlier, needs a non-slim Debian variant for gcc):
-# docker run --rm --env LANG= python:3.12 sh -c 'printf "#include <Python.h>\nint main(){Py_Initialize();PyRun_SimpleString(\"print(chr(252),flush=True)\");}" | gcc -x c - $(python3-config --embed --cflags --ldflags) && ./a.out'
+# docker run --rm --env LANG= python:3.15 sh -c 'printf "#include <Python.h>\nint main(){Py_Initialize();PyRun_SimpleString(\"print(chr(252),flush=True)\");}" | gcc -x c - $(python3-config --embed --cflags --ldflags) && ./a.out'
 ENV LANG=C.UTF-8
 
 # runtime dependencies
@@ -25,21 +25,24 @@ RUN set -eux; \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
-ENV GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305
-ENV PYTHON_VERSION=3.12.15
-ENV PYTHON_SHA256=c2c4321961fab0fb999d66e0cecf521c2ab3994c7992873ea99e306c1094fd5a
+ENV PYTHON_VERSION=3.15.1
+ENV PYTHON_SHA256=673ae7232d84c894729882c8257d300ef2d26523911bfd3917ec8ce7f526f99b
 
-# hadolint ignore=DL3003,DL3047
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+# hadolint ignore=DL3003,DL3047,SC2046
 RUN set -eux; \
+	\
+	# Snapshot *existing* manual packages (Ubuntu marks many base packages manual)
+	before="$(apt-mark showmanual | tr ' ' '\n' | sed '/^$/d' | sort -u)"; \
+	\
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
+		libmpdec-dev \
+		libzstd-dev \
+	; \
 	\
 	wget -O python.tar.xz "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz"; \
 	echo "$PYTHON_SHA256 *python.tar.xz" | sha256sum -c -; \
-	wget -O python.tar.xz.asc "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz.asc"; \
-	GNUPGHOME="$(mktemp -d)"; export GNUPGHOME; \
-	gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys "$GPG_KEY"; \
-	gpg --batch --verify python.tar.xz.asc python.tar.xz; \
-	gpgconf --kill all; \
-	rm -rf "$GNUPGHOME" python.tar.xz.asc; \
 	mkdir -p /usr/src/python; \
 	tar --extract --directory /usr/src/python --strip-components=1 --file python.tar.xz; \
 	rm python.tar.xz; \
@@ -107,6 +110,28 @@ RUN set -eux; \
 	; \
 	\
 	ldconfig; \
+	\
+	# Compute *new* manuals introduced by our build, then flip only those back to auto
+	after="$(apt-mark showmanual | tr ' ' '\n' | sed '/^$/d' | sort -u)"; \
+	new_manual="$(comm -13 <(printf '%s\n' "${before}") <(printf '%s\n' "${after}"))"; \
+	if [ -n "${new_manual}" ]; then \
+		printf '%s\n' "${new_manual}" | xargs -r apt-mark auto; \
+	fi; \
+	\
+	# Identify runtime-shared lib providers and mark them manual (so purge keeps them)
+	find /usr/local -type f -executable -not \( -name '*tkinter*' \) -exec ldd '{}' ';' \
+		| awk '/=>/ { so = $(NF-1); if (index(so, "/usr/local/") == 1) { next }; gsub("^/(usr/)?", "", so); printf "*%s\n", so }' \
+		| sort -u \
+		| xargs -rt dpkg-query --search \
+# https://manpages.debian.org/bookworm/dpkg/dpkg-query.1.en.html#S (we ignore diversions and it'll be really unusual for more than one package to provide any given .so file)
+		| awk 'sub(":$", "", $1) { print $1 }' \
+		| sort -u \
+		| xargs -r apt-mark manual \
+	; \
+	\
+	# Remove build deps that are no longer needed; clean caches
+	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
+	rm -rf /var/lib/apt/lists/*; \
 	\
 	export PYTHONDONTWRITEBYTECODE=1; \
 	python3 --version; \
