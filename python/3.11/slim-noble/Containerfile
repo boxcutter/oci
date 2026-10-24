@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/ubuntu:noble-20251013
+ARG BASE_IMAGE=docker.io/ubuntu:noble-20260930.1
 # hadolint ignore=DL3006
 FROM $BASE_IMAGE
 
@@ -7,8 +7,12 @@ FROM $BASE_IMAGE
 ENV PATH=/usr/local/bin:$PATH
 
 # cannot remove LANG even though https://bugs.python.org/issue19846 is fixed
+# - embedded interpreters (uWSGI, mod_wsgi, etc) skip locale coercion and UTF-8 mode before Python 3.15, so they fall back to ASCII
+# - musl (alpine) never gets LC_CTYPE set, so anything that reads locale environment variables (babel) finds none
 # last attempted removal of LANG broke many users:
 # https://github.com/docker-library/python/pull/570
+# embedded interpreter reproducer (fails with UnicodeEncodeError without LANG on 3.14 and earlier, needs a non-slim Debian variant for gcc):
+# docker run --rm --env LANG= python:3.11 sh -c 'printf "#include <Python.h>\nint main(){Py_Initialize();PyRun_SimpleString(\"print(chr(252),flush=True)\");}" | gcc -x c - $(python3-config --embed --cflags --ldflags) && ./a.out'
 ENV LANG=C.UTF-8
 
 # runtime dependencies
@@ -22,8 +26,8 @@ RUN set -eux; \
   rm -rf /var/lib/apt/lists/*
 
 ENV GPG_KEY=A035C8C19219BA821ECEA86B64E628F8D684696D
-ENV PYTHON_VERSION=3.11.13
-ENV PYTHON_SHA256=8fb5f9fbc7609fa822cb31549884575db7fd9657cbffb89510b5d7975963a83a
+ENV PYTHON_VERSION=3.11.17
+ENV PYTHON_SHA256=bfb74ad39efae27cda510f134ab408e00f9992c56851cfc0b1cdb5646da11599
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # hadolint ignore=DL3003,DL3013,DL3047,SC2086
@@ -35,6 +39,7 @@ RUN set -eux; \
   apt-get update; \
   apt-get install -y --no-install-recommends \
     dpkg-dev \
+    g++ \
     gcc \
     gnupg \
     libbluetooth-dev \
@@ -82,7 +87,7 @@ RUN set -eux; \
   nproc="$(nproc)"; \
   EXTRA_CFLAGS="$(dpkg-buildflags --get CFLAGS)"; \
   LDFLAGS="$(dpkg-buildflags --get LDFLAGS)"; \
-  LDFLAGS="${LDFLAGS:--Wl},--strip-all"; \
+  LDFLAGS="${LDFLAGS:-} -Wl,--strip-all"; \
   make -j "$nproc" \
     "EXTRA_CFLAGS=${EXTRA_CFLAGS:-}" \
     "LDFLAGS=${LDFLAGS:-}" \
@@ -92,7 +97,7 @@ RUN set -eux; \
   rm python; \
   make -j "$nproc" \
     "EXTRA_CFLAGS=${EXTRA_CFLAGS:-}" \
-    "LDFLAGS=${LDFLAGS:--Wl},-rpath='\$\$ORIGIN/../lib'" \
+    "LDFLAGS=${LDFLAGS:-} -Wl,-rpath='\$\$ORIGIN/../lib'" \
     python \
   ; \
   make install; \
@@ -109,6 +114,13 @@ RUN set -eux; \
   \
   ldconfig; \
   \
+    # Compute *new* manuals introduced by our build, then flip only those back to auto
+    after="$(apt-mark showmanual | tr ' ' '\n' | sed '/^$/d' | sort -u)"; \
+    new_manual="$(comm -13 <(printf '%s\n' "${before}") <(printf '%s\n' "${after}"))"; \
+    if [ -n "${new_manual}" ]; then \
+      printf '%s\n' "${new_manual}" | xargs -r apt-mark auto; \
+    fi; \
+    \
     # Identify runtime-shared lib providers and mark them manual (so purge keeps them)
     find /usr/local -type f -executable -not \( -name '*tkinter*' \) -exec ldd '{}' ';' \
       | awk '/=>/ { so = $(NF-1); if (index(so, "/usr/local/") == 1) { next } ; gsub("^/(usr/)?", "", so); printf "*%s\n", so }' \
@@ -119,13 +131,6 @@ RUN set -eux; \
       | sort -u \
       | xargs -r apt-mark manual \
     ; \
-    \
-    # Compute *new* manuals introduced by our build, then flip only those back to auto
-    after="$(apt-mark showmanual | tr ' ' '\n' | sed '/^$/d' | sort -u)"; \
-    new_manual="$(comm -13 <(printf '%s\n' "${before}") <(printf '%s\n' "${after}"))"; \
-    if [ -n "${new_manual}" ]; then \
-      printf '%s\n' "${new_manual}" | xargs -r apt-mark auto; \
-    fi; \
     \
     # Remove build deps that are no longer needed; clean caches
     apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
@@ -139,9 +144,8 @@ RUN set -eux; \
       --disable-pip-version-check \
       --no-cache-dir \
       --no-compile \
-      'setuptools==65.5.1' \
-      # https://github.com/docker-library/python/issues/1023
-      'wheel<0.46' \
+      'setuptools==79.0.1' \
+      'wheel==0.46.3' \
   ; \
   pip3 --version
 

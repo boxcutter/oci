@@ -3,7 +3,7 @@ variable "TAG_PREFIX" {
 }
 
 variable "VERSION" {
-  default = "3.12.12"
+  default = "3.12.15"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
@@ -35,4 +35,4 @@ target "local" {
 target "default" {
   inherits = ["_common"]
   platforms = ["linux/amd64", "linux/arm64/v8"]
-} 
+}
