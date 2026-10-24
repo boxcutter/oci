@@ -70,8 +70,6 @@ jobs:
             dokken/ubuntu-26.04: 'dokken/ubuntu-26.04/**'
             dokken/ubuntu-26.10: 'dokken/ubuntu-26.10/**'
             doctl: 'doctl/**'
-            erlang/26/slim: 'erlang/26/slim/**'
-            erlang/26: 'erlang/26/**'
             flake8: 'flake8/**'
             fpm: 'fpm/**'
             gcc/13: 'gcc/13/**'
