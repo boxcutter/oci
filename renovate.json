@@ -1,0 +1,98 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    "schedule:weekly"
+  ],
+  "ignorePaths": [
+    ".idea/**"
+  ],
+  "customManagers": [
+    {
+      "description": "Base images set as quoted strings in docker-bake.hcl, which override the Containerfile ARG default",
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/(^|/)docker-bake\\.hcl$/"
+      ],
+      "matchStrings": [
+        "\"(?<depName>(?:docker\\.io|quay\\.io|ghcr\\.io)/[^\":$]+):(?<currentValue>[^\"$]+)\""
+      ],
+      "datasourceTemplate": "docker"
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "Each directory pins one distro release (almalinux-8, oraclelinux-7, ubuntu-22.04, ...), so never jump majors",
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "enabled": false
+    },
+    {
+      "description": "openSUSE Leap point releases get their own dokken directory (opensuse-leap-16.0), so a 16.1 is added by hand",
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "opensuse/leap",
+        "docker.io/opensuse/leap"
+      ],
+      "enabled": false
+    },
+    {
+      "description": "Language bases built in this repo are pinned deliberately and moved by hand",
+      "matchManagers": [
+        "dockerfile",
+        "custom.regex"
+      ],
+      "matchPackageNames": [
+        "docker.io/boxcutter/**",
+        "boxcutter/**"
+      ],
+      "enabled": false
+    },
+    {
+      "description": "Ubuntu codename-date tags (resolute-20261006, noble-20260930.1): stay on the codename, take the newest date",
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "ubuntu",
+        "docker.io/ubuntu"
+      ],
+      "matchCurrentValue": "/^[a-z]+-\\d{8}(\\.\\d+)?$/",
+      "versioning": "regex:^(?<compatibility>[a-z]+)-(?<major>\\d{4})(?<minor>\\d{4})(\\.(?<patch>\\d+))?$",
+      "enabled": true,
+      "separateMajorMinor": false,
+      "groupName": "ubuntu base images"
+    },
+    {
+      "description": "Numeric ubuntu tags (22.04, 26.10) name a release on purpose; ubuntu versioning would otherwise swap them for codename tags",
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "ubuntu",
+        "docker.io/ubuntu",
+        "docker.io/arm64v8/ubuntu"
+      ],
+      "matchCurrentValue": "!/^[a-z]+-\\d{8}(\\.\\d+)?$/",
+      "enabled": false
+    },
+    {
+      "description": "Batch routine action bumps into one PR",
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "digest"
+      ],
+      "groupName": "github actions"
+    }
+  ]
+}
