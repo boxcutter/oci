@@ -3,7 +3,7 @@ variable "TAG_PREFIX" {
 }
 
 variable "VERSION" {
-  default = "3.3.8"
+  default = "4.0.9"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
@@ -14,10 +14,10 @@ variable "LOCAL_PLATFORM" {
 target "_common" {
   dockerfile = "Containerfile"
   tags = [
-    "${TAG_PREFIX}:slim-jammy",
-    "${TAG_PREFIX}:3-slim-jammy",
-    "${TAG_PREFIX}:${VERSION}-slim-jammy",
-    "${TAG_PREFIX}:${join(".", slice(split(".", "${VERSION}"), 0, 2))}-slim-jammy",
+    "${TAG_PREFIX}:resolute",
+    "${TAG_PREFIX}:4-resolute",
+    "${TAG_PREFIX}:${VERSION}-resolute",
+    "${TAG_PREFIX}:${join(".", slice(split(".", "${VERSION}"), 0, 2))}-resolute",
   ]
   labels = {
     "org.opencontainers.image.source" = "https://github.com/boxcutter/oci"
@@ -37,4 +37,4 @@ target "local" {
 target "default" {
   inherits = ["_common"]
   platforms = ["linux/amd64", "linux/arm64/v8"]
-} 
+}
