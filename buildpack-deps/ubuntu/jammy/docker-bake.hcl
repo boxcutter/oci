@@ -17,7 +17,7 @@ variable "VARIANT" {
 
 variable "BUILDTAGS" {
   default = [
-    { name = "jammy", base = "docker.io/ubuntu:jammy-20251013", version = "22.04" },
+    { name = "jammy", base = "docker.io/ubuntu:jammy-20260930", version = "22.04" },
   ]
 }
 
@@ -66,5 +66,5 @@ target "default" {
     "${TAG_PREFIX}:${buildtags.name}${variant.tag}",
     "${TAG_PREFIX}:${buildtags.version}${variant.tag}"
   ]
-  platforms = ["linux/amd64", "linux/arm64/v8"]  
+  platforms = ["linux/amd64", "linux/arm64/v8"]
 }
