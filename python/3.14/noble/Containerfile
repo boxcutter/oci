@@ -29,7 +29,7 @@ ENV PYTHON_VERSION=3.14.9
 ENV PYTHON_SHA256=e02d9ac21cebda6e46435369744a92c65cc7cd8669697694122cf97ffacd1e53
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-# hadolint ignore=DL3003,DL3047,SC2086
+# hadolint ignore=DL3003,DL3047,SC2046
 RUN set -eux; \
 	\
 	# Snapshot *existing* manual packages (Ubuntu marks many base packages manual)

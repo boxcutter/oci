@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/ubuntu:jammy-20260930
+ARG BASE_IMAGE=docker.io/boxcutter/buildpack-deps:resolute
 # hadolint ignore=DL3006
 FROM $BASE_IMAGE
 
@@ -19,9 +19,9 @@ ENV LANG=C.UTF-8
 RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
-		ca-certificates \
-		netbase \
-		tzdata \
+		libbluetooth-dev \
+		tk-dev \
+		uuid-dev \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
@@ -30,36 +30,8 @@ ENV PYTHON_VERSION=3.12.15
 ENV PYTHON_SHA256=c2c4321961fab0fb999d66e0cecf521c2ab3994c7992873ea99e306c1094fd5a
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-# hadolint ignore=DL3003,DL3047,SC2086
+# hadolint ignore=DL3003,DL3047,SC2046
 RUN set -eux; \
-	\
-    # Snapshot *existing* manual packages (Ubuntu marks many base packages manual)
-    before="$(apt-mark showmanual | tr ' ' '\n' | sed '/^$/d' | sort -u)"; \
-    \
-	apt-get update; \
-	apt-get install -y --no-install-recommends \
-		dpkg-dev \
-		g++ \
-		gcc \
-		gnupg \
-		libbluetooth-dev \
-		libbz2-dev \
-		libc6-dev \
-		libdb-dev \
-		libffi-dev \
-		libgdbm-dev \
-		liblzma-dev \
-		libncursesw5-dev \
-		libreadline-dev \
-		libsqlite3-dev \
-		libssl-dev \
-		make \
-		tk-dev \
-		uuid-dev \
-		wget \
-		xz-utils \
-		zlib1g-dev \
-	; \
 	\
 	wget -O python.tar.xz "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz"; \
 	echo "$PYTHON_SHA256 *python.tar.xz" | sha256sum -c -; \
@@ -87,7 +59,6 @@ RUN set -eux; \
 	nproc="$(nproc)"; \
 	EXTRA_CFLAGS="$(dpkg-buildflags --get CFLAGS)"; \
 	LDFLAGS="$(dpkg-buildflags --get LDFLAGS)"; \
-	LDFLAGS="${LDFLAGS:-} -Wl,--strip-all"; \
 	arch="$(dpkg --print-architecture)"; arch="${arch##*-}"; \
 # https://docs.python.org/3.12/howto/perf_profiling.html
 # https://github.com/docker-library/python/pull/1000#issuecomment-2597021615
@@ -120,6 +91,12 @@ RUN set -eux; \
 	; \
 	make install; \
 	\
+# enable GDB to load debugging data: https://github.com/docker-library/python/pull/701
+	bin="$(readlink -ve /usr/local/bin/python3)"; \
+	dir="$(dirname "$bin")"; \
+	mkdir -p "/usr/share/gdb/auto-load/$dir"; \
+	cp -vL Tools/gdb/libpython.py "/usr/share/gdb/auto-load/$bin-gdb.py"; \
+	\
 	cd /; \
 	rm -rf /usr/src/python; \
 	\
@@ -131,30 +108,7 @@ RUN set -eux; \
 	; \
 	\
 	ldconfig; \
-    \
-    # Compute *new* manuals introduced by our build, then flip only those back to auto
-    after="$(apt-mark showmanual | tr ' ' '\n' | sed '/^$/d' | sort -u)"; \
-    new_manual="$(comm -13 <(printf '%s\n' "${before}") <(printf '%s\n' "${after}"))"; \
-    if [ -n "${new_manual}" ]; then \
-      printf '%s\n' "${new_manual}" | xargs -r apt-mark auto; \
-    fi; \
-    \
-    # Identify runtime-shared lib providers and mark them manual (so purge keeps them)
-    find /usr/local -type f -executable -not \( -name '*tkinter*' \) -exec ldd '{}' ';' \
-      | awk '/=>/ { so = $(NF-1); if (index(so, "/usr/local/") == 1) { next } ; gsub("^/(usr/)?", "", so); printf "*%s\n", so }' \
-      | sort -u \
-      | xargs -rt dpkg-query --search \
-# https://manpages.debian.org/bookworm/dpkg/dpkg-query.1.en.html#S (we ignore diversions and it'll be really unusual for more than one package to provide any given .so file)
-      | awk 'sub(":$", "", $1) { print $1 }' \
-      | sort -u \
-      | xargs -r apt-mark manual \
-    ; \
-    \
-    # Remove build deps that are no longer needed; clean caches
-    apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
-    apt-get clean; \
-    rm -rf /var/lib/apt/lists/*; \
-    \
+	\
 	export PYTHONDONTWRITEBYTECODE=1; \
 	python3 --version; \
 	pip3 --version
