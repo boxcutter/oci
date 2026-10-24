@@ -78,7 +78,6 @@ jobs:
             golang/1.25/noble: 'golang/1.25/noble/**'
             hadolint: 'hadolint/**'
             jsonnet: 'jsonnet/**'
-            markmaker: 'markmaker/**'
             meshcmd: 'meshcmd/**'
             node/22/resolute-slim: 'node/22/resolute-slim/**'
             node/24/resolute-slim: 'node/24/resolute-slim/**'
