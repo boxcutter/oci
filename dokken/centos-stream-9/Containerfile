@@ -5,6 +5,7 @@ FROM ${BASE_IMAGE}
 # NOTE: CentOS Stream 9 is still under heavy development
 # hadolint ignore=DL3041
 RUN <<EOF
+  set -e
   dnf --allowerasing  -y install \
 	binutils \
 	ca-certificates \
@@ -41,7 +42,7 @@ RUN <<EOF
 	which
   dnf upgrade -y
   dnf clean all
-  rm -rf /var/log/*
+  rm -rf /var/cache/dnf/* /var/lib/dnf/history* /var/lib/rpm/__db.* /var/log/* /tmp/* /var/tmp/*
   find /etc/systemd/system \
 	/lib/systemd/system \
 	-path '*.wants/*' \
@@ -54,7 +55,9 @@ RUN <<EOF
 	-or -name '*udev*' \) \
 	-exec rm -v {} \;
   systemctl set-default multi-user.target
-  systemctl mask dev-hugepages.mount sys-fs-fuse-connections.mount network.service systemd-journal-flush.service	
+  systemctl mask dev-hugepages.mount sys-fs-fuse-connections.mount network.service systemd-journal-flush.service
+  # Let systemd generate a unique machine-id in each container
+  truncate -s 0 /etc/machine-id
 EOF
 
 # Distrust the roots that the compromised eMudhra intermediates chain to

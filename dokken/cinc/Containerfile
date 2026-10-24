@@ -20,6 +20,7 @@ WORKDIR /tmp/cinc
 # work better.
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN <<EOF
+  set -e
   apt-get install -y --update --no-install-recommends \
     ca-certificates \
     curl
@@ -67,6 +68,7 @@ COPY --from=download /tmp/cinc/ca-bundle.pem /tmp/ca-bundle.pem
 # We're using busybox with /bin/sh so DL4006 does not apply
 # hadolint ignore=DL4006
 RUN <<EOF
+  set -e
   # Since busybox includes tools to extract rpm packages, we fetch the rpm
   # package for cinc-client. However since this is a data volume and this
   # container never actually runs, this will work with any OS distro, as it

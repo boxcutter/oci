@@ -4,6 +4,7 @@ FROM ${BASE_IMAGE}
 
 # hadolint ignore=DL3015
 RUN <<EOF
+  set -e
   apt-get update
   DEBIAN_FRONTEND=noninteractive apt-get -y install \
     apt-utils \
@@ -26,6 +27,8 @@ RUN <<EOF
     netcat \
     nmap \
     perl \
+    python3 \
+    python-is-python3 \
     procps \
     snapd \
     strace \
@@ -39,7 +42,8 @@ RUN <<EOF
     wget 
   apt-get clean
   apt-get -y autoremove
-  rm -rf /tmp/* /var/tmp/*
+  rm -rf /tmp/* /var/tmp/* /var/lib/dpkg/*-old /var/cache/debconf/*-old
+  find /var/log -type f -delete
   find /etc/systemd/system \
     /lib/systemd/system \
     -path '*.wants/*' \
@@ -53,6 +57,8 @@ RUN <<EOF
     -exec rm -v {} \;
   systemctl set-default multi-user.target
   systemctl mask dev-hugepages.mount sys-fs-fuse-connections.mount network.service
+  # Let systemd generate a unique machine-id in each container
+  truncate -s 0 /etc/machine-id
 EOF
 
 # Distrust the roots that the compromised eMudhra intermediates chain to

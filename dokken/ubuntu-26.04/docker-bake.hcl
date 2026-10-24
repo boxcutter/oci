@@ -1,5 +1,5 @@
 variable "TAG_PREFIX" {
-  default = "docker.io/boxcutter/dokken-ubuntu-25.04"
+  default = "docker.io/boxcutter/dokken-ubuntu-26.04"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
@@ -15,7 +15,7 @@ target "_common" {
   labels = {
     "org.opencontainers.image.source" = "https://github.com/boxcutter/oci"
     "org.opencontainers.image.licenses" = "Apache-2.0"
-    "org.opencontainers.image.description" = "Ubuntu 25.04 image for use with kitchen-dokken"
+    "org.opencontainers.image.description" = "Ubuntu 26.04 image for use with kitchen-dokken"
     "org.opencontainers.image.title" = "${TAG_PREFIX}"
     "org.opencontainers.image.created" = "${timestamp()}"
     "dev.boxcutter.image.readme-filepath" = "dokken/README.md"
