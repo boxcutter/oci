@@ -4,7 +4,7 @@ This image can be used to generate Ubuntu custom autoinstall ISOs - standard Ubu
 on [cloudymax/pxeless](https://github.com/cloudymax/pxeless) which is in
 turn based on [covertsh/ubuntu-autoinstall-generator](https://github.com/covertsh/ubuntu-autoinstall-generator).
 
-Creating a bootable ISO requires embedding special boot sectors on the image that require root permissions. It's easier to assemble a temporary filesystem with all the necessary permissions within a container image, and then discard it once the ISO has been created.
+Creating a bootable ISO requires extracting the original image, embedding special boot sectors and reassembling it with tools like `xorriso` and `fdisk`. It's easier to assemble a temporary filesystem with all the necessary tooling within a container image, and then discard it once the ISO has been created.
 
 You'll need to create an [`autoinstall.yaml`](https://canonical-subiquity.readthedocs-hosted.com/en/latest/reference/autoinstall-reference.html#interactive-sections)
 file that contains your answers to all installation configuration prompts ahead of time. A good way to create a starter version of this file is to run through the Ubuntu install process manually on the desired equipment. The  Ubuntu installer will create an autoinstall for repeating the installation in `/var/log/installer/autoinstall-user-data`. You can use this file as a starting point, then edit the file as needed.
@@ -42,6 +42,22 @@ $ docker run -it --rm \
 ## Autoinstall by way of cloud-config
 
 
+
+## Running as a non-root user
+
+The container runs as root by default, so on Linux hosts the generated ISO
+will be owned by root. To have the ISO owned by your user instead, pass
+`--user`:
+
+```bash
+$ docker run -it --rm \
+  --user "$(id -u):$(id -g)" \
+  --mount type=bind,source="$(pwd)",target=/data \
+  docker.io/boxcutter/ubuntu-autoinstall \
+    --source ubuntu-24.04.3-live-server-amd64.iso \
+    --autoinstall autoinstall.yaml \
+    --config-root
+```
 
 ## CLI
 

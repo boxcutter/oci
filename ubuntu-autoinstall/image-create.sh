@@ -107,6 +107,10 @@ extract_iso() {
     -extract / "${ISO_FILESYSTEM_DIR}" \
     > /dev/null 2>&1 || die "ISO extraction failed"
 
+  # xorriso preserves the read-only permissions from the ISO, so make the
+  # extracted tree writable to allow patching and cleanup as a non-root user.
+  chmod -R u+w "${ISO_FILESYSTEM_DIR}"
+
   # Ubuntu's installation ISOs are hybrid boot images, they contain a bootable
   # MBR (for BIOS boot) and a GPT header (for UEFI boot).
   MBR_IMAGE="ubuntu-original-${TODAY}.mbr"

@@ -1,16 +1,18 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/ubuntu:resolute-20260912
+ARG BASE_IMAGE=docker.io/ubuntu:resolute-20261006
 FROM $BASE_IMAGE
 
 RUN <<EOF
-  apt-get install -y --update --no-install-recommends \
+  set -e
+  apt-get install --update --no-install-recommends -y \
     fdisk \
     xorriso
+  rm -rf /var/lib/apt/lists/*
 EOF
 
-COPY image-create.sh /app/
+COPY --chmod=0755 image-create.sh /app/
 
 VOLUME /data
 WORKDIR /data
 
-ENTRYPOINT [ "/app/image-create.sh" ]
+ENTRYPOINT ["/app/image-create.sh"]
