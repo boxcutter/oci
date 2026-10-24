@@ -3,7 +3,7 @@ variable "TAG_PREFIX" {
 }
 
 variable "VERSION" {
-  default = "2.14.0"
+  default = "2.15.1"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
@@ -13,10 +13,10 @@ variable "LOCAL_PLATFORM" {
 
 target "_common" {
   args = {
-    HADOLINT_URL_AMD64 = "https://github.com/hadolint/hadolint/releases/download/v2.14.0/hadolint-linux-x86_64"
-    HADOLINT_SHA256_AMD64 = "6bf226944684f56c84dd014e8b979d27425c0148f61b3bd99bcc6f39e9dc5a47"
-    HADOLINT_URL_ARM64 = "https://github.com/hadolint/hadolint/releases/download/v2.14.0/hadolint-linux-arm64"
-    HADOLINT_SHA256_ARM64 = "331f1d3511b84a4f1e3d18d52fec284723e4019552f4f47b19322a53ce9a40ed"
+    HADOLINT_URL_AMD64 = "https://github.com/hadolint/hadolint/releases/download/v2.15.1/hadolint-linux-x86_64"
+    HADOLINT_SHA256_AMD64 = "c7187db94eeeeca956519a6af171adc31453941a1e777961f6e680f697c8c507"
+    HADOLINT_URL_ARM64 = "https://github.com/hadolint/hadolint/releases/download/v2.15.1/hadolint-linux-arm64"
+    HADOLINT_SHA256_ARM64 = "f6198ef8090f404dbb771abfee086eb8c48ac177f30da7fd3510aca35b344b5d"
   }
   dockerfile = "Containerfile"
   tags = [
@@ -26,10 +26,9 @@ target "_common" {
   labels = {
     "org.opencontainers.image.source" = "https://github.com/boxcutter/oci"
     "org.opencontainers.image.licenses" = "Apache-2.0"
-    "org.opencontainers.image.description" = "Dockerfile linter, validate inline bash, written in Haskell." 
+    "org.opencontainers.image.description" = "Dockerfile linter, validate inline bash, written in Haskell."
     "org.opencontainers.image.title" = "${TAG_PREFIX}"
     "org.opencontainers.image.created" = "${timestamp()}"
-    "dev.boxcutter.container-build-publish-action.run-test-stage" = "false"
     "dev.boxcutter.container-build-publish-action.run-lint-stage" = "false"
   }
 }
