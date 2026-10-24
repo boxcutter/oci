@@ -48,6 +48,7 @@ jobs:
             dokken/amazonlinux-2023: 'dokken/amazonlinux-2023/**'
             dokken/centos-stream-9: 'dokken/centos-stream-9/**'
             dokken/centos-stream-10: 'dokken/centos-stream-10/**'
+            dokken/cinc: 'dokken/cinc/**'
             dokken/debian-12: 'dokken/debian-12/**'
             dokken/debian-13: 'dokken/debian-13/**'
             dokken/debian-14: 'dokken/debian-14/**'
@@ -73,6 +74,9 @@ jobs:
             erlang/26: 'erlang/26/**'
             flake8: 'flake8/**'
             fpm: 'fpm/**'
+            gcc/13: 'gcc/13/**'
+            gcc/14: 'gcc/14/**'
+            gcc/15: 'gcc/15/**'
             glab: 'glab/**'
             go2chef: 'go2chef/**'
             golang/1.24/noble: 'golang/1.24/noble/**'
@@ -104,13 +108,33 @@ jobs:
             prometheus/prometheus/3.x: 'prometheus/prometheus/3.x/**'
             prometheus/snmp-exporter: 'prometheus/snmp-exporter/**'
             prometheus/snmp-generator: 'prometheus/snmp-generator/**'
+            pulumi/pulumi: 'pulumi/pulumi/**'
             pulumi/pulumi-base: 'pulumi/pulumi-base/**'
             pulumi/pulumi-nodejs: 'pulumi/pulumi-nodejs/**'
             pulumi/pulumi-python: 'pulumi/pulumi-python/**'
+            python/3.11/jammy: 'python/3.11/jammy/**'
+            python/3.11/noble: 'python/3.11/noble/**'
+            python/3.11/slim-jammy: 'python/3.11/slim-jammy/**'
+            python/3.11/slim-noble: 'python/3.11/slim-noble/**'
+            python/3.12/jammy: 'python/3.12/jammy/**'
+            python/3.12/noble: 'python/3.12/noble/**'
+            python/3.12/slim-jammy: 'python/3.12/slim-jammy/**'
+            python/3.12/slim-noble: 'python/3.12/slim-noble/**'
+            python/3.13/jammy: 'python/3.13/jammy/**'
+            python/3.13/noble: 'python/3.13/noble/**'
+            python/3.13/slim-jammy: 'python/3.13/slim-jammy/**'
+            python/3.13/slim-noble: 'python/3.13/slim-noble/**'
+            python/3.14/noble: 'python/3.14/noble/**'
+            python/3.14/slim-noble: 'python/3.14/slim-noble/**'
+            python/3.15/noble: 'python/3.15/noble/**'
+            python/3.15/slim-noble: 'python/3.15/slim-noble/**'
             redis/6.2/noble: 'redis/6.2/noble/**'
             redis/7.0/noble: 'redis/7.0/noble/**'
             redis/7.2/noble: 'redis/7.2/noble/**'
             redis/7.4/noble: 'redis/7.4/noble/**'
+            ros/humble/ubuntu/jammy: 'ros/humble/ubuntu/jammy/**'
+            ros/jazzy/ubuntu/noble: 'ros/jazzy/ubuntu/noble/**'
+            ros/kilted/ubuntu/noble: 'ros/kilted/ubuntu/noble/**'
             ruby/3.2/jammy: 'ruby/3.2/jammy/**'
             ruby/3.2/noble: 'ruby/3.2/noble/**'
             ruby/3.2/slim-jammy: 'ruby/3.2/slim-jammy/**'
@@ -128,6 +152,7 @@ jobs:
             slidev: 'slidev/**'
             snmp: 'snmp/**'
             ubuntu-autoinstall: 'ubuntu-autoinstall/**'
+            uv: 'uv/**'
             valkey/8.1/ubuntu: 'valkey/8.1/ubuntu/**'
             
   # Job to build and test each of the modified images
@@ -172,7 +197,7 @@ jobs:
       matrix:
         directory: ${{ fromJSON(github.event.inputs.list) }}
     if: ${{ github.event.inputs.list != '' && github.event.inputs.list != '[]' && github.event_name == 'workflow_dispatch' }}
-    runs-on: [self-hosted, multi-arch]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
@@ -192,85 +217,7 @@ jobs:
       - uses: boxcutter/container-build-publish-action@main
         with:
           workdir: ${{ matrix.directory }}
-          build-type: 'local'
-          run-lint-stage: ${{ env.run-lint-stage }}
-          run-test-stage: ${{ env.run-test-stage }}
-          test-entrypoint: ${{ env.test-entrypoint }}
-          dockerhub-username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
-          dockerhub-password: ${{ secrets.CONTAINER_DESCRIPTION_PASSWORD }}
-
-  # Job to run change detection
-  self-hosted-changes:
-    # Temporarily disabled: migrating self-hosted runners
-    if: ${{ false && github.event_name != 'workflow_dispatch' }}
-    runs-on: [self-hosted, multi-arch]
-    outputs:
-      images: ${{ steps.self-hosted-filter.outputs.changes }}
-    steps:
-      - uses: actions/checkout@v7
-
-      - uses: dorny/paths-filter@v4
-        id: self-hosted-filter
-        with:
-          base: ${{ github.ref }}
-          filters: |
-            dokken/cinc: 'dokken/cinc/**'
-            gcc/13: 'gcc/13/**'
-            gcc/14: 'gcc/14/**'
-            gcc/15: 'gcc/15/**'
-            pulumi/pulumi: 'pulumi/pulumi/**'
-            python/3.11/jammy: 'python/3.11/jammy/**'
-            python/3.11/noble: 'python/3.11/noble/**'
-            python/3.11/slim-jammy: 'python/3.11/slim-jammy/**'
-            python/3.11/slim-noble: 'python/3.11/slim-noble/**'
-            python/3.12/jammy: 'python/3.12/jammy/**'
-            python/3.12/noble: 'python/3.12/noble/**'
-            python/3.12/slim-jammy: 'python/3.12/slim-jammy/**'
-            python/3.12/slim-noble: 'python/3.12/slim-noble/**'
-            python/3.13/jammy: 'python/3.13/jammy/**'
-            python/3.13/noble: 'python/3.13/noble/**'
-            python/3.13/slim-jammy: 'python/3.13/slim-jammy/**'
-            python/3.13/slim-noble: 'python/3.13/slim-noble/**'
-            python/3.14/noble: 'python/3.14/noble/**'
-            python/3.14/slim-noble: 'python/3.14/slim-noble/**'
-            python/3.15/noble: 'python/3.15/noble/**'
-            python/3.15/slim-noble: 'python/3.15/slim-noble/**'
-            ros/humble/ubuntu/jammy: 'ros/humble/ubuntu/jammy/**'
-            ros/jazzy/ubuntu/noble: 'ros/jazzy/ubuntu/noble/**'
-            ros/kilted/ubuntu/noble: 'ros/kilted/ubuntu/noble/**'
-            uv: 'uv/**'
-
-  # Job to build and test each of the modified images
-  self-hosted-build:
-    needs: self-hosted-changes
-    strategy:
-      matrix:
-        # Parse JSON array containing names of all filters matching any of changed files
-        # e.g. ['image1', 'image2'] if both image folders contains changes
-        image: ${{ fromJSON(needs.self-hosted-changes.outputs.images) }}
-    # Temporarily disabled: self-hosted runners being migrated
-    if: ${{ false && needs.self-hosted-changes.outputs.images != '[]' && needs.self-hosted-changes.outputs.images != '' && github.event_name != 'workflow_dispatch'}}
-    runs-on: [self-hosted, multi-arch]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v7
-
-      - name: Get build parameters
-        shell: bash
-        working-directory: ${{ matrix.image }}
-        run: |
-          TOPLEVEL=$(git rev-parse --show-toplevel)
-          {
-            echo "run-lint-stage=$("${TOPLEVEL}/bin/run-lint-stage.sh")"
-            echo "run-test-stage=$("${TOPLEVEL}/bin/run-test-stage.sh")"
-            echo "test-entrypoint=$("${TOPLEVEL}/bin/test-entrypoint.sh")"
-          } >> "${GITHUB_ENV}"
-          cat "${GITHUB_ENV}"
-
-      - uses: boxcutter/container-build-publish-action@main
-        with:
-          workdir: ${{ matrix.image }}
-          build-type: 'local'
+          build-type: 'hosted'
           run-lint-stage: ${{ env.run-lint-stage }}
           run-test-stage: ${{ env.run-test-stage }}
           test-entrypoint: ${{ env.test-entrypoint }}
