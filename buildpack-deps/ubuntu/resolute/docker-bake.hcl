@@ -17,7 +17,7 @@ variable "VARIANT" {
 
 variable "BUILDTAGS" {
   default = [
-    { name = "resolute", base = "docker.io/ubuntu:resolute-20251208", version = "26.04" },
+    { name = "resolute", base = "docker.io/ubuntu:resolute-20261006", version = "26.04" },
   ]
 }
 
