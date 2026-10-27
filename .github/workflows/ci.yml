@@ -82,6 +82,8 @@ jobs:
             node/22/resolute-slim: 'node/22/resolute-slim/**'
             node/24/resolute-slim: 'node/24/resolute-slim/**'
             node/26/resolute-slim: 'node/26/resolute-slim/**'
+            openjdk/eclipse-temurin/8/jdk/ubuntu/resolute: 'openjdk/eclipse-temurin/8/jdk/ubuntu/resolute/**'
+            openjdk/eclipse-temurin/8/jre/ubuntu/resolute: 'openjdk/eclipse-temurin/8/jre/ubuntu/resolute/**'
             prometheus/alertmanager: 'prometheus/alertmanager/**'
             prometheus/blackbox-exporter: 'prometheus/blackbox-exporter/**'
             prometheus/node-exporter: 'prometheus/node-exporter/**'
