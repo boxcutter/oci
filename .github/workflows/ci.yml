@@ -88,6 +88,7 @@ jobs:
             prometheus/prometheus/3.x: 'prometheus/prometheus/3.x/**'
             prometheus/snmp-exporter: 'prometheus/snmp-exporter/**'
             prometheus/snmp-generator: 'prometheus/snmp-generator/**'
+            promptfoo: 'promptfoo/**'
             pulumi/pulumi-nodejs: 'pulumi/pulumi-nodejs/**'
             pulumi/pulumi-python: 'pulumi/pulumi-python/**'
             python/3.11/noble: 'python/3.11/noble/**'
