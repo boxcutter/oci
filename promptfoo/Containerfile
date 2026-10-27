@@ -1,0 +1,58 @@
+# syntax=docker/dockerfile:1
+ARG BASE_IMAGE=docker.io/boxcutter/node:24-resolute-slim
+# hadolint ignore=DL3006
+FROM $BASE_IMAGE
+
+# Rename existing node user to promptfoo
+RUN usermod --login promptfoo node \
+  && groupmod --new-name promptfoo node \
+  && usermod --home /home/promptfoo --move-home promptfoo
+
+# Install Python for python providers, prompts, asserts, etc.
+# hadolint ignore=DL3008
+RUN <<EOF
+  set -e
+  DEBIAN_FRONTEND=noninteractive apt-get install --update --no-install-recommends -y \
+    ca-certificates \
+    curl \
+    python-is-python3 \
+    python3 \
+    python3-pip \
+    python3-setuptools
+  rm -rf /var/lib/apt/lists/*
+EOF
+
+# Install the published package instead of building from source. Block
+# dependency lifecycle scripts during install, then rebuild only the esbuild
+# package that tsx needs, the same as the upstream image.
+ARG PROMPTFOO_VERSION
+RUN <<EOF
+  set -e
+  npm install --global --no-audit --no-fund --ignore-scripts "promptfoo@${PROMPTFOO_VERSION}"
+  cd /usr/local/lib/node_modules/promptfoo
+  npm rebuild ./node_modules/esbuild
+  rm -rf /root/.npm /tmp/*
+  promptfoo --version
+EOF
+
+RUN mkdir -p /home/promptfoo/.promptfoo /promptfoo \
+  && chown promptfoo:promptfoo /home/promptfoo/.promptfoo /promptfoo
+
+ENV API_PORT=3000
+ENV HOST=0.0.0.0
+ENV PROMPTFOO_SELF_HOSTED=1
+ENV PROMPTFOO_RUNNING_IN_DOCKER=1
+# pip installs CLIs such as modelaudit into the non-root user's script directory.
+ENV PATH="${PATH}:/home/promptfoo/.local/bin"
+
+USER promptfoo
+
+WORKDIR /promptfoo
+
+EXPOSE 3000
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s CMD node -e "const http = require('node:http'); const req = http.get('http://127.0.0.1:3000/health', (res) => process.exit(res.statusCode >= 200 && res.statusCode < 400 ? 0 : 1)); req.on('error', () => process.exit(1)); req.setTimeout(5000, () => { req.destroy(); process.exit(1); });"
+
+# Start the self-hosted web server by default. Any other command, like
+# `promptfoo eval`, runs through the node image's docker-entrypoint.sh.
+CMD ["node", "/usr/local/lib/node_modules/promptfoo/dist/src/server/index.js"]
