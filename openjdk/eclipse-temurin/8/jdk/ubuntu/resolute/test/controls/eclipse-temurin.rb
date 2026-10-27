@@ -31,3 +31,10 @@ describe file('/__cacert_entrypoint.sh') do
   it { should exist }
   its('mode') { should cmp '0755' }
 end
+
+# GPLv2 with the Classpath Exception requires the license and notices to ship with the binaries
+%w(LICENSE ASSEMBLY_EXCEPTION NOTICE THIRD_PARTY_README).each do |name|
+  describe file("/opt/java/openjdk/#{name}") do
+    it { should exist }
+  end
+end

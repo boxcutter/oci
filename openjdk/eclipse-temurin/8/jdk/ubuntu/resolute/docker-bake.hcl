@@ -24,7 +24,7 @@ target "_common" {
 
   labels = {
     "org.opencontainers.image.source" = "https://github.com/boxcutter/oci"
-    "org.opencontainers.image.licenses" = "Apache-2.0"
+    "org.opencontainers.image.licenses" = "GPL-2.0-only WITH Classpath-exception-2.0"
     "org.opencontainers.image.description" = "Eclipse Temurin OpenJDK 8 Java Development Kit."
     "org.opencontainers.image.title" = "${TAG_PREFIX}"
     "org.opencontainers.image.created" = "${timestamp()}"
