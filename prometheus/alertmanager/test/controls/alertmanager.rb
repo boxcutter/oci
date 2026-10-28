@@ -11,7 +11,7 @@ describe command('amtool') do
   it { should exist }
 end
 
-describe command('amtool  --version') do
+describe command('amtool --version') do
   its('exit_status') { should eq 0 }
   its('stdout') { should match(/amtool, version/) }
 end

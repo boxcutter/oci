@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/ubuntu:noble-20251013
+ARG BASE_IMAGE=docker.io/ubuntu:resolute-20261024.1
 # hadolint ignore=DL3006
 FROM $BASE_IMAGE AS base
 
@@ -8,7 +8,7 @@ ARG NODE_EXPORTER_SHA256_AMD64
 ARG NODE_EXPORTER_URL_ARM64
 ARG NODE_EXPORTER_SHA256_ARM64
 
-FROM base as download
+FROM base AS download
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN <<EOF
   apt-get update

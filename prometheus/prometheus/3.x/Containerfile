@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/ubuntu:noble-20251013
+ARG BASE_IMAGE=docker.io/ubuntu:resolute-20261024.1
 # hadolint ignore=DL3006
 FROM $BASE_IMAGE AS base
 
@@ -48,7 +48,6 @@ RUN <<EOF
   DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     ca-certificates
   rm -rf /var/lib/apt/lists/*
-  ln -s /usr/share/prometheus/console_libraries /usr/share/prometheus/consoles/ /etc/prometheus/
   chown -R nobody:nogroup /etc/prometheus /prometheus
 EOF
 
