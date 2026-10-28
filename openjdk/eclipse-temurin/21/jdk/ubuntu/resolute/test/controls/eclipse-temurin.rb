@@ -1,0 +1,45 @@
+describe command('java --version') do
+  its('exit_status') { should eq 0 }
+  its('stdout') { should match(/Temurin-21\.0\.13\+9/) }
+end
+
+describe command('javac --version') do
+  its('exit_status') { should eq 0 }
+  its('stdout') { should match(/javac 21\.0\.13/) }
+end
+
+describe os_env('JAVA_HOME') do
+  its('content') { should eq '/opt/java/openjdk' }
+end
+
+describe os_env('LANG') do
+  its('content') { should eq 'en_US.UTF-8' }
+end
+
+describe file('/opt/java/openjdk/lib/security/cacerts') do
+  it { should exist }
+end
+
+describe file('/opt/java/openjdk/lib/src.zip') do
+  it { should_not exist }
+end
+
+describe file('/__cacert_entrypoint.sh') do
+  it { should exist }
+  its('mode') { should cmp '0755' }
+end
+
+# GPLv2 with the Classpath Exception requires the license and notices to ship with the binaries
+%w(legal/java.base/LICENSE legal/java.base/ASSEMBLY_EXCEPTION NOTICE).each do |name|
+  describe file("/opt/java/openjdk/#{name}") do
+    it { should exist }
+  end
+end
+
+# The roots named at https://openjdk.org/emudhra must not be trusted
+describe command('keytool -list -v -cacerts -storepass changeit') do
+  its('exit_status') { should eq 0 }
+  ['emSign ECC Root CA - G3', 'emSign Root CA - G1', 'emSign Root CA - G2', 'AAA Certificate Services'].each do |cn|
+    its('stdout') { should_not include "CN=#{cn}," }
+  end
+end
