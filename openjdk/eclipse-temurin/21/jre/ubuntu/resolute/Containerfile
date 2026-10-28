@@ -1,0 +1,99 @@
+# syntax=docker/dockerfile:1
+ARG BASE_IMAGE=docker.io/ubuntu:resolute-20261006
+# hadolint ignore=DL3006
+FROM $BASE_IMAGE
+
+ENV JAVA_HOME=/opt/java/openjdk
+ENV PATH=$JAVA_HOME/bin:$PATH
+
+# Default to UTF-8 file.encoding
+ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
+
+RUN set -eux; \
+    apt-get update; \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        # curl required for historical reasons, see https://github.com/adoptium/containers/issues/255
+        curl \
+        wget \
+        # gnupg required to verify the signature
+        gnupg \
+        # java.lang.UnsatisfiedLinkError: libfontmanager.so: libfreetype.so.6: cannot open shared object file: No such file or directory
+        # java.lang.NoClassDefFoundError: Could not initialize class sun.awt.X11FontManager
+        # https://github.com/docker-library/openjdk/pull/235#issuecomment-424466077
+        fontconfig \
+        # utilities for keeping Ubuntu and OpenJDK CA certificates in sync
+        # https://github.com/adoptium/containers/issues/293
+        ca-certificates p11-kit \
+        tzdata \
+        # locales ensures proper character encoding and locale-specific behaviors using en_US.UTF-8
+        locales \
+    ; \
+    echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen; \
+    locale-gen en_US.UTF-8; \
+    rm -rf /var/lib/apt/lists/*
+
+ENV JAVA_VERSION=jdk-21.0.13+9
+
+RUN set -eux; \
+    ARCH="$(dpkg --print-architecture)"; \
+    case "${ARCH}" in \
+       amd64) \
+         ESUM='a535a1df9c6284d9618872984e026ae0352d1f7e9e0605425c0e6114f47351dd'; \
+         BINARY_URL='https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.13%2B9/OpenJDK21U-jre_x64_linux_hotspot_21.0.13_9.tar.gz'; \
+         ;; \
+       arm64) \
+         ESUM='b1734db7ade49c3f6acc6ae06233b8c2dd90e3e2f00f67000ae1c972aaa64d8c'; \
+         BINARY_URL='https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.13%2B9/OpenJDK21U-jre_aarch64_linux_hotspot_21.0.13_9.tar.gz'; \
+         ;; \
+       ppc64el) \
+         ESUM='4994d5bf70a58b683c86158dc1c19c973551cc225956893f91008c6180469c6c'; \
+         BINARY_URL='https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.13%2B9/OpenJDK21U-jre_ppc64le_linux_hotspot_21.0.13_9.tar.gz'; \
+         ;; \
+       s390x) \
+         ESUM='f4722f400e7fce6e6d80c86d5ef68d0007694670a0a2b0bb569ad0e83dd5f996'; \
+         BINARY_URL='https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.13%2B9/OpenJDK21U-jre_s390x_linux_hotspot_21.0.13_9.tar.gz'; \
+         ;; \
+       *) \
+         echo "Unsupported arch: ${ARCH}"; \
+         exit 1; \
+         ;; \
+    esac; \
+    wget --progress=dot:giga -O /tmp/openjdk.tar.gz ${BINARY_URL}; \
+    wget --progress=dot:giga -O /tmp/openjdk.tar.gz.sig ${BINARY_URL}.sig; \
+    export GNUPGHOME="$(mktemp -d)"; \
+    # gpg: key 843C48A565F8F04B: "Adoptium GPG Key (DEB/RPM Signing Key) <temurin-dev@eclipse.org>" imported
+    gpg --batch --keyserver keyserver.ubuntu.com --recv-keys 3B04D753C9050D9A5D343F39843C48A565F8F04B; \
+    gpg --batch --verify /tmp/openjdk.tar.gz.sig /tmp/openjdk.tar.gz; \
+    rm -rf "${GNUPGHOME}" /tmp/openjdk.tar.gz.sig; \
+    echo "${ESUM} */tmp/openjdk.tar.gz" | sha256sum -c -; \
+    mkdir -p "$JAVA_HOME"; \
+    tar --extract \
+        --file /tmp/openjdk.tar.gz \
+        --directory "$JAVA_HOME" \
+        --strip-components 1 \
+        --no-same-owner \
+    ; \
+    rm -f /tmp/openjdk.tar.gz; \
+    # https://github.com/docker-library/openjdk/issues/331#issuecomment-498834472
+    find "$JAVA_HOME/lib" -name '*.so' -exec dirname '{}' ';' | sort -u > /etc/ld.so.conf.d/docker-openjdk.conf; \
+    ldconfig; \
+    # https://github.com/docker-library/openjdk/issues/212#issuecomment-420979840
+    # https://openjdk.java.net/jeps/341
+    java -Xshare:dump;
+
+RUN set -eux; \
+    echo "Verifying install ..."; \
+    echo "java --version"; java --version; \
+    echo "Complete."
+
+# Remove the eMudhra roots as advised at https://openjdk.org/emudhra. Temurin
+# 21.0.13 no longer ships emSign ECC Root CA - G3, but still trusts emSign Root
+# CA - G1, which OpenJDK's CheckCerts flags. emSign Root CA - G2 and AAA
+# Certificate Services aren't in Temurin's cacerts. A missing alias fails the
+# build, so this gets revisited when cacerts changes.
+RUN set -eux; \
+    keytool -delete -cacerts -storepass changeit \
+        -alias 'cn_emsign_root_ca__g1,o_emudhra_technologies_limited,ou_emsign_pki,c_in [jdk]'
+
+COPY --chmod=755 entrypoint.sh /__cacert_entrypoint.sh
+ENTRYPOINT ["/__cacert_entrypoint.sh"]
