@@ -32,3 +32,11 @@ end
     it { should exist }
   end
 end
+
+# The roots named at https://openjdk.org/emudhra must not be trusted
+describe command('keytool -list -v -keystore /opt/java/openjdk/lib/security/cacerts -storepass changeit') do
+  its('exit_status') { should eq 0 }
+  ['emSign ECC Root CA - G3', 'emSign Root CA - G1', 'emSign Root CA - G2', 'AAA Certificate Services'].each do |cn|
+    its('stdout') { should_not include "CN=#{cn}," }
+  end
+end
