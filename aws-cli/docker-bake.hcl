@@ -4,7 +4,7 @@ variable "TAG_PREFIX" {
 
 # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
 variable "VERSION" {
-  default = "2.32.28"
+  default = "2.39.0"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
@@ -27,6 +27,7 @@ target "_common" {
     "org.opencontainers.image.description" = "AWS command-line interface."
     "org.opencontainers.image.title" = "${TAG_PREFIX}"
     "org.opencontainers.image.created" = "${timestamp()}"
+    "dev.boxcutter.image.readme-filepath" = "aws-cli/README.md"
   }
 }
 
