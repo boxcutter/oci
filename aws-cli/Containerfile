@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/amazonlinux:2
+ARG BASE_IMAGE=docker.io/amazonlinux:2023.12.20261021.0
+# hadolint ignore=DL3006
 FROM $BASE_IMAGE AS base
 
 FROM base AS installer
@@ -8,9 +9,12 @@ ARG AWS_CLI_VERSION
 
 COPY aws-cli.key /tmp/aws-cli/aws-cli.key
 
-RUN yum update -y \
-  && yum install -y gnupg unzip \
-  && gpg --import /tmp/aws-cli/aws-cli.key \
+# Amazon Linux 2023 ships gnupg2-minimal, which has no gpg-agent, so gpg exits
+# non-zero even after a successful import. Swap in the full gnupg2 here; the
+# installer stage is discarded.
+RUN dnf update -y \
+  && dnf install -y --allowerasing gnupg2 unzip \
+  && gpg --batch --import /tmp/aws-cli/aws-cli.key \
   && arch="$(arch)" \
   && case "${arch##*-}" in \
     x86_64) \
@@ -19,28 +23,25 @@ RUN yum update -y \
     aarch64) \
       AWS_CLI_URL="https://awscli.amazonaws.com/awscli-exe-linux-aarch64-${AWS_CLI_VERSION}.zip" \
       ;; \
-    armv7l) \
-      AWS_CLI_URL="https://awscli.amazonaws.com/awscli-exe-linux-armv7l-${AWS_CLI_VERSION}.zip" \
-      ;; \
     *) echo "unsupported architecture"; exit 1 ;; \
     esac \
   && curl -fsSL -o /tmp/aws-cli/awscliv2.zip "${AWS_CLI_URL}" \
   && curl -fsSL -o /tmp/aws-cli/awscliv2.sig "${AWS_CLI_URL}.sig" \
-  && gpg --verify /tmp/aws-cli/awscliv2.sig /tmp/aws-cli/awscliv2.zip \
-  && unzip  /tmp/aws-cli/awscliv2.zip -d /tmp/aws-cli/awscliv2 \
+  && gpg --batch --verify /tmp/aws-cli/awscliv2.sig /tmp/aws-cli/awscliv2.zip \
+  && unzip /tmp/aws-cli/awscliv2.zip -d /tmp/aws-cli/awscliv2 \
   # The --bin-dir is specified so that we can copy the
   # entire bin directory from the installer stage into
   # into /usr/local/bin of the final stage without
   # accidentally copying over any other executables that
   # may be present in /usr/local/bin of the installer stage.
   && /tmp/aws-cli/awscliv2/aws/install --bin-dir /aws-cli-bin/ \
-  && yum clean all
+  && dnf clean all
 
 FROM base AS release
 
-RUN yum update -y \
-  && yum install -y less groff \
-  && yum clean all
+RUN dnf update -y \
+  && dnf install -y less groff findutils jq \
+  && dnf clean all
 COPY --from=installer /usr/local/aws-cli/ /usr/local/aws-cli/
 COPY --from=installer /aws-cli-bin/ /usr/local/bin/
 WORKDIR /aws
