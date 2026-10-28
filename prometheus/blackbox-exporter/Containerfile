@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/ubuntu:noble-20251013
+ARG BASE_IMAGE=docker.io/ubuntu:resolute-20261024.1
 # hadolint ignore=DL3006
 FROM $BASE_IMAGE AS base
 
@@ -39,7 +39,7 @@ RUN <<EOF
   apt-get update
   DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     ca-certificates
-  rm -rf /var/lib/apt/lists/*  
+  rm -rf /var/lib/apt/lists/*
 EOF
 
 COPY --chmod=755 --from=download /tmp/blackbox_exporter/blackbox_exporter /usr/local/bin/blackbox_exporter

@@ -3,7 +3,7 @@ variable "TAG_PREFIX" {
 }
 
 variable "VERSION" {
-  default = "0.29.0"
+  default = "0.31.0"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
@@ -14,8 +14,10 @@ variable "LOCAL_PLATFORM" {
 target "_common" {
   dockerfile = "Containerfile"
   args = {
-    SNMP_EXPORTER_SOURCE_URL = "https://github.com/prometheus/snmp_exporter/archive/refs/tags/v0.29.0.tar.gz"
+    SNMP_EXPORTER_SOURCE_URL = "https://github.com/prometheus/snmp_exporter/archive/refs/tags/v0.31.0.tar.gz"
     PEPLINK_SNMP_MIBS_URL = "https://download.peplink.com/resources/peplink_pepwave_snmp_mib-2024-07.zip"
+    # Match the Go version in snmp_exporter's .promu.yml
+    GO_TOOLCHAIN = "go1.27.3"
   }
   tags = [
     "${TAG_PREFIX}:${VERSION}",
@@ -26,6 +28,7 @@ target "_common" {
     "org.opencontainers.image.licenses" = "Apache-2.0"
     "org.opencontainers.image.description" = "Prometheus SNMP generator."
     "org.opencontainers.image.title" = "${TAG_PREFIX}"
+    "org.opencontainers.image.created" = "${timestamp()}"
     "dev.boxcutter.image.readme-filepath" = "prometheus/snmp-generator/README.md"
   }
 }

@@ -3,7 +3,7 @@ variable "TAG_PREFIX" {
 }
 
 variable "VERSION" {
-  default = "0.29.0"
+  default = "0.31.0"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
@@ -14,10 +14,10 @@ variable "LOCAL_PLATFORM" {
 target "_common" {
   dockerfile = "Containerfile"
   args = {
-    SNMP_EXPORTER_URL_AMD64 = "https://github.com/prometheus/snmp_exporter/releases/download/v0.29.0/snmp_exporter-0.29.0.linux-amd64.tar.gz"
-    SNMP_EXPORTER_SHA256_AMD64 = "fd7ded886180063a8f77e1ca18cc648e44b318b9c92bcb3867b817d93a5232d6"
-    SNMP_EXPORTER_URL_ARM64 = "https://github.com/prometheus/snmp_exporter/releases/download/v0.29.0/snmp_exporter-0.29.0.linux-arm64.tar.gz"
-    SNMP_EXPORTER_SHA256_ARM64 = "e590870ad2fcd39ea9c7d722d6e85aa6f1cc9e8671ff3f17feba12a6b5a3b47a"
+    SNMP_EXPORTER_URL_AMD64 = "https://github.com/prometheus/snmp_exporter/releases/download/v0.31.0/snmp_exporter-0.31.0.linux-amd64.tar.gz"
+    SNMP_EXPORTER_SHA256_AMD64 = "264d1b3be8dd1133fcbd11cbb81ab2a65f121237ab2fff198adb1cc6961ed3ae"
+    SNMP_EXPORTER_URL_ARM64 = "https://github.com/prometheus/snmp_exporter/releases/download/v0.31.0/snmp_exporter-0.31.0.linux-arm64.tar.gz"
+    SNMP_EXPORTER_SHA256_ARM64 = "a854feb530c16e7e4aa5d4d96f9d44f98320c415b5048e93e152593412ffaac8"
   }
   tags = [
     "${TAG_PREFIX}:${VERSION}",

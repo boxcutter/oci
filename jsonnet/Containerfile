@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 # Arguments used in FROM need to be defined before the first build stage
-ARG BUILD_IMAGE=docker.io/boxcutter/golang:1.23-noble
-ARG BASE_IMAGE=docker.io/ubuntu:noble-20250529
+ARG BUILD_IMAGE=docker.io/boxcutter/golang:1.25-noble
+ARG BASE_IMAGE=docker.io/ubuntu:resolute-20261024.1
 # hadolint ignore=DL3006
 FROM $BASE_IMAGE AS base
 
@@ -37,8 +37,10 @@ EOF
 
 FROM ${BUILD_IMAGE} AS build
 
+ARG MIXTOOL_VERSION
+
 RUN <<EOF
-  go install github.com/monitoring-mixins/mixtool/cmd/mixtool@main
+  go install github.com/monitoring-mixins/mixtool/cmd/mixtool@${MIXTOOL_VERSION}
 EOF
 
 FROM base
