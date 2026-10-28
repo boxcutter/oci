@@ -15,6 +15,7 @@ Open container images for robotics, neuromorphic engineering, systems and embedd
 | [cmake-gcc](https://hub.docker.com/r/boxcutter/cmake-gcc) | CMake build system with gcc compiler toolchain. | [cmake/cmake-gcc](https://github.com/boxcutter/oci/tree/main/cmake/gcc) |
 | [doctl](https://hub.docker.com/r/boxcutter/doctl) | Digital Ocean command-line interface | [doctl](https://github.com/boxcutter/oci/tree/main/doctl) |
 | [dokken-&lt;platform&gt;](https://hub.docker.com/u/boxcutter?search=dokken) | Operating system images for use with kitchen-dokken: AlmaLinux, Amazon Linux, CentOS Stream, Debian, Fedora, openSUSE Leap, Oracle Linux, Rocky Linux and Ubuntu | [dokken](https://github.com/boxcutter/oci/tree/main/dokken) |
+| [eclipse-temurin](https://hub.docker.com/r/boxcutter/eclipse-temurin) | Eclipse Temurin OpenJDK Java Development Kit and Runtime Environment | [openjdk/eclipse-temurin](https://github.com/boxcutter/oci/tree/main/openjdk/eclipse-temurin) |
 | [flake8](https://hub.docker.com/r/boxcutter/flake8) | Flake8: Your Tool For Style Guide Enforcement | [flake8](https://github.com/boxcutter/oci/tree/main/flake8) |
 | [gcc](https://hub.docker.com/r/boxcutter/gcc) | The GNU Compiler Collection is a compiling system that supports several languages. | [gcc](https://github.com/boxcutter/oci/tree/main/gcc) |
 | [golang](https://hub.docker.com/r/boxcutter/golang) | Go (golang) is a general purpose, higher-level, imperative programming language | [golang](https://github.com/boxcutter/oci/tree/main/golang) |
