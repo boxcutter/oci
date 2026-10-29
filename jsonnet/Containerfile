@@ -1,47 +1,49 @@
 # syntax=docker/dockerfile:1
 # Arguments used in FROM need to be defined before the first build stage
-ARG BUILD_IMAGE=docker.io/boxcutter/golang:1.25-noble
+ARG BUILD_IMAGE=docker.io/boxcutter/golang:1.27-resolute
 ARG BASE_IMAGE=docker.io/ubuntu:resolute-20261024.1
 # hadolint ignore=DL3006
 FROM $BASE_IMAGE AS base
+
+FROM base AS download
 
 ARG JSONNET_URL_AMD64
 ARG JSONNET_SHA256_AMD64
 ARG JSONNET_URL_ARM64
 ARG JSONNET_SHA256_ARM64
 
-FROM base AS download
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+# Heredocs don't stop on errors by default, so set -e is needed for a failed
+# checksum to fail the build
 RUN <<EOF
+  set -eux
   apt-get update
-  apt-get install -y --no-install-recommends \
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     ca-certificates \
     curl
   mkdir -p /tmp/jsonnet
   dpkgArch="$(dpkg --print-architecture)"
-  case "${dpkgArch##*-}" in \
-    amd64) \
-      JSONNET_URL="${JSONNET_URL_AMD64}" \
-      JSONNET_SHA256="${JSONNET_SHA256_AMD64}" \
-      ;; \
-    arm64) \
-      JSONNET_URL="${JSONNET_URL_ARM64}" \
-      JSONNET_SHA256="${JSONNET_SHA256_ARM64}" \
-      ;; \
-    *) echo "unsupported architecture"; exit 1 ;; \
+  case "${dpkgArch##*-}" in
+    amd64)
+      JSONNET_URL="${JSONNET_URL_AMD64}"
+      JSONNET_SHA256="${JSONNET_SHA256_AMD64}"
+      ;;
+    arm64)
+      JSONNET_URL="${JSONNET_URL_ARM64}"
+      JSONNET_SHA256="${JSONNET_SHA256_ARM64}"
+      ;;
+    *) echo "unsupported architecture"; exit 1 ;;
   esac
   curl -fsSL -o /tmp/jsonnet.tar.gz "${JSONNET_URL}"
   echo "${JSONNET_SHA256} /tmp/jsonnet.tar.gz" | sha256sum -c -
-  tar xvf /tmp/jsonnet.tar.gz -C /tmp/jsonnet
+  tar -xzf /tmp/jsonnet.tar.gz -C /tmp/jsonnet
 EOF
 
 FROM ${BUILD_IMAGE} AS build
 
 ARG MIXTOOL_VERSION
 
-RUN <<EOF
-  go install github.com/monitoring-mixins/mixtool/cmd/mixtool@${MIXTOOL_VERSION}
-EOF
+RUN go install "github.com/monitoring-mixins/mixtool/cmd/mixtool@${MIXTOOL_VERSION}"
 
 FROM base
 
