@@ -1,36 +1,41 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/ubuntu:noble-20250404
+ARG BASE_IMAGE=docker.io/ubuntu:resolute-20261024.1
+# hadolint ignore=DL3006
 FROM $BASE_IMAGE AS base
+
+FROM base AS download
 
 ARG CMAKE_URL_AMD64
 ARG CMAKE_SHA256_AMD64
 ARG CMAKE_URL_ARM64
 ARG CMAKE_SHA256_ARM64
 
-FROM base AS download
-
 WORKDIR /tmp/cmake
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+# Heredocs don't stop on errors by default, so set -e is needed for a failed
+# checksum to fail the build
 RUN <<EOF
+  set -eux
   apt-get update
-  apt-get install -y --no-install-recommends \
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     ca-certificates \
     curl
   dpkgArch="$(dpkg --print-architecture)"
-  case "${dpkgArch##*-}" in \
-    amd64) \
-      CMAKE_URL="${CMAKE_URL_AMD64}" \
-      CMAKE_SHA256="${CMAKE_SHA256_AMD64}" \
-      ;; \
-    arm64) \
-      CMAKE_URL="${CMAKE_URL_ARM64}" \
-      CMAKE_SHA256="${CMAKE_SHA256_ARM64}" \
-      ;; \
-    *) echo "unsupported architecture"; exit 1 ;; \
-  esac 
-  curl --fail --silent --show-error --location --output /tmp/cmake.tar.gz ${CMAKE_URL}
+  case "${dpkgArch##*-}" in
+    amd64)
+      CMAKE_URL="${CMAKE_URL_AMD64}"
+      CMAKE_SHA256="${CMAKE_SHA256_AMD64}"
+      ;;
+    arm64)
+      CMAKE_URL="${CMAKE_URL_ARM64}"
+      CMAKE_SHA256="${CMAKE_SHA256_ARM64}"
+      ;;
+    *) echo "unsupported architecture"; exit 1 ;;
+  esac
+  curl -fsSL -o /tmp/cmake.tar.gz "${CMAKE_URL}"
   echo "${CMAKE_SHA256} /tmp/cmake.tar.gz" | sha256sum -c -
-  tar xvf /tmp/cmake.tar.gz -C /tmp/cmake --strip-components=1
+  tar -xzf /tmp/cmake.tar.gz -C /tmp/cmake --strip-components=1
 EOF
 
 FROM base
@@ -42,9 +47,11 @@ COPY --from=download /tmp/cmake /opt/cmake
 ENV PATH="/opt/cmake/bin:${PATH}"
 
 RUN <<EOF
+  set -eux
   apt-get update
   DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     ninja-build \
+    make \
     clang \
     lld \
     llvm \
