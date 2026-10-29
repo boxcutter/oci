@@ -1,12 +1,13 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/boxcutter/buildpack-deps:noble-scm
+ARG BASE_IMAGE=docker.io/boxcutter/buildpack-deps:resolute-scm
+# hadolint ignore=DL3006
 FROM $BASE_IMAGE AS base
 
 FROM base AS build
 
 ENV PATH=/usr/local/go/bin:$PATH
 
-ENV GOLANG_VERSION=1.24.11
+ENV GOLANG_VERSION=1.26.10
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # hadolint ignore=DL3003, SC2086
@@ -16,36 +17,32 @@ RUN set -eux; \
 	url=; \
 	case "$arch" in \
 		'amd64') \
-			url='https://dl.google.com/go/go1.24.11.linux-amd64.tar.gz'; \
-			sha256='bceca00afaac856bc48b4cc33db7cd9eb383c81811379faed3bdbc80edb0af65'; \
+			url='https://dl.google.com/go/go1.26.10.linux-amd64.tar.gz'; \
+			sha256='ccfe7ae822d2c2f41f4fe7c956199967a4dac22d0ee0d2b2bfdb440aab3b20c5'; \
 			;; \
 		'armhf') \
-			url='https://dl.google.com/go/go1.24.11.linux-armv6l.tar.gz'; \
-			sha256='24d712a7e8ea2f429c05bc67287249e0291f2fe0ea6d6ff268f11b7343ad0f47'; \
+			url='https://dl.google.com/go/go1.26.10.linux-armv6l.tar.gz'; \
+			sha256='7d89fd32259eb0ff647381e8c3465dc32ccfc7f71cb7b9bcd95604c3481f5109'; \
 			;; \
 		'arm64') \
-			url='https://dl.google.com/go/go1.24.11.linux-arm64.tar.gz'; \
-			sha256='beaf0f51cbe0bd71b8289b2b6fa96c0b11cd86aa58672691ef2f1de88eb621de'; \
+			url='https://dl.google.com/go/go1.26.10.linux-arm64.tar.gz'; \
+			sha256='3f4227ce7b206a513e794f1393adb473a07b46e94d18bd15d1c684bbb7319797'; \
 			;; \
 		'i386') \
-			url='https://dl.google.com/go/go1.24.11.linux-386.tar.gz'; \
-			sha256='bb702d0b67759724dccee1825828e8bae0b5199e3295cac5a98a81f3098fa64a'; \
-			;; \
-		'mips64el') \
-			url='https://dl.google.com/go/go1.24.11.linux-mips64le.tar.gz'; \
-			sha256='c0274255613b85e2ba45e210e8f07995d51a048f11c7f0b9128dc177472692b3'; \
+			url='https://dl.google.com/go/go1.26.10.linux-386.tar.gz'; \
+			sha256='fa05f9c9d71d08da81ae34f1b6baf8aacb05374b9a6fb223e92f7b29afc81148'; \
 			;; \
 		'ppc64el') \
-			url='https://dl.google.com/go/go1.24.11.linux-ppc64le.tar.gz'; \
-			sha256='f770d0c5d7e7e2edb030133ac7854d9204f4e954e79a176e81362ffedf6ea34c'; \
+			url='https://dl.google.com/go/go1.26.10.linux-ppc64le.tar.gz'; \
+			sha256='4492031a19657de3bd7e4c48dce9d9e5aa7b668300f7c2c98e620b9ac0ee84ee'; \
 			;; \
 		'riscv64') \
-			url='https://dl.google.com/go/go1.24.11.linux-riscv64.tar.gz'; \
-			sha256='9db9ba8e6b60f3662f55ed78b128175edbe8b9480e657126a5b8f5043ee1e38c'; \
+			url='https://dl.google.com/go/go1.26.10.linux-riscv64.tar.gz'; \
+			sha256='32020d03991283fd28e1236f239b6343853bfdc0893a8c7d4fc180c130b9ba51'; \
 			;; \
 		's390x') \
-			url='https://dl.google.com/go/go1.24.11.linux-s390x.tar.gz'; \
-			sha256='5955ddda3445b2cbfd81b8772044084911f55d0baeb32414da0411f6a377a2d4'; \
+			url='https://dl.google.com/go/go1.26.10.linux-s390x.tar.gz'; \
+			sha256='ae724ea910de9ea2528ce6558b8493725c7a06b8d14ed88d0a51144b5138533e'; \
 			;; \
 		*) echo >&2 "error: unsupported architecture '$arch' (likely packaging update needed)"; exit 1 ;; \
 	esac; \
@@ -107,7 +104,7 @@ FROM base
 # install cgo-related dependencies
 RUN set -eux; \
 	apt-get update; \
-	apt-get install -y --no-install-recommends \
+	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
 		g++ \
 		gcc \
 		libc6-dev \
@@ -122,17 +119,17 @@ RUN set -eux; \
 # (and available as "binutils-gold" which is also a virtual on bookworm so we can reasonably be explicit everywhere)
 	dpkgArch="$(dpkg --print-architecture)"; \
 	if [ "$dpkgArch" = 'arm64' ]; then \
-		apt-get install -y --no-install-recommends binutils-gold; \
+		DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends binutils-gold; \
 	fi; \
 	rm -rf /var/lib/apt/lists/*
 
-ENV GOLANG_VERSION=1.24.11
+ENV GOLANG_VERSION=1.26.10
 
 # don't auto-upgrade the gotoolchain
 # https://github.com/docker-library/golang/issues/472
 ENV GOTOOLCHAIN=local
 
-ENV GOPATH /go
+ENV GOPATH=/go
 ENV PATH=$GOPATH/bin:/usr/local/go/bin:$PATH
 # (see notes above about "COPY --link")
 COPY --from=build --link /target/ /
