@@ -10,15 +10,13 @@ ARG CINC_AUDITOR_SHA256_AMD64
 ARG CINC_AUDITOR_URL_ARM64
 ARG CINC_AUDITOR_SHA256_ARM64
 
-ARG DEBIAN_FRONTEND=noninteractive
-
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # Heredocs don't stop on errors by default, so set -e is needed for a failed
 # checksum to fail the build
 RUN <<EOF
   set -eux
   apt-get update
-  apt-get install -y --no-install-recommends \
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     ca-certificates \
     curl
   dpkgArch="$(dpkg --print-architecture)"
@@ -40,15 +38,13 @@ EOF
 
 FROM base
 
-ARG DEBIAN_FRONTEND=noninteractive
-
 ENV PATH=/opt/cinc-auditor/bin:/opt/cinc-auditor/embedded/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 # Run the entire container with the default locale to be en_US.UTF-8
 RUN <<EOF
   set -eux
   apt-get update
-  apt-get install -y --no-install-recommends locales
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends locales
   locale-gen en_US.UTF-8
   update-locale LANG=en_US.UTF-8
   # The official Ubuntu images automatically run `apt-get clean`, so explicit
@@ -67,7 +63,7 @@ COPY --from=download /tmp/cinc-auditor.deb /tmp/cinc-auditor.deb
 RUN <<EOF
   set -eux
   apt-get update
-  apt-get install -y --no-install-recommends /tmp/cinc-auditor.deb
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends /tmp/cinc-auditor.deb
   rm -rf /tmp/cinc-auditor.deb
   # Remove the eMudhra emSign G3 and G1 roots (CVE-2026-91403) from the CA
   # bundles cinc-auditor ships, as recommended by https://openjdk.org/emudhra
@@ -86,7 +82,7 @@ RUN <<EOF
     fi
   done
   # Install any packages that make life easier for an InSpec installation
-  apt-get install -y --no-install-recommends git
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends git
   # The official Ubuntu images automatically run `apt-get clean`, so explicit
   # invocation is not required
   rm -rf /var/lib/apt/lists/*
