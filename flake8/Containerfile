@@ -1,11 +1,10 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/boxcutter/python:3.13-noble
+ARG BASE_IMAGE=docker.io/boxcutter/python:3.14-slim-resolute
 # hadolint ignore=DL3006
 FROM $BASE_IMAGE AS base
 
 ARG FLAKE8_VERSION
 WORKDIR /code
-RUN python3 -m pip install --no-cache-dir flake8==$FLAKE8_VERSION
+RUN python3 -m pip install --no-cache-dir --root-user-action=ignore flake8=="${FLAKE8_VERSION}"
 
 ENTRYPOINT ["flake8"]
-CMD ["--help"]
