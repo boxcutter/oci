@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/ubuntu:noble-20251013
+ARG BASE_IMAGE=docker.io/ubuntu:noble-20261024.1
 # hadolint ignore=DL3006
 FROM $BASE_IMAGE AS base
 
@@ -11,38 +11,44 @@ ENV RUSTUP_HOME=/usr/local/rustup \
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN set -eux; \
+    \
     apt-get update; \
-    apt-get install -y --no-install-recommends \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         ca-certificates \
         gcc \
         libc6-dev \
         wget \
         ; \
+    \
     arch="$(dpkg --print-architecture)"; \
     case "$arch" in \
         'amd64') \
             rustArch='x86_64-unknown-linux-gnu'; \
-            rustupSha256='20a06e644b0d9bd2fbdbfd52d42540bdde820ea7df86e92e533c073da0cdd43c'; \
+            rustupSha256='5be191e8c70a5007074254cb74d78dbfdd25cd5a61c27de7b8e5410122ec24f4'; \
             ;; \
         'armhf') \
             rustArch='armv7-unknown-linux-gnueabihf'; \
-            rustupSha256='3b8daab6cc3135f2cd4b12919559e6adaee73a2fbefb830fadf0405c20231d61'; \
+            rustupSha256='fb8cc6c0ff713fd405a6940c80138516da9b75e6649e280cb65342afa3dcf188'; \
             ;; \
         'arm64') \
             rustArch='aarch64-unknown-linux-gnu'; \
-            rustupSha256='e3853c5a252fca15252d07cb23a1bdd9377a8c6f3efa01531109281ae47f841c'; \
+            rustupSha256='a9c168dbea81a84671c6b7a5c1795cb0eb699020110d107ddfca427bd797e697'; \
             ;; \
         'i386') \
             rustArch='i686-unknown-linux-gnu'; \
-            rustupSha256='a5db2c4b29d23e9b318b955dd0337d6b52e93933608469085c924e0d05b1df1f'; \
+            rustupSha256='01c158bbee6bf70a57bd2642349b6f70e0be8b98b366fc4bbe38dfe7f82e1acb'; \
             ;; \
         'ppc64el') \
             rustArch='powerpc64le-unknown-linux-gnu'; \
-            rustupSha256='acd89c42b47c93bd4266163a7b05d3f26287d5148413c0d47b2e8a7aa67c9dc0'; \
+            rustupSha256='96d46b6164ff778288c789e7e94dd09ce55d35777043aabe4e7af1d99b04bd71'; \
             ;; \
         's390x') \
             rustArch='s390x-unknown-linux-gnu'; \
-            rustupSha256='726b7fd5d8805e73eab4a024a2889f8859d5a44e36041abac0a2436a52d42572'; \
+            rustupSha256='c60999321d0363f6e4d75b646f59ba25feb41b20f872ffb3a46b9a9aea6da1fc'; \
+            ;; \
+        'riscv64') \
+            rustArch='riscv64gc-unknown-linux-gnu'; \
+            rustupSha256='1217772975cb864e12a2cad757cd27d7dcdbac3b490a05ad9b86b61ffa6a8b3b'; \
             ;; \
         *) \
             echo >&2 "unsupported architecture: $arch"; \
@@ -50,18 +56,20 @@ RUN set -eux; \
             ;; \
     esac; \
     \
-    url="https://static.rust-lang.org/rustup/archive/1.28.2/${rustArch}/rustup-init"; \
+    url="https://static.rust-lang.org/rustup/archive/1.29.2/${rustArch}/rustup-init"; \
     wget --progress=dot:giga "$url"; \
     echo "${rustupSha256} *rustup-init" | sha256sum -c -; \
     \
     chmod +x rustup-init; \
-    ./rustup-init -y --no-modify-path --profile minimal --default-toolchain $RUST_VERSION --default-host ${rustArch}; \
+    ./rustup-init -y --no-modify-path --profile minimal --default-toolchain "${RUST_VERSION}" --default-host "${rustArch}"; \
     rm rustup-init; \
-    chmod -R a+w $RUSTUP_HOME $CARGO_HOME; \
-    rustup --version; \
-    cargo --version; \
-    rustc --version; \
+    chmod -R a+w "${RUSTUP_HOME}" "${CARGO_HOME}"; \
+    \
     apt-get remove -y --auto-remove \
         wget \
         ; \
-    rm -rf /var/lib/apt/lists/*;
+    rm -rf /var/lib/apt/lists/*; \
+    \
+    rustup --version; \
+    cargo --version; \
+    rustc --version;

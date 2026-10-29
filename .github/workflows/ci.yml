@@ -130,6 +130,7 @@ jobs:
             ruby/4.0/resolute: 'ruby/4.0/resolute/**'
             ruby/4.0/slim-resolute: 'ruby/4.0/slim-resolute/**'
             rust/noble/slim: 'rust/noble/slim/**'
+            rust/resolute/slim: 'rust/resolute/slim/**'
             shellcheck: 'shellcheck/**'
             slidev: 'slidev/**'
             snmp: 'snmp/**'
