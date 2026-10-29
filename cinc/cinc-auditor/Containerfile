@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/ubuntu:noble-20260410
+ARG BASE_IMAGE=docker.io/ubuntu:resolute-20261024.1
 # hadolint ignore=DL3006
 FROM ${BASE_IMAGE} AS base
 
@@ -13,23 +13,26 @@ ARG CINC_AUDITOR_SHA256_ARM64
 ARG DEBIAN_FRONTEND=noninteractive
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+# Heredocs don't stop on errors by default, so set -e is needed for a failed
+# checksum to fail the build
 RUN <<EOF
+  set -eux
   apt-get update
   apt-get install -y --no-install-recommends \
     ca-certificates \
     curl
   dpkgArch="$(dpkg --print-architecture)"
-  case "${dpkgArch##*-}" in \
-    amd64) \
+  case "${dpkgArch##*-}" in
+    amd64)
       CINC_AUDITOR_URL="${CINC_AUDITOR_URL_AMD64}"
       CINC_AUDITOR_SHA256="${CINC_AUDITOR_SHA256_AMD64}"
-      ;; \
-    arm64) \
+      ;;
+    arm64)
       CINC_AUDITOR_URL="${CINC_AUDITOR_URL_ARM64}"
       CINC_AUDITOR_SHA256="${CINC_AUDITOR_SHA256_ARM64}"
-      ;; \
-    *) echo "unsupported architecture"; exit 1 ;; \
-    esac
+      ;;
+    *) echo "unsupported architecture"; exit 1 ;;
+  esac
   curl -fsSL -o /tmp/cinc-auditor.deb "${CINC_AUDITOR_URL}"
   echo "${CINC_AUDITOR_SHA256} /tmp/cinc-auditor.deb" | sha256sum -c -
   rm -rf /var/lib/apt/lists/*
@@ -37,11 +40,14 @@ EOF
 
 FROM base
 
+ARG DEBIAN_FRONTEND=noninteractive
+
 ENV PATH=/opt/cinc-auditor/bin:/opt/cinc-auditor/embedded/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 # Run the entire container with the default locale to be en_US.UTF-8
 RUN <<EOF
-  apt-get update 
+  set -eux
+  apt-get update
   apt-get install -y --no-install-recommends locales
   locale-gen en_US.UTF-8
   update-locale LANG=en_US.UTF-8
@@ -56,12 +62,29 @@ ENV LANG=en_US.UTF-8 \
 
 WORKDIR /share
 
-COPY --from=download /tmp/cinc-auditor.deb  /tmp/cinc-auditor.deb
+COPY --from=download /tmp/cinc-auditor.deb /tmp/cinc-auditor.deb
 
 RUN <<EOF
-  apt-get update 
-  apt-get install -y --no-install-recommends /tmp/cinc-auditor.deb 
+  set -eux
+  apt-get update
+  apt-get install -y --no-install-recommends /tmp/cinc-auditor.deb
   rm -rf /tmp/cinc-auditor.deb
+  # Remove the eMudhra emSign G3 and G1 roots (CVE-2026-91403) from the CA
+  # bundles cinc-auditor ships, as recommended by https://openjdk.org/emudhra
+  for bundle in \
+    /opt/cinc-auditor/embedded/ssl/certs/cacert.pem \
+    /opt/cinc-auditor/embedded/lib/ruby/gems/*/gems/excon-*/data/cacert.pem; do
+    awk '
+      $0 == "emSign ECC Root CA - G3" || $0 == "emSign Root CA - G1" { skip = 1 }
+      !skip { print }
+      skip && /^-----END CERTIFICATE-----$/ { skip = 0 }
+    ' "${bundle}" > "${bundle}.new"
+    mv "${bundle}.new" "${bundle}"
+    if grep -qE '^emSign (ECC Root CA - G3|Root CA - G1)$' "${bundle}"; then
+      echo "failed to remove emSign G1/G3 from ${bundle}"
+      exit 1
+    fi
+  done
   # Install any packages that make life easier for an InSpec installation
   apt-get install -y --no-install-recommends git
   # The official Ubuntu images automatically run `apt-get clean`, so explicit
