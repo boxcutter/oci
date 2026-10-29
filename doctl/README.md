@@ -28,7 +28,7 @@ Some commands require user input, for those to pass the `--interactive` and `--t
 ```bash
 docker container run --rm --interactive --tty \
   --env=DIGITALOCEAN_ACCESS_TOKEN \
-  docker.io/boxcutter/doctl account get
+  docker.io/boxcutter/doctl doctl account get
 ```
 
 NOTE: Don't use the `tty` flag when you plan to pipe the output of docker to another program. It adds
@@ -297,7 +297,7 @@ docker container run --rm --interactive --tty \
   --env=DIGITALOCEAN_ACCESS_TOKEN \
   --env=SSH_AUTH_SOCK=/run/host-services/ssh-auth.sock \
   --mount type=bind,source=/run/host-services/ssh-auth.sock,target=/run/host-services/ssh-auth.sock,readonly \
-  docker.io/boxcutter/doctl doctl compute ssh <DROPLET_ID>  
+  docker.io/boxcutter/doctl doctl compute ssh <DROPLET_ID>
 ```
 
 Deleting a Droplet
