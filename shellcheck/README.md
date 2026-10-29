@@ -6,6 +6,11 @@ This image packages releases from https://github.com/koalaman/shellcheck
 
 Source location: https://github.com/boxcutter/oci/tree/main/shellcheck
 
+ShellCheck is licensed under the GNU General Public License, version 3 or
+later. The license ships in the image at
+`/usr/local/share/doc/shellcheck/LICENSE.txt`, and the source for each release
+is at https://github.com/koalaman/shellcheck/releases.
+
 # Using shellcheck
 
 Shellcheck has an online playground environment where you can test out example scripts: https://www.shellcheck.net/
@@ -13,7 +18,7 @@ Shellcheck has an online playground environment where you can test out example s
 Because this is a container image, you need to get the source files into the
 image with a bind mount. Other than that, just pass in the name of the script
 you want to check as a parameter
- 
+
 ```bash
 docker container run --rm \
   --mount type=bind,source="$(pwd)",target=/share,readonly \

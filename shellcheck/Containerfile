@@ -1,12 +1,16 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/ubuntu:noble-20251013
+ARG BASE_IMAGE=docker.io/ubuntu:resolute-20261024.1
+# hadolint ignore=DL3006
 FROM $BASE_IMAGE AS download
 
 ARG SHELLCHECK_URL_AMD64
+ARG SHELLCHECK_SHA256_AMD64
 ARG SHELLCHECK_URL_ARM64
+ARG SHELLCHECK_SHA256_ARM64
 ARG SHELLCHECK_URL_ARMHF
+ARG SHELLCHECK_SHA256_ARMHF
 
-# hadolint ignore=SC2086
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN apt-get install -y --update --no-install-recommends \
     ca-certificates \
     curl \
@@ -15,21 +19,28 @@ RUN apt-get install -y --update --no-install-recommends \
   && case "${dpkgArch##*-}" in \
     amd64) \
       SHELLCHECK_URL="$SHELLCHECK_URL_AMD64" \
+      SHELLCHECK_SHA256="$SHELLCHECK_SHA256_AMD64" \
       ;; \
     arm64) \
       SHELLCHECK_URL="$SHELLCHECK_URL_ARM64" \
+      SHELLCHECK_SHA256="$SHELLCHECK_SHA256_ARM64" \
       ;; \
     armhf) \
       SHELLCHECK_URL="$SHELLCHECK_URL_ARMHF" \
+      SHELLCHECK_SHA256="$SHELLCHECK_SHA256_ARMHF" \
       ;; \
     *) echo "unsupported architecture"; exit 1 ;; \
     esac \
-  && curl -fsSL -o /tmp/shellcheck.tar.gz ${SHELLCHECK_URL} \
-  && tar -xf /tmp/shellcheck.tar.gz --wildcards '*/shellcheck' --strip-components=1
+  && curl -fsSL -o /tmp/shellcheck.tar.xz "${SHELLCHECK_URL}" \
+  && echo "${SHELLCHECK_SHA256} /tmp/shellcheck.tar.xz" | sha256sum -c - \
+  && mkdir -p /tmp/shellcheck \
+  && tar -xf /tmp/shellcheck.tar.xz -C /tmp/shellcheck --strip-components=1
 
 FROM scratch
 
-COPY --from=download /shellcheck /usr/local/bin/shellcheck
+COPY --from=download /tmp/shellcheck/shellcheck /usr/local/bin/shellcheck
+# ShellCheck is GPLv3, so ship the license with the binary
+COPY --from=download /tmp/shellcheck/LICENSE.txt /usr/local/share/doc/shellcheck/LICENSE.txt
 
 WORKDIR /share
 ENTRYPOINT ["/usr/local/bin/shellcheck"]
