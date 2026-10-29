@@ -10,7 +10,7 @@ Flake8 runs all the tools by launching the single flake8 command. It displays th
 
 This image packages flake8 releases from PyPI: https://github.com/PyCQA/flake8
 
-Image source: https://github.com/boxcutter/oci/tree/main/dasel
+Image source: https://github.com/boxcutter/oci/tree/main/flake8
 
 # Using flake8
 
@@ -18,16 +18,15 @@ By default, the container image will run `flake8` in the `/code` directory:
 
 ```bash
 docker container run -it --rm \
-  --mount type=bin,source="$(pwd)",target=/code \
+  --mount type=bind,source="$(pwd)",target=/code \
   docker.io/boxcutter/flake8
 ```
 
 Pass any desired arguments after flake8
 
-
 ```bash
 docker container run -it --rm \
-  --mount type=bin,source="$(pwd)",target=/code \
+  --mount type=bind,source="$(pwd)",target=/code \
   docker.io/boxcutter/flake8 --max-complexity 12 coolproject
 ```
 
@@ -40,7 +39,7 @@ usage: flake8 [options] file file ...
 positional arguments:
   filename
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   -v, --verbose         Print more information about what is happening in
                         flake8. This option is repeatable and will increase
@@ -67,11 +66,8 @@ optional arguments:
                         repeatable.
   --color {auto,always,never}
                         Whether to use color in output. Defaults to `auto`.
-  --count               Print total number of errors to standard output and
-                        set the exit code to 1 if total is not empty.
-  --diff                (DEPRECATED) Report changes only within line number
-                        ranges in the unified diff provided on standard in by
-                        the user.
+  --count               Print total number of errors to standard output after
+                        all other output.
   --exclude patterns    Comma-separated list of files or directories to
                         exclude. (Default: ['.svn', 'CVS', '.bzr', '.hg',
                         '.git', '__pycache__', '.tox', '.nox', '.eggs',
@@ -85,7 +81,12 @@ optional arguments:
                         The name used when reporting errors from code passed
                         via stdin. This is useful for editors piping the file
                         contents to flake8. (Default: stdin)
-  --format format       Format errors according to the chosen formatter.
+  --format format       Format errors according to the chosen formatter
+                        (default, pylint, quiet-filename, quiet-nothing) or a
+                        format string containing %-style mapping keys (code,
+                        col, path, row, text). For example,
+                        ``--format=pylint`` or ``--format='%(path)s
+                        %(code)s'``. (Default: default)
   --hang-closing        Hang closing bracket instead of matching indentation
                         of opening bracket's line.
   --ignore errors       Comma-separated list of error codes to ignore (or
@@ -107,20 +108,22 @@ optional arguments:
   --max-doc-length n    Maximum allowed doc line length for the entirety of
                         this run. (Default: None)
   --indent-size n       Number of spaces used for indentation (Default: 4)
-  --select errors       Comma-separated list of error codes to enable. For
-                        example, ``--select=E4,E51,W234``. (Default:
-                        E,F,W,C90)
+  --select errors       Limit the reported error codes to codes prefix-matched
+                        by this list. You usually do not need to specify this
+                        option as the default includes all installed plugin
+                        codes. For example, ``--select=E4,E51,W234``.
   --extend-select errors
-                        Comma-separated list of error codes to add to the list
-                        of selected ones. For example, ``--extend-
-                        select=E4,E51,W234``.
+                        Add additional error codes to the default
+                        ``--select``. You usually do not need to specify this
+                        option as the default includes all installed plugin
+                        codes. For example, ``--extend-select=E4,E51,W234``.
   --disable-noqa        Disable the effect of "# noqa". This will report
                         errors on lines with "# noqa" at the end.
   --show-source         Show the source generate each error or warning.
   --no-show-source      Negate --show-source
   --statistics          Count errors.
   --exit-zero           Exit with status code "0" even if there are errors.
-  -j JOBS, --jobs JOBS  Number of subprocesses to use to run checks in
+  -j, --jobs JOBS       Number of subprocesses to use to run checks in
                         parallel. This is ignored on Windows. The default,
                         "auto", will auto-detect the number of processors
                         available to use. (Default: auto)
@@ -136,10 +139,6 @@ mccabe:
 pyflakes:
   --builtins BUILTINS   define more built-ins, comma separated
   --doctests            also check syntax of the doctests
-  --include-in-doctest INCLUDE_IN_DOCTEST
-                        Run doctests only on these files
-  --exclude-from-doctest EXCLUDE_FROM_DOCTEST
-                        Skip these files when running doctests
 
-Installed plugins: mccabe: 0.7.0, pycodestyle: 2.9.1, pyflakes: 2.5.0
+Installed plugins: mccabe: 0.7.0, pycodestyle: 2.15.0, pyflakes: 4.1.0
 ```
