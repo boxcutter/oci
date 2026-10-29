@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/ubuntu:noble-20251001
+ARG BASE_IMAGE=docker.io/ubuntu:resolute-20261024.1
+# hadolint ignore=DL3006
 FROM ${BASE_IMAGE} AS base
 
 FROM base AS build
@@ -8,37 +9,43 @@ ARG DOCTL_URL_AMD64
 ARG DOCTL_SHA256_AMD64
 ARG DOCTL_URL_ARM64
 ARG DOCTL_SHA256_ARM64
+ARG KUBECTL_URL_AMD64
+ARG KUBECTL_SHA256_AMD64
+ARG KUBECTL_URL_ARM64
+ARG KUBECTL_SHA256_ARM64
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+# Heredocs don't stop on errors by default, so set -e is needed for a failed
+# checksum to fail the build
 RUN <<EOF
+  set -eux
   apt-get update
-  apt-get install -y --no-install-recommends \
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     ca-certificates \
     curl
   dpkgArch="$(dpkg --print-architecture)"
-  case "${dpkgArch##*-}" in \
-    amd64) \
-      DOCTL_URL="${DOCTL_URL_AMD64}" \
-      DOCTL_SHA256="${DOCTL_SHA256_AMD64}" \
-      KUBECTL_URL="https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" \
-      KUBECTL_SHA256_URL="https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256" \
-      ;; \
-    arm64) \
-      DOCTL_URL="${DOCTL_URL_ARM64}" \
-      DOCTL_SHA256="${DOCTL_SHA256_AMD64}" \
-      KUBECTL_URL="https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl" \
-      KUBECTL_SHA256_URL="https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl.sha256" \
-      ;; \
-    *) echo "unsupported architecture"; exit 1 ;; \
+  case "${dpkgArch##*-}" in
+    amd64)
+      DOCTL_URL="${DOCTL_URL_AMD64}"
+      DOCTL_SHA256="${DOCTL_SHA256_AMD64}"
+      KUBECTL_URL="${KUBECTL_URL_AMD64}"
+      KUBECTL_SHA256="${KUBECTL_SHA256_AMD64}"
+      ;;
+    arm64)
+      DOCTL_URL="${DOCTL_URL_ARM64}"
+      DOCTL_SHA256="${DOCTL_SHA256_ARM64}"
+      KUBECTL_URL="${KUBECTL_URL_ARM64}"
+      KUBECTL_SHA256="${KUBECTL_SHA256_ARM64}"
+      ;;
+    *) echo "unsupported architecture"; exit 1 ;;
   esac
-  curl -fsSL -o /tmp/doctl.tar.gz ${DOCTL_URL}
+  curl -fsSL -o /tmp/doctl.tar.gz "${DOCTL_URL}"
   echo "${DOCTL_SHA256} /tmp/doctl.tar.gz" | sha256sum -c -
   mkdir -p /tmp/doctl
-  tar xzvf /tmp/doctl.tar.gz -C /tmp/doctl
+  tar -xzf /tmp/doctl.tar.gz -C /tmp/doctl
 
-  curl -fsSL -o /tmp/kubectl ${KUBECTL_URL}
-  curl -fsSL -o /tmp/kubectl.sha256 ${KUBECTL_SHA256_URL}
-  echo "$(cat /tmp/kubectl.sha256)  /tmp/kubectl" | sha256sum -c -
+  curl -fsSL -o /tmp/kubectl "${KUBECTL_URL}"
+  echo "${KUBECTL_SHA256} /tmp/kubectl" | sha256sum -c -
 
   rm -rf /var/lib/apt/lists/*
 EOF
@@ -46,8 +53,9 @@ EOF
 FROM base
 
 RUN <<EOF
+  set -eux
   apt-get update
-  apt-get install -y --no-install-recommends \
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     ca-certificates \
     curl \
     jq \
