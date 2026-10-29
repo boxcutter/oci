@@ -7,7 +7,7 @@ infrastructure, applications and container images.
 
 This image packages releases from https://cinc.sh/
 
-Image source: https://github.com/boxcutter/oci/tree/main/bootstrap/cinc-auditor
+Image source: https://github.com/boxcutter/oci/tree/main/cinc/cinc-auditor
 
 # Using cinc-auditor
 
@@ -68,7 +68,7 @@ docker container run --rm --interactive --tty \
 ### Testing a container image
 
 If you need to run an InSpec profile against a container image, make sure you
-start the other image first, sitting at a shell prompt, detached. Then also bind 
+start the other image first, sitting at a shell prompt, detached. Then also bind
 mount `/var/run/docker.sock` so the docker tools in the container work when you
 run cinc-auditor in a container:
 
@@ -91,7 +91,7 @@ dd6e9a9ce3df   nginx     "/docker-entrypoint.…"   14 seconds ago   Up 14 secon
   --mount type=bind,source="$(pwd)",target=/share \
   --mount type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock \
   docker.io/boxcutter/cinc-auditor exec . -t docker://${CONTAINER_ID}
-  
+
 # Stop the container under test - give a chance for PID 1 to clean up processes
 % docker container stop ${CONTAINER_ID}
 dd6e9a9ce3df1b6cf8164ed093da6fcd309d411f5a45ddcc2cbebb518de3ad40
