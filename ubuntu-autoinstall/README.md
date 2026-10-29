@@ -18,23 +18,23 @@ By default, this script uses the `--config-root` mode for configuring the autoin
 ### Ubuntu Desktop
 
 ```bash
-$ curl -LO https://releases.ubuntu.com/24.04.3/ubuntu-24.04.3-desktop-amd64.iso
+$ curl -LO https://releases.ubuntu.com/26.04/ubuntu-26.04.1-desktop-amd64.iso
 $ docker run -it --rm \
   --mount type=bind,source="$(pwd)",target=/data \
   docker.io/boxcutter/ubuntu-autoinstall \
-    --source ubuntu-24.04.3-desktop-amd64.iso \
+    --source ubuntu-26.04.1-desktop-amd64.iso \
     --autoinstall autoinstall.yaml \
     --config-root
 ```
 
 ### Ubuntu Server
 
-```
-$ https://releases.ubuntu.com/24.04.3/ubuntu-24.04.3-live-server-amd64.iso
+```bash
+$ curl -LO https://releases.ubuntu.com/26.04/ubuntu-26.04.1-live-server-amd64.iso
 $ docker run -it --rm \
   --mount type=bind,source="$(pwd)",target=/data \
   docker.io/boxcutter/ubuntu-autoinstall \
-    --source ubuntu-24.04.3-live-server-amd64.iso \
+    --source ubuntu-26.04.1-live-server-amd64.iso \
     --autoinstall autoinstall.yaml \
     --config-root
 ```
@@ -54,7 +54,7 @@ $ docker run -it --rm \
   --user "$(id -u):$(id -g)" \
   --mount type=bind,source="$(pwd)",target=/data \
   docker.io/boxcutter/ubuntu-autoinstall \
-    --source ubuntu-24.04.3-live-server-amd64.iso \
+    --source ubuntu-26.04.1-live-server-amd64.iso \
     --autoinstall autoinstall.yaml \
     --config-root
 ```
