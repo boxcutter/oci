@@ -1,29 +1,39 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/ubuntu:noble-20250127
+ARG BASE_IMAGE=docker.io/ubuntu:resolute-20261024.1
+# hadolint ignore=DL3006
 FROM $BASE_IMAGE AS base
 
 FROM base AS build
 
+ARG MESHCMD_URL_AMD64
+ARG MESHCMD_SHA256_AMD64
+ARG MESHCMD_URL_ARM64
+ARG MESHCMD_SHA256_ARM64
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+# Heredocs don't stop on errors by default, so set -e is needed for a failed
+# checksum to fail the build
 RUN <<EOF
+  set -eux
   apt-get update
-  apt-get install -y --no-install-recommends \
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     ca-certificates \
     curl
-  mkdir -p /tmp/meshcmd
   dpkgArch="$(dpkg --print-architecture)"
-  case "${dpkgArch##*-}" in \
-    amd64) \
-      MESHCMD_URL='https://meshcentral.com/executables/meshcmd-linux-x86-64' \
-      ;; \
-    arm64) \
-      MESHCMD_URL='https://meshcentral.com/executables/meshcmd-linux-arm-64' \
-      ;; \
-    armhf) \
-      MESHCMD_URL='https://meshcentral.com/executables/meshcmd-linux-arm-32' \
-      ;; \
-    *) echo "unsupported architecture"; exit 1 ;; \
-    esac
-  curl -o /tmp/meshcmd/meshcmd "$MESHCMD_URL"
+  case "${dpkgArch##*-}" in
+    amd64)
+      MESHCMD_URL="${MESHCMD_URL_AMD64}"
+      MESHCMD_SHA256="${MESHCMD_SHA256_AMD64}"
+      ;;
+    arm64)
+      MESHCMD_URL="${MESHCMD_URL_ARM64}"
+      MESHCMD_SHA256="${MESHCMD_SHA256_ARM64}"
+      ;;
+    *) echo "unsupported architecture"; exit 1 ;;
+  esac
+  mkdir -p /tmp/meshcmd
+  curl -fsSL -o /tmp/meshcmd/meshcmd "${MESHCMD_URL}"
+  echo "${MESHCMD_SHA256} /tmp/meshcmd/meshcmd" | sha256sum -c -
   rm -rf /var/lib/apt/lists/*
 EOF
 
@@ -31,7 +41,7 @@ FROM base
 
 WORKDIR /opt/meshcmd/bin
 
-COPY --from=build --chmod=755 /tmp/meshcmd /opt/meshcmd/bin
+COPY --from=build --chmod=755 /tmp/meshcmd/meshcmd /opt/meshcmd/bin/meshcmd
 
 ENV PATH="/opt/meshcmd/bin:${PATH}"
 EXPOSE 3000

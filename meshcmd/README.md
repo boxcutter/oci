@@ -2,9 +2,20 @@
 
 Command line tool used to perform many tasks related to computer management of Intel Active Management Technology (AMT) devices.
 
-This image packages releases from https://github.com/Ylianst/MeshCentral/tree/master/agents
+This image packages the standalone MeshCmd executables published at
+https://meshcentral.com/executables/. The source is in
+https://github.com/Ylianst/MeshCentral/tree/master/agents
 
 Image source: https://github.com/boxcutter/oci/tree/main/meshcmd
+
+## Tags
+
+| Tag      | Description                        |
+|----------|------------------------------------|
+| `latest` | Latest MeshCmd (currently 1.1.9)   |
+| `1.1.9`  | MeshCmd 1.1.9                      |
+
+The images are built for `linux/amd64` and `linux/arm64`.
 
 ## Background
 
@@ -12,7 +23,7 @@ An Intel employee working on the Intel AMT team, [Ylian Saint-Hilaire](https://w
 
 While written with more modern tooling, MeshCentral’s approach to remote management is still a little too Windows-centric and doesn’t allow 100% automated management through APIs. We don’t use it for very much. It is intended to be set up and used like a Microsoft SMS server. A good example of this is [https://www.sprinxle.com/](https://www.sprinxle.com/)
 
-However, MeshCommander includes a wonderful little tool called MeshCommander includes a great standalone tool that can be used to work with Intel AMT through the command line and access the remote desktop in a web browser via WebRTC, which is very useful. We’ve packaged MeshCommander as the container image `boxcutter/meshcmd`.
+However, MeshCentral includes a great standalone tool called MeshCmd that can be used to work with Intel AMT through the command line and access the remote desktop in a web browser via WebRTC, which is very useful. We’ve packaged MeshCmd as the container image `boxcutter/meshcmd`.
 
 ## Using meshcmd
 
