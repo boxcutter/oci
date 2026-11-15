@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/ubuntu:noble-20260324
+ARG BASE_IMAGE=docker.io/ubuntu:resolute-20261105.1
 FROM $BASE_IMAGE AS download
 
 ARG CINC_URL_AMD64
@@ -23,7 +23,8 @@ RUN <<EOF
   set -e
   apt-get install -y --update --no-install-recommends \
     ca-certificates \
-    curl
+    curl \
+    openssl
   rm -rf /var/lib/apt/lists/*
   dpkgArch="$(dpkg --print-architecture)" 
   case "$TARGETARCH" in \
@@ -44,14 +45,25 @@ EOF
 # The CA bundles inside the cinc package trust the roots that the
 # compromised eMudhra intermediates chain to
 # (https://emudhra.we-have-a-problem.com/). Build a bundle without them to
-# put in their place.
+# put in their place. Patched ca-certificates releases already leave these
+# roots out, so the sed only matters on older ones. sed silently does nothing
+# when a filename doesn't match, so check the finished bundle and fail the
+# build if any of the roots are still in it.
 RUN <<EOF
+  set -e
   sed -i \
     -e 's|^mozilla/emSign_ECC_Root_CA_-_G3.crt|!&|' \
     -e 's|^mozilla/Comodo_AAA_Services_root.crt|!&|' \
-    /etc/ca-certificates.conf &&
-  update-ca-certificates --fresh &&
+    /etc/ca-certificates.conf
+  update-ca-certificates --fresh
   cp /etc/ssl/certs/ca-certificates.crt /tmp/cinc/ca-bundle.pem
+  subjects="$(openssl crl2pkcs7 -nocrl -certfile /tmp/cinc/ca-bundle.pem |
+    openssl pkcs7 -print_certs -noout | grep '^subject=')"
+  if grep -E 'AAA Certificate Services|emSign ECC Root CA - G3|emSign Root (TLS|CS) CA - G3' <<<"${subjects}"; then
+    echo "ca-bundle.pem still trusts the eMudhra-related roots above" >&2
+    exit 1
+  fi
+  echo "ca-bundle.pem: $(grep -c . <<<"${subjects}") roots, none distrusted"
 EOF
 
 
