@@ -40,9 +40,9 @@ ENV GCC_MIRRORS \
 # only attempt the origin FTP as a mirror of last resort
 		ftp://ftp.gnu.org/gnu/gcc
 
-# Last Modified: 2025-06-05
-ENV GCC_VERSION 13.4.0
-# Docker EOL: 2026-12-05
+# Last Modified: 2026-09-11
+ENV GCC_VERSION 13.5.0
+# Docker EOL: 2028-03-11
 
 RUN set -ex; \
 	\
@@ -59,7 +59,9 @@ RUN set -ex; \
 		local fetch="$1"; shift; \
 		local file="$1"; shift; \
 		for mirror in $GCC_MIRRORS; do \
-			if curl -fL "$mirror/$fetch" -o "$file"; then \
+			# add connect-timeout: default 60
+			# https://curl.se/docs/manpage.html#--connect-timeout
+			if curl -fL "$mirror/$fetch" --connect-timeout 30 -o "$file"; then \
 				return 0; \
 			fi; \
 		done; \
@@ -89,7 +91,10 @@ RUN set -ex; \
 	\
 # explicitly update autoconf config.guess and config.sub so they support more arches/libcs
 	for f in config.guess config.sub; do \
-		wget -O "$f" "https://git.savannah.gnu.org/cgit/config.git/plain/$f?id=7d3d27baf8107b630586c962c057e22149653deb"; \
+# use the copies from the base image's autotools-dev (newer than the pinned
+# config.git commit upstream downloads) instead of fetching them from Savannah,
+# whose cgit mirrors return 404 or hang
+		cp -v "/usr/share/misc/$f" "$f"; \
 # find any more (shallow) copies of the file we grabbed and update them too
 		find -mindepth 2 -name "$f" -exec cp -v "$f" '{}' ';'; \
 	done; \
