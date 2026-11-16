@@ -1,6 +1,6 @@
 describe command('go version') do
   its('exit_status') { should eq 0 }
-  its('stdout') { should match(/^go version go1\.26\.10 linux\//) }
+  its('stdout') { should match(/^go version go1\.26\.11 linux\//) }
 end
 
 describe os_env('GOTOOLCHAIN') do

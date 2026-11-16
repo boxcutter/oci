@@ -10,8 +10,8 @@ Image source: https://github.com/boxcutter/oci/tree/main/golang
 
 | Tag | Contents |
 | --- | --- |
-| `latest`, `1`, `1-resolute`, `1.27`, `1.27-resolute`, `1.27.3`, `1.27.3-resolute` | Go 1.27 on Ubuntu 26.04 |
-| `1.26`, `1.26-resolute`, `1.26.10`, `1.26.10-resolute` | Go 1.26 on Ubuntu 26.04 |
+| `latest`, `1`, `1-resolute`, `1.27`, `1.27-resolute`, `1.27.4`, `1.27.4-resolute` | Go 1.27 on Ubuntu 26.04 |
+| `1.26`, `1.26-resolute`, `1.26.11`, `1.26.11-resolute` | Go 1.26 on Ubuntu 26.04 |
 
 Only the two newest Go releases are supported upstream, so older versions are
 no longer built. Previously published tags such as `1.25-noble` remain on

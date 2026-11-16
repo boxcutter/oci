@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=docker.io/ubuntu:resolute-20261006
+ARG BASE_IMAGE=docker.io/ubuntu:resolute-20261105.1
 # hadolint ignore=DL3006
 FROM $BASE_IMAGE
 
@@ -32,30 +32,30 @@ RUN set -eux; \
     locale-gen en_US.UTF-8; \
     rm -rf /var/lib/apt/lists/*
 
-ENV JAVA_VERSION=jdk8u504-b01
+ENV JAVA_VERSION=jdk8u512-b09
 
 RUN set -eux; \
     ARCH="$(dpkg --print-architecture)"; \
     case "${ARCH}" in \
        amd64) \
-         ESUM='52dcd578baca1d3e449ea86768a9129c0ee04d7b22565695498353cc66940c61'; \
-         BINARY_URL='https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u504-b01/OpenJDK8U-jre_x64_linux_hotspot_8u504b01.tar.gz'; \
+         ESUM='57468dc8bfd71dd0578d9717e63a8c13b9efe0a2f2c85c2a13966d1c0f9b1e5f'; \
+         BINARY_URL='https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u512-b09/OpenJDK8U-jre_x64_linux_hotspot_8u512b09.tar.gz'; \
          ;; \
        arm64) \
-         ESUM='9ae9c4dd80fc8f3c4081b480c7d42346e9e4cbee5ae58198fca11e0fc1a19163'; \
-         BINARY_URL='https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u504-b01/OpenJDK8U-jre_aarch64_linux_hotspot_8u504b01.tar.gz'; \
+         ESUM='9b45f49bc6e54cf9170aebe0ee45f48a833222325cb3b2d6d21220eee4c5207b'; \
+         BINARY_URL='https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u512-b09/OpenJDK8U-jre_aarch64_linux_hotspot_8u512b09.tar.gz'; \
          ;; \
        armhf) \
-         ESUM='8ca828acbe5f5b021e14a7ee67c6af36bd0ac50681f1ccdd62352afab947e9cb'; \
-         BINARY_URL='https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u504-b01/OpenJDK8U-jre_arm_linux_hotspot_8u504b01.tar.gz'; \
+         ESUM='bbe01d0683d3dcdd0bbdcc568d3d9123f719a4fa390208b3fe1ca6e1ef083923'; \
+         BINARY_URL='https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u512-b09/OpenJDK8U-jre_arm_linux_hotspot_8u512b09.tar.gz'; \
          # Fixes libatomic.so.1: cannot open shared object file
          apt-get update; \
          DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends libatomic1; \
          rm -rf /var/lib/apt/lists/*; \
          ;; \
        ppc64el) \
-         ESUM='314457c842c578607d61e8867c4a9adcb3765eb62bb1b543239b1baccfe7b48b'; \
-         BINARY_URL='https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u504-b01/OpenJDK8U-jre_ppc64le_linux_hotspot_8u504b01.tar.gz'; \
+         ESUM='10e73d7932dca112d63fcdc3f26cc479cec52e0b3715f931ada758af47374b44'; \
+         BINARY_URL='https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u512-b09/OpenJDK8U-jre_ppc64le_linux_hotspot_8u512b09.tar.gz'; \
          ;; \
        *) \
          echo "Unsupported arch: ${ARCH}"; \
@@ -88,14 +88,14 @@ RUN set -eux; \
     echo "Complete."
 
 # Remove the eMudhra roots as advised at https://openjdk.org/emudhra until
-# Temurin ships a release that fixes JDK-8395690 (CVE-2026-114820). Temurin
-# names its cacerts aliases after the certificate subject rather than
-# "emsigneccrootcag3 [jdk]", so the advisory's keytool commands don't match.
+# Temurin ships a release that fixes JDK-8395690 (CVE-2026-114820). 8u512
+# already dropped emSign ECC Root CA - G3 but still trusts emSign Root CA - G1.
+# Temurin names its cacerts aliases after the certificate subject rather than
+# "emsignrootcag1 [jdk]", so the advisory's keytool commands don't match.
 # emSign Root CA - G2 and AAA Certificate Services aren't in Temurin's cacerts.
 # A missing alias fails the build, so this gets revisited when cacerts changes.
 RUN set -eux; \
     for alias in \
-        'cn=emsign_ecc_root_ca_-_g3,o=emudhra_technologies_limited,ou=emsign_pki,c=in' \
         'cn=emsign_root_ca_-_g1,o=emudhra_technologies_limited,ou=emsign_pki,c=in' \
     ; do \
         keytool -delete -keystore "$JAVA_HOME/lib/security/cacerts" -storepass changeit -alias "$alias"; \

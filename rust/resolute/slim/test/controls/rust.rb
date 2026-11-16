@@ -10,7 +10,7 @@ end
 
 describe command('rustup --version') do
   its('exit_status') { should eq 0 }
-  its('stdout') { should match(/^rustup 1\.29\.2 /) }
+  its('stdout') { should match(/^rustup 1\.29\.3 /) }
 end
 
 describe os_env('RUST_VERSION') do

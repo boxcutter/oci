@@ -16,8 +16,8 @@ https://adoptium.net/.
 
 | Tag | Contents |
 | --- | --- |
-| `8-jdk`, `8-jdk-resolute`, `8u504-b01-jdk`, `8u504-b01-jdk-resolute` | Java 8 Development Kit |
-| `8-jre`, `8-jre-resolute`, `8u504-b01-jre`, `8u504-b01-jre-resolute` | Java 8 Runtime Environment |
+| `8-jdk`, `8-jdk-resolute`, `8u512-b09-jdk`, `8u512-b09-jdk-resolute` | Java 8 Development Kit |
+| `8-jre`, `8-jre-resolute`, `8u512-b09-jre`, `8u512-b09-jre-resolute` | Java 8 Runtime Environment |
 | `21-jdk`, `21-jdk-resolute`, `21.0.13_9-jdk`, `21.0.13_9-jdk-resolute` | Java 21 Development Kit |
 | `21-jre`, `21-jre-resolute`, `21.0.13_9-jre`, `21.0.13_9-jre-resolute` | Java 21 Runtime Environment |
 | `25-jdk`, `25-jdk-resolute`, `25.0.5_8-jdk`, `25.0.5_8-jdk-resolute` | Java 25 Development Kit |
@@ -78,7 +78,7 @@ The binaries in this image are built by Eclipse Adoptium from this source:
 
 | Release | Source |
 | --- | --- |
-| `jdk8u504-b01` | https://github.com/adoptium/jdk8u/tree/jdk8u504-b01 |
+| `jdk8u512-b09` | https://github.com/adoptium/jdk8u/tree/jdk8u512-b09 |
 | `jdk-21.0.13+9` | https://github.com/adoptium/jdk21u/tree/jdk-21.0.13+9 |
 | `jdk-25.0.5+8` | https://github.com/adoptium/jdk25u/tree/jdk-25.0.5+8 |
 
