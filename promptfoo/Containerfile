@@ -22,17 +22,27 @@ RUN <<EOF
   rm -rf /var/lib/apt/lists/*
 EOF
 
-# Install the published package instead of building from source. Block
-# dependency lifecycle scripts during install, then rebuild only the esbuild
-# package that tsx needs, the same as the upstream image.
+# Install the published package instead of building from source, from the
+# committed package-lock.json so every dependency is pinned and checked
+# against its recorded integrity hash. package.json's overrides move
+# dependencies with known advisories to fixed releases. Block dependency
+# lifecycle scripts during install, then rebuild only the esbuild package
+# that tsx needs, the same as the upstream image.
 ARG PROMPTFOO_VERSION
+COPY package.json package-lock.json /opt/promptfoo/
 RUN <<EOF
   set -e
-  npm install --global --no-audit --no-fund --ignore-scripts "promptfoo@${PROMPTFOO_VERSION}"
-  cd /usr/local/lib/node_modules/promptfoo
-  npm rebuild ./node_modules/esbuild
+  cd /opt/promptfoo
+  npm ci --omit=dev --no-audit --no-fund --ignore-scripts
+  npm rebuild esbuild
+  ln -s /opt/promptfoo/node_modules/.bin/promptfoo /usr/local/bin/promptfoo
+  ln -s /opt/promptfoo/node_modules/.bin/pf /usr/local/bin/pf
   rm -rf /root/.npm /tmp/*
-  promptfoo --version
+  installed="$(promptfoo --version)"
+  if [ "${installed}" != "${PROMPTFOO_VERSION}" ]; then
+    echo "package-lock.json installs promptfoo ${installed}, but docker-bake.hcl says ${PROMPTFOO_VERSION}" >&2
+    exit 1
+  fi
 EOF
 
 RUN mkdir -p /home/promptfoo/.promptfoo /promptfoo \
@@ -55,4 +65,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s CMD node -e "const ht
 
 # Start the self-hosted web server by default. Any other command, like
 # `promptfoo eval`, runs through the node image's docker-entrypoint.sh.
-CMD ["node", "/usr/local/lib/node_modules/promptfoo/dist/src/server/index.js"]
+CMD ["node", "/opt/promptfoo/node_modules/promptfoo/dist/src/server/index.js"]
