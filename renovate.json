@@ -1,8 +1,11 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended",
-    "schedule:weekly"
+    "config:recommended"
+  ],
+  "timezone": "America/New_York",
+  "schedule": [
+    "* * * * 1"
   ],
   "ignorePaths": [
     ".idea/**"
