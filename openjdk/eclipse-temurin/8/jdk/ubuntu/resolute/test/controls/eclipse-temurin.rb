@@ -1,13 +1,13 @@
 # JDK 8 prints its version to stderr
 describe command('java -version') do
   its('exit_status') { should eq 0 }
-  its('stderr') { should match(/openjdk version "1\.8\.0_504"/) }
+  its('stderr') { should match(/openjdk version "1\.8\.0_512"/) }
   its('stderr') { should match(/Temurin/) }
 end
 
 describe command('javac -version') do
   its('exit_status') { should eq 0 }
-  its('stderr') { should match(/javac 1\.8\.0_504/) }
+  its('stderr') { should match(/javac 1\.8\.0_512/) }
 end
 
 describe os_env('JAVA_HOME') do

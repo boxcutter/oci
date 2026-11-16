@@ -3,7 +3,7 @@ variable "TAG_PREFIX" {
 }
 
 variable "VERSION" {
-  default = "8u504-b01"
+  default = "8u512-b09"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, use linux
