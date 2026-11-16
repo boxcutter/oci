@@ -3,7 +3,7 @@
 ARG BUILD_IMAGE=docker.io/boxcutter/golang:1.27-resolute
 # The generator links against libsnmp, so the runtime image needs to match the
 # Ubuntu release of the build image
-ARG BASE_IMAGE=docker.io/ubuntu:resolute-20261024.1
+ARG BASE_IMAGE=docker.io/ubuntu:resolute-20261105.1
 # hadolint ignore=DL3006
 FROM $BASE_IMAGE AS base
 
@@ -14,6 +14,9 @@ ARG SNMP_EXPORTER_SOURCE_URL
 ARG SNMP_EXPORTER_SOURCE_SHA256
 ARG PEPLINK_SNMP_MIBS_URL
 ARG PEPLINK_SNMP_MIBS_SHA256
+ARG LIEBERT_MIBS_BASE_URL
+ARG LIEBERT_GP_PDU_MIB_SHA256
+ARG LIEBERT_GP_REG_MIB_SHA256
 
 WORKDIR /usr/src/snmp_exporter
 
@@ -78,7 +81,12 @@ RUN <<EOF
   make mibs/PDU2-MIB.txt
   make mibs/PDU_AssetManagement_MIB.txt
   make mibs/Infrapower-MIB.mib
-  make mibs/LIEBERT_GP_PDU.MIB
+  # Vertiv's download (LIEBERT_URL in the Makefile) now answers 403, so take
+  # the same MIBs from a pinned LibreNMS commit instead
+  curl -fsSL -o mibs/LIEBERT_GP_PDU.MIB "${LIEBERT_MIBS_BASE_URL}/LIEBERT-GP-PDU-MIB"
+  curl -fsSL -o mibs/LIEBERT_GP_REG.MIB "${LIEBERT_MIBS_BASE_URL}/LIEBERT-GP-REGISTRATION-MIB"
+  echo "${LIEBERT_GP_PDU_MIB_SHA256} mibs/LIEBERT_GP_PDU.MIB" | sha256sum -c -
+  echo "${LIEBERT_GP_REG_MIB_SHA256} mibs/LIEBERT_GP_REG.MIB" | sha256sum -c -
   make mibs/CyberPower.MIB
   make mibs/EAP.MIB
   make mibs/EAP-Client.MIB
