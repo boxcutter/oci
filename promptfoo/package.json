@@ -1,0 +1,15 @@
+{
+  "name": "boxcutter-promptfoo",
+  "private": true,
+  "description": "Pins promptfoo and its dependencies for the boxcutter/promptfoo image. Regenerate package-lock.json after changing this file (see README.md).",
+  "dependencies": {
+    "promptfoo": "0.125.1"
+  },
+  "overrides": {
+    "@azure/identity": "4.14.1",
+    "@hono/node-server": "2.1.8",
+    "basic-ftp": "6.2.6",
+    "fast-xml-parser": "5.12.1",
+    "hono": "4.13.19"
+  }
+}
