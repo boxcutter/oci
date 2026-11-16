@@ -3,7 +3,7 @@
 ARG BUILD_IMAGE=docker.io/boxcutter/golang:1.27-resolute
 # The generator links against libsnmp, so the runtime image needs to match the
 # Ubuntu release of the build image
-ARG BASE_IMAGE=docker.io/ubuntu:resolute-20261024.1
+ARG BASE_IMAGE=docker.io/ubuntu:resolute-20261105.1
 # hadolint ignore=DL3006
 FROM $BASE_IMAGE AS base
 

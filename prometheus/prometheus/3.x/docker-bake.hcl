@@ -3,7 +3,7 @@ variable "TAG_PREFIX" {
 }
 
 variable "VERSION" {
-  default = "3.15.1"
+  default = "3.16.0"
 }
 
 # There's no darwin-based Docker, so if we're running on macOS, change the platform to linux
@@ -14,10 +14,10 @@ variable "LOCAL_PLATFORM" {
 target "_common" {
   dockerfile = "Containerfile"
   args = {
-    PROMETHEUS_URL_AMD64 = "https://github.com/prometheus/prometheus/releases/download/v3.15.1/prometheus-3.15.1.linux-amd64.tar.gz"
-    PROMETHEUS_SHA256_AMD64 = "6a726885328ad9efebbf36e876ce2fb6225468a71fd1e7ce3ba666d5f4d97a84"
-    PROMETHEUS_URL_ARM64 = "https://github.com/prometheus/prometheus/releases/download/v3.15.1/prometheus-3.15.1.linux-arm64.tar.gz"
-    PROMETHEUS_SHA256_ARM64 = "ceb6d21493c37ca0b4513b147642797c68cf39a0f50a444d50e1e80c74f21b26"
+    PROMETHEUS_URL_AMD64 = "https://github.com/prometheus/prometheus/releases/download/v3.16.0/prometheus-3.16.0.linux-amd64.tar.gz"
+    PROMETHEUS_SHA256_AMD64 = "68727009472a2c02e1ff7f062fd5b3e637285bffc8fc2d340c76fb449d6e0f34"
+    PROMETHEUS_URL_ARM64 = "https://github.com/prometheus/prometheus/releases/download/v3.16.0/prometheus-3.16.0.linux-arm64.tar.gz"
+    PROMETHEUS_SHA256_ARM64 = "fd8571b8162f4020232d886f17340bcf92e1722985ae3b4c1d096157826c0fbe"
   }
   tags = [
     "${TAG_PREFIX}:${VERSION}",
