@@ -43,3 +43,10 @@ describe command('keytool -list -v -cacerts -storepass changeit') do
     its('stdout') { should_not include "CN=#{cn}," }
   end
 end
+
+# Java4Shell (CVE-2026-114938) mitigation: the java launcher must start with the
+# Base64 intrinsic disabled
+describe command('java -XX:+PrintFlagsFinal -version') do
+  its('exit_status') { should eq 0 }
+  its('stdout') { should match(/^\s*bool UseBASE64Intrinsics\s+= false\s/) }
+end

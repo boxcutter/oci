@@ -29,6 +29,13 @@ RUN set -eux; \
 
 ENV JAVA_VERSION=jdk-25.0.5+8
 
+# Java4Shell (CVE-2026-114938): the AVX-512 Base64 intrinsic in this build can
+# corrupt the heap on x86-64 CPUs with AVX-512 VBMI. Adoptium has no GA build
+# with the fix yet, so turn the intrinsic off, as Red Hat advises. Drop this
+# once JAVA_VERSION moves to a fixed release.
+# https://openjdk.org/groups/vulnerability/advisories/2026-11-17
+ENV JDK_JAVA_OPTIONS=-XX:-UseBASE64Intrinsics
+
 RUN set -eux; \
     ARCH="$(dpkg --print-architecture)"; \
     case "${ARCH}" in \
